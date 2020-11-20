@@ -1,11 +1,11 @@
 import React, { Component }  from 'react';
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
-import NavBar from "./NavBar";
+import NavBar from "../NavBar";
 import './App.css';
 import { Container } from "reactstrap";
-import Welcome from "./Welcome";
-import ErrorMessage from "./ErrorMessage";
-import withAuthProvider, { AuthComponentProps } from "./AuthProvider";
+import Welcome from "./home/Welcome";
+import ErrorMessage from "../ErrorMessage";
+import withAuthProvider, { AuthComponentProps } from "../api/azure/azauth";
 import "bootstrap/dist/css/bootstrap.css";
 
 class App extends Component<AuthComponentProps> {

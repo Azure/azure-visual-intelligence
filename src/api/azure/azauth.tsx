@@ -5,8 +5,8 @@ import React from "react";
 import { UserAgentApplication } from "msal";
 import { AccessToken, GetTokenOptions } from "@azure/core-http";
 
-import { config } from "./Config";
-import { getUserDetails } from "./GraphService";
+import { config } from "../../common/Config";
+import { getUserDetails } from "./azgraph";
 
 export interface AuthComponentProps {
   error: any;
