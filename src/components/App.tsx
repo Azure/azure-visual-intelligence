@@ -1,9 +1,10 @@
 import React, { Component }  from 'react';
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Route} from "react-router-dom";
 import NavBar from "../NavBar";
 import './App.css';
-import { Container } from "reactstrap";
+import { Container} from "reactstrap";
 import Welcome from "./home/Welcome";
+import Graph from "./graph/Graph";
 import ErrorMessage from "../ErrorMessage";
 import withAuthProvider, { AuthComponentProps } from "../api/azure/azauth";
 import "bootstrap/dist/css/bootstrap.css";
@@ -29,25 +30,37 @@ class App extends Component<AuthComponentProps> {
         }
         user={this.props.user}
       />
-      <Container>
         {error}
         <Route
           exact
           path="/"
           render={(props) => (
-            <Welcome
-              {...props}
-              isAuthenticated={this.props.isAuthenticated}
-              user={this.props.user}
-              authButtonMethod={this.props.login}
+            <Container>
+                <Welcome
+                {...props}
+                isAuthenticated={this.props.isAuthenticated}
+                user={this.props.user}
+                authButtonMethod={this.props.login}
+               />
+            </Container>
+          )}
+        />
+        <Route
+          exact
+          path="/graph"
+          render={(props) => (
+            <Graph
+            {...props}
             />
           )}
         />
-      </Container>
     </div>
   </Router>
   );
   }
 }
+
+/*              {...props}
+isAuthenticated={this.props.isAuthenticated}*/
 
 export default withAuthProvider(App);

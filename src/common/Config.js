@@ -7,5 +7,8 @@ export const config = {
       "https://graph.microsoft.com/user.read",
       "https://graph.microsoft.com/calendars.read",
     ],
+    argscopes:[
+      "https://management.core.windows.net/user_impersonation",
+    ],
     storageAccount: "https://demostorageaccount.blob.core.windows.net",
   };

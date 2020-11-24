@@ -7,6 +7,7 @@ import { AccessToken, GetTokenOptions } from "@azure/core-http";
 
 import { config } from "../../common/Config";
 import { getUserDetails } from "./azgraph";
+import { azGetSubscriptions } from "./azarg";
 
 export interface AuthComponentProps {
   error: any;
@@ -91,6 +92,7 @@ export default function withAuthProvider<
         });
         // After login, get the user's profile
         await this.getUserProfile();
+        await this.getSubscriptions();
       } catch (err) {
         this.setState({
           isAuthenticated: false,
@@ -278,6 +280,29 @@ export default function withAuthProvider<
         error.message.indexOf("interaction_required") > -1 ||
         error.message.indexOf("login_required") > -1
       );
+    }
+
+    // <getUserProfileSnippet>
+    async getSubscriptions() {
+      try {
+        var accessToken = await this.getAccessToken(config.argscopes);
+
+        if (accessToken) {
+          var subscriptions = await azGetSubscriptions(accessToken);
+          this.setState({
+            user: {
+              subscriptions: subscriptions,
+            },
+            error: null,
+          });
+        }
+      } catch (err) {
+        this.setState({
+          isAuthenticated: false,
+          user: {},
+          error: this.normalizeError(err),
+        });
+      }
     }
   };
 }
