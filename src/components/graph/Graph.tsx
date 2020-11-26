@@ -28,7 +28,13 @@ interface SubscriptionsProps {
 interface subscription {
   subscriptionId : string,
   displayName: string,
-  resourceGroups : any[],
+  resourceGroups : resourceGroup[],
+}
+
+interface resourceGroup{
+  id :string,
+  name:string
+  resources : any[],
 }
 
 interface GraphState {
@@ -94,7 +100,12 @@ function Subscriptions(props: SubscriptionsProps){
           return (
             <TreeItem nodeId={subscription.subscriptionId} label={subscription.displayName}>
               {subscription.resourceGroups && subscription.resourceGroups.map((resourceGroup) => {
-                return <TreeItem nodeId={resourceGroup.id} label={resourceGroup.name}/>
+                return (<TreeItem nodeId={resourceGroup.id} label={resourceGroup.name}>
+                      {resourceGroup.resources && resourceGroup.resources.map((resource) => {
+                        return (<TreeItem nodeId={resource.id} label={resource.name}/>)
+                      })}
+                </TreeItem>
+                )
               })}
             </TreeItem>
             
