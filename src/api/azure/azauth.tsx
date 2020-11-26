@@ -7,16 +7,21 @@ import { AccessToken, GetTokenOptions } from "@azure/core-http";
 
 import { config } from "../../common/Config";
 import { getUserDetails } from "./azgraph";
-import { azGetSubscriptions } from "./azarg";
+import { azGetSubscriptions } from "./azarm";
 
 export interface AuthComponentProps {
   error: any;
   isAuthenticated: boolean;
-  user: any;
+  user: {
+    displayName: string,
+    email: string,
+    subscriptions : any[],
+  };
   login: Function;
   logout: Function;
+  refreshResources:Function;
   getAccessToken: Function;
-  getToken: Function; //test
+  getToken: Function;
   setError: Function;
 }
 
@@ -72,6 +77,7 @@ export default function withAuthProvider<
         <WrappedComponent
           login={() => this.login()}
           logout={() => this.logout()}
+          refreshResources={() => this.refreshResources()}
           getAccessToken={(scopes: string[]) => this.getAccessToken(scopes)}
           getToken={(scopes: string[]) => this.getToken(scopes)}
           setError={(message: string, debug: string) =>
@@ -102,24 +108,30 @@ export default function withAuthProvider<
       }
     }
 
+    async refreshResources(){
+      try {
+        await this.getSubscriptions();
+      } catch (err) {
+        this.setState({
+          isAuthenticated: false,
+          user: {},
+          error: this.normalizeError(err),
+        });
+      }
+    }
+
     logout() {
       this.userAgentApplication.logout();
     }
 
     async getAccessToken(scopes: string[]): Promise<string> {
       try {
-        // Get the access token silently
-        // If the cache contains a non-expired token, this function
-        // will just return the cached token. Otherwise, it will
-        // make a request to the Azure OAuth endpoint to get a token
         var silentResult = await this.userAgentApplication.acquireTokenSilent({
           scopes: scopes,
         });
 
         return silentResult.accessToken;
       } catch (err) {
-        // If a silent request fails, it may be because the user needs
-        // to login or grant consent to one or more of the requested scopes
         if (this.isInteractionRequired(err)) {
           var interactiveResult = await this.userAgentApplication.acquireTokenPopup(
             {
@@ -200,21 +212,7 @@ export default function withAuthProvider<
 
       let authPromise: Promise<msal.AuthResponse> | undefined;
       if (authResponse === undefined) {
-        /*logger.warning(
-          `InteractiveBrowserCredential: silent authentication failed, falling back to interactive method ${this.loginStyle}`
-        );*/
-        /*switch (this.loginStyle) {
-          case "redirect":*/
-        /*authPromise = new Promise((resolve, reject) => {
-              this.userAgentApplication.handleRedirectCallback(resolve, reject);
-            });
-            this.userAgentApplication.acquireTokenRedirect(authParams);
-            break;*/
-        //case "popup":
         authPromise = this.userAgentApplication.acquireTokenPopup(authParams);
-        //break;
-        //}
-
         authResponse = authPromise && (await authPromise);
       }
       return authResponse;
@@ -282,7 +280,6 @@ export default function withAuthProvider<
       );
     }
 
-    // <getUserProfileSnippet>
     async getSubscriptions() {
       try {
         var accessToken = await this.getAccessToken(config.argscopes);
@@ -291,6 +288,7 @@ export default function withAuthProvider<
           var subscriptions = await azGetSubscriptions(accessToken);
           this.setState({
             user: {
+              ...this.state.user,
               subscriptions: subscriptions,
             },
             error: null,

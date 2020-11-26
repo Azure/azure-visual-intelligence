@@ -51,6 +51,8 @@ class App extends Component<AuthComponentProps> {
           render={(props) => (
             <Graph
             {...props}
+            user={this.props.user}
+            refreshResourcesButtonMethod={this.props.refreshResources}
             />
           )}
         />
