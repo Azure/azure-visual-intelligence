@@ -1,6 +1,11 @@
 import React from "react";
 import {Container, Row, Col} from "reactstrap";
 import { Button } from "reactstrap";
+import { makeStyles } from '@material-ui/core/styles';
+import TreeView from '@material-ui/lab/TreeView';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import TreeItem from '@material-ui/lab/TreeItem';
 
 
 interface GraphProps {
@@ -16,13 +21,27 @@ interface SubscriptionsProps {
   user: {
     displayName: string,
     email: string,
-    subscriptions : any[],
+    subscriptions : subscription[]
   };
+}
+
+interface subscription {
+  subscriptionId : string,
+  displayName: string,
+  resourceGroups : any[],
 }
 
 interface GraphState {
   isOpen: boolean;
 }
+
+const useStyles = makeStyles({
+  root: {
+    height: 216,
+    flexGrow: 1,
+    maxWidth: 400,
+  },
+});
 
 export default class Graph extends React.Component<
 GraphProps,
@@ -62,17 +81,47 @@ function Browser(props: GraphProps) {
 }
 
 function Subscriptions(props: SubscriptionsProps){
-  ////if (props.user.subscriptions.length > 0){
+  const classes = useStyles();
   if (props.user.subscriptions !== undefined){
     return (  
-      <div>
+      <TreeView
+      className={classes.root}
+      defaultCollapseIcon={<ExpandMoreIcon />}
+      defaultExpandIcon={<ChevronRightIcon />}
+      multiSelect
+    >
         {props.user.subscriptions.map((subscription) => {
           return (
-            <div>{subscription.displayName}</div>
+            <TreeItem nodeId={subscription.subscriptionId} label={subscription.displayName}>
+              {subscription.resourceGroups && subscription.resourceGroups.map((resourceGroup) => {
+                return <TreeItem nodeId={resourceGroup.id} label={resourceGroup.name}/>
+              })}
+            </TreeItem>
+            
           );
         })}
-      </div>   
+      </TreeView>
     );
   }
   return (<div>No Subscriptions</div>);
 }
+/*
+              {subscription.resourceGroups && subscription.resourceGroups.map((resourceGroup) => {
+                return <TreeItem nodeId={resourceGroup.id} label={resourceGroup.name}/>
+              })}
+              */
+//<Subscription key={subscription.subscriptionId} props={subscription}/>
+/*function Subscription(props :any){
+    return (  
+        <TreeItem nodeId={props.subscriptionId} label={props.displayName}>
+
+      </TreeItem>
+    );
+}*/
+
+
+/*        {props.resourceGroups.map((resourceGroup) => {
+          return (
+              <TreeItem nodeId={resourceGroup.subscriptionId+2} label="Calendar" />
+          );
+        })}*/
