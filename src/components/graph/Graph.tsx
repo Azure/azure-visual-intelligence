@@ -1,11 +1,11 @@
 import React from "react";
 import {Container, Row, Col} from "reactstrap";
 import { Button } from "reactstrap";
-import { makeStyles } from '@material-ui/core/styles';
 import TreeView from '@material-ui/lab/TreeView';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import TreeItem from '@material-ui/lab/TreeItem';
+import CytoScape from "./Cytoscape";
 
 
 interface GraphProps {
@@ -41,34 +41,28 @@ interface GraphState {
   isOpen: boolean;
 }
 
-const useStyles = makeStyles({
-  root: {
-    height: 216,
-    flexGrow: 1,
-    maxWidth: 400,
-  },
-});
-
 export default class Graph extends React.Component<
 GraphProps,
 GraphState
 >{
   render() {
-    //if (this.props.isAuthenticated) {
       return (
-        <Container className="themed-container" fluid={true}>
-            <Row>
-                <Col xs="2">
+        <Container className="themed-container" fluid={true} style={{height:'100%'}}>
+            <Row> 
+                <Col xs="2" className="py-2 border rounded">
                   <Browser
                     user={this.props.user}
                     refreshResourcesButtonMethod={this.props.refreshResourcesButtonMethod}
                   />
                </Col>
-                <Col>GRAPH</Col>
+                <Col className="py-2 border rounded">
+                    <div style={{height:'92vh'}}>
+                      <CytoScape />
+                      </div>
+                </Col>
             </Row>
         </Container>
       );
-   // }
   }
 }
 
@@ -87,11 +81,9 @@ function Browser(props: GraphProps) {
 }
 
 function Subscriptions(props: SubscriptionsProps){
-  const classes = useStyles();
   if (props.user.subscriptions !== undefined){
     return (  
       <TreeView
-      className={classes.root}
       defaultCollapseIcon={<ExpandMoreIcon />}
       defaultExpandIcon={<ChevronRightIcon />}
       multiSelect
@@ -116,23 +108,3 @@ function Subscriptions(props: SubscriptionsProps){
   }
   return (<div>No Subscriptions</div>);
 }
-/*
-              {subscription.resourceGroups && subscription.resourceGroups.map((resourceGroup) => {
-                return <TreeItem nodeId={resourceGroup.id} label={resourceGroup.name}/>
-              })}
-              */
-//<Subscription key={subscription.subscriptionId} props={subscription}/>
-/*function Subscription(props :any){
-    return (  
-        <TreeItem nodeId={props.subscriptionId} label={props.displayName}>
-
-      </TreeItem>
-    );
-}*/
-
-
-/*        {props.resourceGroups.map((resourceGroup) => {
-          return (
-              <TreeItem nodeId={resourceGroup.subscriptionId+2} label="Calendar" />
-          );
-        })}*/
