@@ -3,7 +3,6 @@ export async function azGetResources(accessToken:string){
     
     const extendedsubscriptions :any[] = [];
     await Promise.all(subscriptions.map(async (subscription:any) => {
-    //subscriptions.forEach((subscription:any, index:any, array:any[]) =>{
         let resourceGroups = await azGetResourceGroups(accessToken, subscription);
         let extendedsubscription = {
             subscriptionId : subscription.subscriptionId,

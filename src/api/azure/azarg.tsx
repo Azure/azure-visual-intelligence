@@ -1,11 +1,3 @@
-//import * as msal from "msal";
-//import React from "react";
-//import { UserAgentApplication } from "msal";
-//import { AccessToken, GetTokenOptions } from "@azure/core-http";
-
-//import { config } from "../../common/Config";
-//import { getUserDetails } from "./azgraph";
-
 const { HttpHeaders } = require("@azure/ms-rest-js");
 const resourceGraph = require("@azure/arm-resourcegraph");
 

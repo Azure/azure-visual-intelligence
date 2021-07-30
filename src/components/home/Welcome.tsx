@@ -1,9 +1,5 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-
-// <WelcomeSnippet>
 import React from "react";
-import { Button, Jumbotron } from "reactstrap";
+import {DefaultButton} from '@fluentui/react/lib/Button';
 
 interface WelcomeProps {
   isAuthenticated: boolean;
@@ -28,9 +24,7 @@ function WelcomeContent(props: WelcomeProps) {
 
   // Not authenticated, present a sign in button
   return (
-    <Button color="primary" onClick={props.authButtonMethod}>
-      Click here to sign in
-    </Button>
+    <DefaultButton text="Click here to sign in" onClick={props.authButtonMethod}/>
   );
 }
 
@@ -40,7 +34,7 @@ export default class Welcome extends React.Component<
 > {
   render() {
     return (
-      <Jumbotron>
+      <div>
         <h1>Azure Visual Intelligence</h1>
         <p className="lead"></p>
         This application allows you to :
@@ -54,7 +48,7 @@ export default class Welcome extends React.Component<
           user={this.props.user}
           authButtonMethod={this.props.authButtonMethod}
         />
-      </Jumbotron>
+      </div>
     );
   }
 }

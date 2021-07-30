@@ -1,0 +1,187 @@
+body{
+  overflow-x: hidden;
+  height: 100%;
+}
+
+#mainview {
+  width: 100%;
+  height: 90vh;
+}
+
+#error {
+  display: none;
+  font-size: 120%;
+  margin: 0 auto;
+  margin-top: 40vh;
+  border: 2px solid var(--vscode-button-background);
+  box-shadow: 0 0 35px rgba(0, 0, 0, 0.7);
+}
+
+#errortitle {
+  background-color: var(--vscode-selection-background);
+  font-weight: bold;
+  font-size: 150%;
+  padding: 8px;
+}
+
+#errormsg {
+  font-size: 120%;
+  color: var(--vscode-errorForeground);
+  font-family: var(--vscode-editor-font-family);
+  white-space: pre-wrap;
+  word-break: break-all;
+  word-wrap: break-word;
+  padding: 10px;
+}
+
+#statusbar {
+  width: 97%;
+  display: block;
+  bottom: 4px;
+  position: absolute;
+  z-index: 500;
+  color: var(--vscode-sideBarSectionHeader-foreground);
+  background-color: var(--vscode-sideBarSectionHeader-background);
+  padding: 4px;
+  padding-left: 10px;
+}
+
+button {
+  display: inline-flex;
+  align-items: center; 
+  background: none;
+  color: var(--vscode-button-foreground);
+  background-color: var(--vscode-button-background);
+  border: none;
+  padding: 8px;
+  margin: 2px;
+  border-radius: 3px;
+  font-size: 95%;
+  /* min-width: 70px; */
+  text-align: center;
+}
+
+button img {
+  width: 16px;
+  height: 16px;
+  display: inline;
+}
+
+button:hover {
+  background-color: var(--vscode-button-hoverBackground);
+}
+
+.toggled {
+  background-color: var(--vscode-gitDecoration-addedResourceForeground);
+}
+
+@media only screen and (max-width: 750px) {
+  .lab {
+    display: none;
+  }
+}
+
+.italic {
+  font-style: italic;
+}
+
+#infobox {
+  display: block;
+  font-size: 90%;
+  border: 2px solid var(--vscode-button-background);
+  box-shadow: 0 0 35px rgba(0, 0, 0, 0.7);
+  position: absolute;
+  z-index: 8000;
+  bottom: 10px;
+  right: -400px;
+  padding: 0px;
+  word-wrap: break-word;
+  font-size: 105%;
+  max-width: 90%;
+  overflow: hidden;
+  background-color: var(--vscode-notifications-background);
+  transition: all 0.4s ease-in
+}
+
+#infotable {
+  padding: 5px;
+}
+
+#infobox td:first-child {
+  font-weight: bold;
+  color: var(--vscode-button-background);
+}
+
+#infobox tr {
+  border-bottom: 2px solid var(--vscode-foreground);
+  margin: 15px;
+}
+
+#infobox td {
+  padding: 5px;
+  font-size: 1.1em;
+}
+
+#infobox .panel-heading  {
+  font-size: 120%;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.panel-heading {
+  background-color: var(--vscode-selection-background);
+  font-size: 130%;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 4px;
+  margin: auto;
+  vertical-align: middle;
+}
+
+#infobox .panel-heading img {
+  height: 25px;
+  vertical-align: middle;
+}
+
+/* CSS loader/spinner */
+.loader,
+.loader:after {
+  border-radius: 50%;
+  width: 10em;
+  height: 10em;
+}
+.loader {
+  margin: 60px auto;
+  font-size: 10px;
+  position: relative;
+  text-indent: -9999em;
+  border-top: 1.1em solid rgba(255, 255, 255, 0.2);
+  border-right: 1.1em solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1.1em solid rgba(255, 255, 255, 0.2);
+  border-left: 1.1em solid #ffffff;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation: load8 1.1s infinite linear;
+  animation: load8 1.1s infinite linear;
+}
+@-webkit-keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}

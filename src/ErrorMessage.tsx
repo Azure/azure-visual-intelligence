@@ -3,7 +3,10 @@
 
 // <ErrorMessageSnippet>
 import React from "react";
-import { Alert } from "reactstrap";
+import {
+  MessageBar,
+  MessageBarType,
+} from '@fluentui/react';
 
 interface ErrorMessageProps {
   debug: string;
@@ -21,10 +24,13 @@ export default class ErrorMessage extends React.Component<ErrorMessageProps> {
       );
     }
     return (
-      <Alert color="danger">
-        <p className="mb-3">{this.props.message}</p>
-        {debug}
-      </Alert>
+      <MessageBar
+      messageBarType={MessageBarType.error}
+      isMultiline={false}
+      dismissButtonAriaLabel="Close"
+    >
+      {this.props.message}, {debug}
+    </MessageBar>
     );
   }
 }

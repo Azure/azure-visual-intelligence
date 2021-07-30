@@ -1,6 +1,6 @@
 import React from "react";
-import {Container, Row, Col} from "reactstrap";
-import { Button } from "reactstrap";
+import { Stack, IStackStyles, IStackTokens, IStackItemStyles } from '@fluentui/react/lib/Stack';
+import {DefaultButton} from '@fluentui/react/lib/Button';
 import TreeView from '@material-ui/lab/TreeView';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -47,21 +47,17 @@ GraphState
 >{
   render() {
       return (
-        <Container className="themed-container" fluid={true} style={{height:'100%'}}>
-            <Row> 
-                <Col xs="2" className="py-2 border rounded">
-                  <Browser
-                    user={this.props.user}
-                    refreshResourcesButtonMethod={this.props.refreshResourcesButtonMethod}
-                  />
-               </Col>
-                <Col className="py-2 border rounded">
-                    <div style={{height:'92vh'}}>
-                      <CytoScape />
-                      </div>
-                </Col>
-            </Row>
-        </Container>
+        <Stack horizontal>
+          <Stack.Item grow>
+            <Browser
+              user={this.props.user}
+              refreshResourcesButtonMethod={this.props.refreshResourcesButtonMethod}
+            />
+          </Stack.Item>
+          <Stack.Item grow>
+            <CytoScape />
+          </Stack.Item> 
+        </Stack>
       );
   }
 }
@@ -71,9 +67,7 @@ function Browser(props: GraphProps) {
     <div>
       <p>
         Resources
-        <Button color="primary" onClick={props.refreshResourcesButtonMethod}>
-          Refresh
-        </Button>
+        <DefaultButton text="Refresh" onClick={props.refreshResourcesButtonMethod}/>
         <Subscriptions user={props.user}/>
       </p>
     </div>

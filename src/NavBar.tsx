@@ -3,23 +3,19 @@
 
 // <NavBarSnippet>
 import React from "react";
-import { NavLink as RouterNavLink } from "react-router-dom";
-import {
-  Button,
-  Collapse,
-  Container,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-} from "reactstrap";
-import "@fortawesome/fontawesome-free/css/all.css";
+import { Link as RouterLink, NavLink as RouterNavLink } from "react-router-dom";
+import { DefaultButton, Stack, Separator,PrimaryButton, Nav, Link, DefaultPalette, IStackStyles, IStackTokens, INavLink, INavStyles, INavLinkGroup } from '@fluentui/react';
+
+const stackStyles: IStackStyles = {
+  root: {
+    background: DefaultPalette.neutralLighter       ,
+  },
+};
+
+const themedSmallStackTokens: IStackTokens = {
+  childrenGap: 's1',
+  padding: 's1',
+};
 
 interface NavBarProps {
   isAuthenticated: boolean;
@@ -58,40 +54,43 @@ function AuthNavItem(props: NavBarProps) {
   // sign out button
   if (props.isAuthenticated) {
     return (
-      <UncontrolledDropdown>
-        <DropdownToggle nav caret>
-          <UserAvatar user={props.user} />
-        </DropdownToggle>
-        <DropdownMenu right>
-          <h5 className="dropdown-item-text mb-0">{props.user.displayName}</h5>
-          <p className="dropdown-item-text text-muted mb-0">
+      <div>
             {props.user.email}
-          </p>
-          <DropdownItem divider />
-          <DropdownItem onClick={props.authButtonMethod}>Sign Out</DropdownItem>
-        </DropdownMenu>
-      </UncontrolledDropdown>
+      </div>
     );
   }
 
   // Not authenticated, return a sign in link
   return (
-    <NavItem>
-      <Button
-        onClick={props.authButtonMethod}
-        className="btn-link nav-link border-0"
-        color="link"
-      >
-        Sign In
-      </Button>
-    </NavItem>
+      <DefaultButton text="Sign In" onClick={props.authButtonMethod}/>
   );
+}
+
+function Authentication() {
+  // If authenticated, return a dropdown with the user's info and a
+  // sign out button
+  //if (props.isAuthenticated) {
+   // return (
+  //    <div>
+
+  //    </div>
+  //  );
+  //}
+
+  // Not authenticated, return a sign in link
+  return (
+      <Stack tokens={themedSmallStackTokens}>
+       <span> Authentication</span>
+       <span>You are currently using a sample account. Sign in to access your own data. </span>
+       <PrimaryButton text="Sign in to Azure Visual Intelligence"/>
+      </Stack>
+  );
+  //<DefaultButton text="Sign In" onClick={props.authButtonMethod}/>
 }
 
 export default class NavBar extends React.Component<NavBarProps, NavBarState> {
   constructor(props: NavBarProps) {
     super(props);
-
     this.toggle = this.toggle.bind(this);
     this.state = {
       isOpen: false,
@@ -110,57 +109,34 @@ export default class NavBar extends React.Component<NavBarProps, NavBarState> {
     let GraphLink = null;
     if (this.props.isAuthenticated) {
       GraphsLink = (
-        <NavItem>
-          <RouterNavLink to="/graphs" className="nav-link" exact>
+          <Link as={RouterLink} to="/graphs" exact>
             Graphs
-          </RouterNavLink>
-        </NavItem>
+          </Link>
       );
       GraphLink = (
-        <NavItem>
-          <RouterNavLink to="/graph" className="nav-link" exact>
+          <Link as={RouterLink} to="/graph" exact>
             Graph
-          </RouterNavLink>
-        </NavItem>
+          </Link>
       );
     }
 
     return (
-      <div>
-        <Navbar color="dark" dark expand="md" fixed="top">
-          <Container>
-            <NavbarBrand href="/">Azure Visual Intelligence</NavbarBrand>
-            <NavbarToggler onClick={this.toggle} />
-            <Collapse isOpen={this.state.isOpen} navbar>
-              <Nav className="mr-auto" navbar>
-                <NavItem>
-                  <RouterNavLink to="/" className="nav-link" exact>
-                    Home
-                  </RouterNavLink>
-                </NavItem>
-                {GraphsLink}
-                {GraphLink}
-              </Nav>
-              <Nav className="justify-content-end" navbar>
-                <NavItem>
-                  <NavLink
-                    href="https://github.com/chboudry/"
-                    target="_blank"
-                  >
-                    <i className="fas fa-external-link-alt mr-1"></i>
-                    Docs
-                  </NavLink>
-                </NavItem>
-                <AuthNavItem
-                  isAuthenticated={this.props.isAuthenticated}
-                  authButtonMethod={this.props.authButtonMethod}
-                  user={this.props.user}
-                />
-              </Nav>
-            </Collapse>
-          </Container>
-        </Navbar>
-      </div>
+      <Stack styles={stackStyles}>
+        <span>Azure Visual Intelligence</span>
+        <Separator/>
+        <Authentication/>
+        <Separator/>
+        <Link as={RouterLink} to="/" exact>
+          Home
+        </Link>
+        {GraphsLink}
+        {GraphLink}
+        <AuthNavItem
+                isAuthenticated={this.props.isAuthenticated}
+                authButtonMethod={this.props.authButtonMethod}
+                user={this.props.user}
+              />
+      </Stack>
     );
   }
 }
