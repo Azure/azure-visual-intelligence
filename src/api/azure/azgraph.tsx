@@ -1,8 +1,8 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
+import { graphConfig } from "../../common/Config";
 
-// <graphServiceSnippet1>
 var graph = require("@microsoft/microsoft-graph-client");
+
+
 
 function getAuthenticatedClient(accessToken: string) {
   // Initialize Graph client
@@ -26,7 +26,7 @@ export async function getUserDetails(accessToken: string) {
 // </graphServiceSnippet1>
 
 // <getEventsSnippet>
-export async function getEvents(accessToken: string) {
+/*export async function getEvents(accessToken: string) {
   const client = getAuthenticatedClient(accessToken);
 
   const events = await client
@@ -36,5 +36,21 @@ export async function getEvents(accessToken: string) {
     .get();
 
   return events;
+}*/
+
+
+export async function callMsGraph(accessToken: string) {
+    const headers = new Headers();
+    const bearer = `Bearer ${accessToken}`;
+
+    headers.append("Authorization", bearer);
+
+    const options = {
+        method: "GET",
+        headers: headers
+    };
+
+    return fetch(graphConfig.graphMeEndpoint, options)
+        .then(response => response.json())
+        .catch(error => console.log(error));
 }
-// </getEventsSnippet>
