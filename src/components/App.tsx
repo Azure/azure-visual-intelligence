@@ -1,6 +1,6 @@
 import React from "react";
 import MenuBar from "./menubar/MenuBar";
-import Welcome from "./home/Welcome";
+import Welcome from "./Welcome";
 import Graph from "./graph/Graph";
 import ErrorMessage from "../ErrorMessage";
 import "office-ui-fabric-react/dist/css/fabric.css";
