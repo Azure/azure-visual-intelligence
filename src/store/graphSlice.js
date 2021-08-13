@@ -5,7 +5,7 @@ import { msalConfig } from "../common/Config";
 
 const initialState = {
   graph: [],
-  graphmail: "",
+  mail: "",
   status: "idle",
   error: null,
 };
@@ -46,7 +46,7 @@ const graphSlice = createSlice({
     [fetchProfileData.fulfilled]: (state, action) => {
       state.status = "succeeded";
       //state.graph.push(action.payload);
-      state.graphmail = action.payload.mail;
+      state.mail = action.payload.mail;
     },
     [fetchProfileData.rejected]: (state, action) => {
       state.status = "failed";

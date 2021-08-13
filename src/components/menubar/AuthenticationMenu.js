@@ -28,7 +28,7 @@ const AuthenticationMenu = () => {
   const { instance } = useMsal();
   const isAuthenticated = useIsAuthenticated();
 
-  const graphmail = useSelector((state) => state.graph.graphmail);
+  const graphmail = useSelector((state) => state.graph.mail);
 
   if (isAuthenticated) {
     return (
