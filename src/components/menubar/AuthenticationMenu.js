@@ -1,73 +1,39 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Stack,
   PrimaryButton,
   ActionButton,
+  Label,
   MessageBar,
   MessageBarType,
   IStackTokens,
   IIconProps,
 } from "@fluentui/react";
-//import { RootState } from '../../store/store'
-//import { useSelector, useDispatch } from 'react-redux'
-//import { Counter } from '../Counter';
 import { useIsAuthenticated } from "@azure/msal-react";
 import { useMsal } from "@azure/msal-react";
 import { loginRequest } from "../../common/Config";
 import { Icon } from "@fluentui/react/lib/Icon";
-import { getUserDetails } from "../../api/azure/azgraph";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchProfileData } from "../../store/graphSlice";
 
-const horizontalGapStackTokens: IStackTokens = {
+const horizontalGapStackTokens = {
   childrenGap: 5,
   padding: 5,
 };
 
-const ContactIcon: IIconProps = { iconName: "Contact" };
-
-const ProfileData = (props: any) => {
-  console.log(props.graphData);
-
-  return (
-    <div id="profile-div">
-      <p> {props.graphData.mail || props.graphData.userPrincipalName}</p>
-    </div>
-  );
-};
-
-const UserInfo = () => {
-  const { instance, accounts } = useMsal();
-  const [graphData, setGraphData] = useState(null);
-
-  function RequestProfileData() {
-    // Silently acquires an access token which is then attached to a request for MS Graph data
-    instance
-      .acquireTokenSilent({
-        ...loginRequest,
-        account: accounts[0],
-      })
-      .then((response) => {
-        //callMsGraph(response.accessToken).then(response => setGraphData(response));
-        getUserDetails(response.accessToken).then((response) =>
-          setGraphData(response)
-        );
-      });
-  }
-
-  //CAREFUL AUTO LOOP
-  //RequestProfileData();
-  return <>{graphData ? <ProfileData graphData={graphData} /> : <></>}</>;
-};
-//<h5 >{graphData ? graphData.name : " test"} </h5>
-//{graphData ? UserAvatar(graphData) : <></>}
+const ContactIcon = { iconName: "Contact" };
 
 const AuthenticationMenu = () => {
+  const dispatch = useDispatch();
   const { instance } = useMsal();
   const isAuthenticated = useIsAuthenticated();
+
+  const graphmail = useSelector((state) => state.graph.graphmail);
 
   if (isAuthenticated) {
     return (
       <Stack>
-        <UserInfo />
+        <Label>{graphmail}</Label>
         <PrimaryButton
           text="Sign Out"
           onClick={() =>
@@ -76,6 +42,11 @@ const AuthenticationMenu = () => {
               mainWindowRedirectUri: "/",
             })
           }
+        />
+        <ActionButton
+          iconProps={ContactIcon}
+          text="Get Graph Data"
+          onClick={() => dispatch(fetchProfileData())}
         />
       </Stack>
     );
