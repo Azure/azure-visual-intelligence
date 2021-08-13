@@ -6,8 +6,6 @@ import {
   Label,
   MessageBar,
   MessageBarType,
-  IStackTokens,
-  IIconProps,
 } from "@fluentui/react";
 import { useIsAuthenticated } from "@azure/msal-react";
 import { useMsal } from "@azure/msal-react";

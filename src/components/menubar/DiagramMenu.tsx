@@ -25,9 +25,7 @@ const DiagramMenu = () => {
           {" "}
           <Label styles={labelStyles}>Infra</Label>{" "}
         </PivotItem>
-      ) : (
-        <></>
-      )}
+      ) : null}
     </Pivot>
   );
 };
