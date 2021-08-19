@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getUserDetails } from "../api/azure/azgraph";
+import { getUserDetails } from "../../api/azure/azgraph";
 import { PublicClientApplication } from "@azure/msal-browser";
-import { msalConfig } from "../common/Config";
+import { msalConfig } from "../../common/Config";
 
 const initialState = {
   graph: [],

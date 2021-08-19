@@ -11,8 +11,7 @@ import { useIsAuthenticated } from "@azure/msal-react";
 import { useMsal } from "@azure/msal-react";
 import { loginRequest } from "../../common/Config";
 import { Icon } from "@fluentui/react/lib/Icon";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchProfileData } from "../../store/graphSlice";
+import { useSelector } from "react-redux";
 
 const horizontalGapStackTokens = {
   childrenGap: 5,
@@ -22,16 +21,15 @@ const horizontalGapStackTokens = {
 const ContactIcon = { iconName: "Contact" };
 
 const AuthenticationMenu = () => {
-  const dispatch = useDispatch();
   const { instance } = useMsal();
   const isAuthenticated = useIsAuthenticated();
 
-  const graphmail = useSelector((state) => state.graph.mail);
+  const username = useSelector((state) => state.user.account.username);
 
   if (isAuthenticated) {
     return (
       <Stack>
-        <Label>{graphmail}</Label>
+        <Label>{username}</Label>
         <PrimaryButton
           text="Sign Out"
           onClick={() =>
@@ -40,11 +38,6 @@ const AuthenticationMenu = () => {
               mainWindowRedirectUri: "/",
             })
           }
-        />
-        <ActionButton
-          iconProps={ContactIcon}
-          text="Get Graph Data"
-          onClick={() => dispatch(fetchProfileData())}
         />
       </Stack>
     );
