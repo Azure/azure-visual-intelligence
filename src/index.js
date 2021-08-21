@@ -23,10 +23,20 @@ msalInstance.addEventCallback((message) => {
 });
 
 ReactDOM.render(
-  <MsalProvider instance={msalInstance}>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </MsalProvider>,
+  <div
+    style={{
+      height: "100%",
+      position: "absolute",
+      left: "0px",
+      width: "100%",
+    }}
+  >
+    <MsalProvider instance={msalInstance}>
+      <Provider store={store}>
+        <App style={{ height: "100vh" }} />
+      </Provider>
+    </MsalProvider>
+  </div>,
+
   document.getElementById("root")
 );
