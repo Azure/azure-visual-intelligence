@@ -6,6 +6,7 @@ import {
   DefaultPalette,
   IStackTokens,
   IStackStyles,
+  ActionButton,
   IStackItemStyles,
   Label,
 } from "@fluentui/react";
@@ -13,32 +14,18 @@ import AuthenticationMenu from "./AuthenticationMenu";
 import DiagramMenu from "./DiagramMenu";
 import { Icon } from "@fluentui/react/lib/Icon";
 
-const horizontalGapStackTokens: IStackTokens = {
-  childrenGap: 10,
-  //padding: 10,
-};
+const SettingsIcon = { iconName: "Settings" };
+const GlobalNavIcon = { iconName: "GlobalNavButton" };
 
-const stackStyles: IStackStyles = {
+const topStackStyles: IStackStyles = {
   root: {
     background: DefaultPalette.neutralLighter,
     marginTop: 10,
     margin: 0,
-    padding: 0,
+    padding: 8,
     height: "auto",
     align: "stretch",
     verticalFill: true,
-  },
-};
-
-const stackItemStyles: IStackItemStyles = {
-  root: {
-    alignItems: "center",
-    background: DefaultPalette.themePrimary,
-    color: DefaultPalette.white,
-    display: "flex",
-    height: 50,
-    justifyContent: "center",
-    width: 50,
   },
 };
 
@@ -59,26 +46,25 @@ const separatorStyles: ISeparatorStyles = {
 
 const MenuBar = () => {
   return (
-    <Stack styles={stackStyles}>
-      <Stack horizontal tokens={horizontalGapStackTokens}>
-        <Icon iconName="GlobalNavButton" />
-        <Label>Azure Visual Intelligence</Label>
+    <Stack verticalAlign="space-between" styles={topStackStyles}>
+      <Stack>
+        <ActionButton
+          iconProps={GlobalNavIcon}
+          text="Azure Visual Intelligence"
+          onClick={() => console.log("Crop")}
+        />
+        <Separator styles={separatorStyles} />
+        <AuthenticationMenu />
+        <Separator styles={separatorStyles} />
+        <DiagramMenu />
       </Stack>
-      <Separator styles={separatorStyles} />
-      <AuthenticationMenu />
-      <Separator styles={separatorStyles} />
-      <DiagramMenu />
+
+      <ActionButton
+        iconProps={SettingsIcon}
+        text="Settings"
+        onClick={() => console.log("settings")}
+      />
     </Stack>
   );
 };
 export default MenuBar;
-
-/*
-        <Stack horizontal tokens={horizontalGapStackTokens}>
-          <Icon iconName="GlobalNavButton" />
-          <Label>Azure Visual Intelligence</Label>
-        </Stack>
-        <Separator styles={separatorStyles} />
-        <AuthenticationMenu />
-        <Separator styles={separatorStyles} />
-        <DiagramMenu />*/

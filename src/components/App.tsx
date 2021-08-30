@@ -23,7 +23,7 @@ const stackStyles: IStackStyles = {
     //maxHeight: "inherit",
   },
 };
-const stackItemStyles: IStackItemStyles = {
+/*const stackItemStyles: IStackItemStyles = {
   root: {
     alignItems: "center",
     background: DefaultPalette.themePrimary,
@@ -32,7 +32,7 @@ const stackItemStyles: IStackItemStyles = {
     height: "100%",
     justifyContent: "center",
   },
-};
+};*/
 
 // Tokens definition
 const stackTokens: IStackTokens = {
@@ -51,18 +51,3 @@ const App = () => {
 };
 
 export default App;
-
-/*    <div className="ms-Grid" dir="ltr">
-      <div className="ms-Grid-row">
-        <div className="ms-Grid-col ms-sm6 ms-md4 ms-lg2">
-          <MenuBar />
-        </div>
-        <div className="ms-Grid-col ms-sm6 ms-md6 ms-lg2">
-          <ResourcesList />
-        </div>
-        <div className="ms-Grid-col ms-sm5 ms-md5 ms-lg6">
-          <Welcome />
-        </div>
-      </div>
-    </div>
-    */
