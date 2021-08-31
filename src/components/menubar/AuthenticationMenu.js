@@ -1,24 +1,15 @@
 import React from "react";
-import {
-  Stack,
-  PrimaryButton,
-  ActionButton,
-  Label,
-  MessageBar,
-  MessageBarType,
-} from "@fluentui/react";
 import { useIsAuthenticated } from "@azure/msal-react";
 import { useMsal } from "@azure/msal-react";
 import { loginRequest } from "../../common/Config";
-import { Icon } from "@fluentui/react/lib/Icon";
 import { useSelector } from "react-redux";
-
-const horizontalGapStackTokens = {
-  childrenGap: 5,
-  padding: 5,
-};
-
-const ContactIcon = { iconName: "Contact" };
+//UI
+import { Alert } from "@material-ui/lab";
+import { Button, Typography, Grid } from "@material-ui/core";
+//Icons
+import VpnKeyIcon from "@material-ui/icons/VpnKey";
+import PersonIcon from "@material-ui/icons/Person";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 const AuthenticationMenu = () => {
   const { instance } = useMsal();
@@ -28,37 +19,54 @@ const AuthenticationMenu = () => {
 
   if (isAuthenticated) {
     return (
-      <Stack>
-        <Label>{username}</Label>
-        <PrimaryButton
-          text="Sign Out"
-          onClick={() =>
-            instance.logoutPopup({
-              postLogoutRedirectUri: "/",
-              mainWindowRedirectUri: "/",
-            })
-          }
-        />
-      </Stack>
+      <Grid container direction="column">
+        <Grid item>
+          <Typography variant="body1">{username}</Typography>
+        </Grid>
+        <Grid item>
+          <Button
+            //variant="contained"
+            //color="primary"
+            startIcon={<ExitToAppIcon />}
+            onClick={() =>
+              instance.logoutPopup({
+                postLogoutRedirectUri: "/",
+                mainWindowRedirectUri: "/",
+              })
+            }
+          >
+            Sign out
+          </Button>
+        </Grid>
+      </Grid>
     );
   } else {
     return (
-      <Stack>
-        <Stack horizontal tokens={horizontalGapStackTokens}>
-          <Icon iconName="Permissions" />
-          <span> Authentication</span>
-        </Stack>
-        <MessageBar messageBarType={MessageBarType.warning} isMultiline={true}>
-          {" "}
-          You are currently using a sample account. Sign in to access your own
-          data.
-        </MessageBar>
-        <ActionButton
-          iconProps={ContactIcon}
-          text="Sign in to Azure Visual Intelligence"
-          onClick={() => instance.loginPopup(loginRequest)}
-        />
-      </Stack>
+      <Grid container direction="column">
+        <Grid item>
+          <Grid container alignItems="center">
+            <VpnKeyIcon />
+            <Typography variant="body1"> Authentication</Typography>
+          </Grid>
+        </Grid>
+        <Grid item>
+          <Alert severity="warning">
+            You are currently using a sample account. Sign in to access your own
+            data.
+          </Alert>
+        </Grid>
+
+        <Grid item>
+          <Button
+            //variant="contained"
+            //color="primary"
+            startIcon={<PersonIcon />}
+            onClick={() => instance.loginPopup(loginRequest)}
+          >
+            Sign in to Azure Visual Intelligence
+          </Button>
+        </Grid>
+      </Grid>
     );
   }
 };

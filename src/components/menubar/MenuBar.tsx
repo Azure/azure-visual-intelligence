@@ -1,70 +1,65 @@
 import React from "react";
-import {
-  Stack,
-  Separator,
-  ISeparatorStyles,
-  DefaultPalette,
-  IStackTokens,
-  IStackStyles,
-  ActionButton,
-  IStackItemStyles,
-  Label,
-} from "@fluentui/react";
 import AuthenticationMenu from "./AuthenticationMenu";
 import DiagramMenu from "./DiagramMenu";
-import { Icon } from "@fluentui/react/lib/Icon";
-
-const SettingsIcon = { iconName: "Settings" };
-const GlobalNavIcon = { iconName: "GlobalNavButton" };
-
-const topStackStyles: IStackStyles = {
-  root: {
-    background: DefaultPalette.neutralLighter,
-    marginTop: 10,
-    margin: 0,
-    padding: 8,
-    height: "auto",
-    align: "stretch",
-    verticalFill: true,
-  },
-};
-
-const separatorStyles: ISeparatorStyles = {
-  content: {},
-  root: [
-    {
-      //marginLeft: 10,
-      //marginRight: 10,
-      selectors: {
-        "::before": {
-          background: "black",
-        },
-      },
-    },
-  ],
-};
+import {
+  Button,
+  IconButton,
+  Typography,
+  Divider,
+  Grid,
+} from "@material-ui/core";
+import MenuIcon from "@material-ui/icons/Menu";
+import SettingsIcon from "@material-ui/icons/Settings";
 
 const MenuBar = () => {
   return (
-    <Stack verticalAlign="space-between" styles={topStackStyles}>
-      <Stack>
-        <ActionButton
-          iconProps={GlobalNavIcon}
-          text="Azure Visual Intelligence"
-          onClick={() => console.log("Crop")}
-        />
-        <Separator styles={separatorStyles} />
-        <AuthenticationMenu />
-        <Separator styles={separatorStyles} />
-        <DiagramMenu />
-      </Stack>
+    <Grid container direction="column" justifyContent="space-between">
+      <Grid item>
+        <Grid container direction="column">
+          <Grid item>
+            <Grid container alignItems="center">
+              <Grid item>
+                <IconButton onClick={() => console.log("Crop")}>
+                  <MenuIcon />
+                </IconButton>
+              </Grid>
+              <Grid item>
+                <Typography variant="body1">
+                  Azure Visual Intelligence
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
 
-      <ActionButton
-        iconProps={SettingsIcon}
-        text="Settings"
-        onClick={() => console.log("settings")}
-      />
-    </Stack>
+          <Grid item>
+            <Divider />
+          </Grid>
+
+          <Grid item>
+            <AuthenticationMenu />
+          </Grid>
+
+          <Grid item>
+            <Divider />
+          </Grid>
+
+          <Grid item>
+            <DiagramMenu />
+          </Grid>
+        </Grid>
+      </Grid>
+
+      <Grid item>
+        <Button
+          //variant="contained"
+          //color="primary"
+          startIcon={<SettingsIcon />}
+          onClick={() => console.log("settings")}
+        >
+          Settings
+        </Button>
+      </Grid>
+    </Grid>
   );
 };
 export default MenuBar;

@@ -1,8 +1,4 @@
 import React from "react";
-import {
-  MessageBar,
-  MessageBarType,
-} from '@fluentui/react';
 
 interface ErrorMessageProps {
   debug: string;
@@ -20,13 +16,13 @@ export default class ErrorMessage extends React.Component<ErrorMessageProps> {
       );
     }
     return (
-      <MessageBar
-      messageBarType={MessageBarType.error}
-      isMultiline={false}
-      dismissButtonAriaLabel="Close"
-    >
-      {this.props.message}, {debug}
-    </MessageBar>
+      <div
+      //messageBarType={MessageBarType.error}
+      // isMultiline={false}
+      //dismissButtonAriaLabel="Close"
+      >
+        {this.props.message}, {debug}
+      </div>
     );
   }
 }

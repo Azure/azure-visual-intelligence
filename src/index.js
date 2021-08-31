@@ -6,9 +6,6 @@ import { PublicClientApplication, EventType } from "@azure/msal-browser";
 import { MsalProvider } from "@azure/msal-react";
 import { msalConfig } from "./common/Config";
 import { Provider } from "react-redux";
-import { initializeIcons } from "@fluentui/font-icons-mdl2";
-
-initializeIcons();
 
 const msalInstance = new PublicClientApplication(msalConfig);
 //const dispatch = useDispatch();
