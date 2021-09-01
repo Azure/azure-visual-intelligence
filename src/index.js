@@ -30,10 +30,18 @@ ReactDOM.render(
   >
     <MsalProvider instance={msalInstance}>
       <Provider store={store}>
-        <App style={{ height: "100vh" }} />
+        <App />
       </Provider>
     </MsalProvider>
   </div>,
-
   document.getElementById("root")
 );
+
+/*  <div
+    style={{
+      height: "100%",
+      position: "absolute",
+      left: "0px",
+      width: "100%",
+    }}
+  >*/

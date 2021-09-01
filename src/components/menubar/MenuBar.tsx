@@ -13,7 +13,12 @@ import SettingsIcon from "@material-ui/icons/Settings";
 
 const MenuBar = () => {
   return (
-    <Grid container direction="column" justifyContent="space-between">
+    <Grid
+      container
+      direction="column"
+      justifyContent="space-between"
+      style={{ height: "100vh" }}
+    >
       <Grid item>
         <Grid container direction="column">
           <Grid item>

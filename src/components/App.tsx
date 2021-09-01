@@ -10,17 +10,16 @@ const App = () => {
       container
       direction="row"
       justifyContent="flex-start"
-      alignItems="flex-start"
-      xs={12}
+      alignItems="stretch"
+      style={{ height: "100vh" }}
     >
-      <Grid item>
+      <Grid item xs={2}>
         <MenuBar />
       </Grid>
-      <Grid item>
+      <Grid item xs={2}>
         <ResourcesList />
       </Grid>
-      <Grid item xs={3}>
-        <span>toto</span>
+      <Grid item xs={8}>
         <CytoScape />
       </Grid>
     </Grid>
