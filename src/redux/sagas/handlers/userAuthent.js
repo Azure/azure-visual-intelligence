@@ -1,14 +1,16 @@
 import { call, put } from "redux-saga/effects";
 import { setUser } from "../../ducks/userSlice";
 import { setResources } from "../../ducks/resourcesSlice";
-import { azGetResources } from "../../../api/azure/azarm";
+import { azGetResourceContainersTree } from "../../../api/azure/azarm";
 
 export function* handleUserAuthent(action) {
   try {
-    yield put(setUser({ ...action.payload }));
-    const response = yield call(requestGetUser, {
+    yield put(setUser(action.payload));
+    const response = yield call(requestGetResources, {
       ...action.payload,
     });
+
+    console.log(response);
 
     yield put(setResources(response));
   } catch (error) {
@@ -16,8 +18,8 @@ export function* handleUserAuthent(action) {
   }
 }
 
-export function requestGetUser(payload) {
-  return azGetResources(payload.accessToken);
+export function requestGetResources(payload) {
+  return azGetResourceContainersTree(payload.accessToken);
   /*return axios.request({
     method: "get",
     url: "https://my-json-server.typicode.com/atothey/demo/user",

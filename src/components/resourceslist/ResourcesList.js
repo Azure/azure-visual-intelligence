@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { arrayToTree } from "../../common/arrayToTree";
 //UI
 import { TreeView, TreeItem } from "@material-ui/lab";
 //Icons
@@ -9,19 +10,21 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 const ResourcesList = () => {
   const resources = useSelector((state) => state.resources);
 
-  const renderedListItems = (
-    <TreeItem nodeId="Tenant Root Group" label="Tenant Root Group">
-      {resources &&
-        resources.map((subscription) => {
-          return (
-            <TreeItem
-              nodeId={subscription.subscriptionId}
-              label={subscription.displayName}
-            />
-          );
-        })}
-    </TreeItem>
-  );
+  const tree = arrayToTree(resources, {
+    id: "TreeID",
+    parentId: "TreeParentID",
+    childrenField: "children",
+  });
+
+  const cb = (e) => {
+    return (
+      <TreeItem nodeId={e.data.TreeID} label={e.data.TreeName}>
+        {e.children && e.children.map(cb)}
+      </TreeItem>
+    );
+  };
+
+  const renderedListItems = tree.map(cb);
 
   return (
     <TreeView
