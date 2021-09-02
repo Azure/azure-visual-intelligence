@@ -7,27 +7,60 @@ export async function azGetResourceContainersTree(accessToken: string) {
     accessToken,
     subscriptions
   );
-  console.log("resourceContainers");
-  console.log(resourceContainers);
 
+  //We get all the resources from those subscriptions
+  let resources = await azGetResources(accessToken, subscriptions);
+
+  //We flatten all of that
   let MGFlatList = createMGFlatList(resourceContainers);
   let SubscriptionsFlatList = createSubscriptionsFlatList(resourceContainers);
   let ResourceGroupsFlatList = createResourceGroupsFlatList(resourceContainers);
+  let ResourcesFlatList = createResourcesFlatList(resources);
 
+  /*
   console.log("MGFlatList");
   console.log(MGFlatList);
   console.log("SubscriptionsFlatList");
   console.log(SubscriptionsFlatList);
   console.log("ResourceGroupsFlatList");
   console.log(ResourceGroupsFlatList);
+  console.log("ResourcesFlatList");
+  console.log(ResourcesFlatList);*/
 
+  //Merging them in a single flat list
   let tree = constructTree(
     MGFlatList,
     SubscriptionsFlatList,
-    ResourceGroupsFlatList
+    ResourceGroupsFlatList,
+    ResourcesFlatList
   );
 
   return tree;
+}
+
+function createResourcesFlatList(resources: any) {
+  let flatList: any = [];
+  resources.data.forEach((resource: any) => {
+    if (
+      !flatList.some(function (resourceGroupItem: any) {
+        return resourceGroupItem.TreeID === resource.id;
+      })
+    ) {
+      resource["TreeParentID"] =
+        "/subscriptions/" +
+        resource.subscriptionId +
+        "/resourceGroups/" +
+        resource.resourceGroup;
+      resource["TreeID"] = resource.id;
+      resource["TreeName"] = resource.name;
+      flatList.push({
+        ...resource,
+      });
+    }
+    return flatList;
+  });
+
+  return flatList;
 }
 
 function createResourceGroupsFlatList(resourceContainers: any) {
@@ -183,63 +216,26 @@ async function azGetResourceContainers(
 function constructTree(
   MGFlatList: any,
   SubscriptionsFlatList: any,
-  ResourceGroupsFlatList: any
+  ResourceGroupsFlatList: any,
+  ResourcesFlatList: any
 ) {
   let tree: any = [];
   tree.push(...MGFlatList);
   tree.push(...SubscriptionsFlatList);
   tree.push(...ResourceGroupsFlatList);
+  tree.push(...ResourcesFlatList);
 
   return tree;
 }
 
-function addManagementGroupToTree(
-  tree: any,
-  managementGroupAncestorsChain: any
-) {
-  //We create a tree of the management groups
-  let treeofAncestors: any = [];
-  managementGroupAncestorsChain.forEach(function (managementGroup: any) {
-    treeofAncestors = [
-      {
-        name: managementGroup.name,
-        displayname: managementGroup.displayName,
-        type: "ManagementGroup",
-        children: [treeofAncestors],
-      },
-    ];
-  });
-
-  //we merge this new tree with the existing one
-  //if root does not exist yet we create it
-  if (treeofAncestors.name === tree.name) {
-    tree.push(treeofAncestors);
-  }
-  //it the root exist we want to check the children
-  else {
-    //checking each children -- will return true if no matching children exist
-    if (
-      !tree.children.some(function (children: any) {
-        return children.name === treeofAncestors.children[0].name;
-      })
-    ) {
-      //We didn't break so we don't have this children
-      tree.children.push(treeofAncestors.children[0]);
-    }
-  }
-  return tree;
-}
-
-async function azGetRGResources(
-  accessToken: string,
-  subscription: any,
-  resourceGroup: string
-) {
+async function azGetResources(accessToken: string, subscriptions: any) {
   const bearerToken = "Bearer " + accessToken;
-  const query =
-    "resources | where resourceGroup == '" + resourceGroup.toLowerCase() + "'";
+  const query = "resources";
+  const bodySubscriptions = subscriptions.map((subscription: any) => {
+    return subscription.subscriptionId;
+  });
   const body = {
-    subscriptions: [subscription.subscriptionId],
+    subscriptions: bodySubscriptions,
     query: query,
     options: {
       resultFormat: "objectArray",
@@ -257,5 +253,5 @@ async function azGetRGResources(
     }
   );
   const resources = await response.json();
-  return resources.data;
+  return resources;
 }
