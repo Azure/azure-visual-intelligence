@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { arrayToTree } from "../../common/arrayToTree";
 //UI
+import { Grid, Typography } from "@material-ui/core";
 import { TreeView, TreeItem } from "@material-ui/lab";
 //Icons
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -27,13 +28,31 @@ const ResourcesList = () => {
   const renderedListItems = tree.map(cb);
 
   return (
-    <TreeView
-      defaultCollapseIcon={<ExpandMoreIcon />}
-      defaultExpandIcon={<ChevronRightIcon />}
-      multiSelect
+    <Grid
+      container
+      direction="column"
+      style={{
+        height: "100%",
+        width: "100%",
+        margin: "0px 0px 0px 5px",
+        background: "#f3f2f1",
+        padding: "5px 5px 5px 5px",
+      }}
     >
-      {renderedListItems}
-    </TreeView>
+      <Grid item>
+        <Typography variant="body1">Azure Existing resources</Typography>
+      </Grid>
+      <Grid item>
+        <TreeView
+          style={{ height: "100%" }}
+          defaultCollapseIcon={<ExpandMoreIcon />}
+          defaultExpandIcon={<ChevronRightIcon />}
+          multiSelect
+        >
+          {renderedListItems}
+        </TreeView>
+      </Grid>
+    </Grid>
   );
 };
 export default ResourcesList;

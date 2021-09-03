@@ -2,6 +2,7 @@ export async function azGetResourceContainersTree(accessToken: string) {
   //We get all the subscriptions available
   let subscriptions = await azGetSubscriptions(accessToken);
 
+  //Should be optimized to parallelize those 2, or single query ?
   //We get all the containers from those subscriptions
   let resourceContainers = await azGetResourceContainers(
     accessToken,

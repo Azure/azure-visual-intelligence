@@ -16,10 +16,23 @@ const App = () => {
       <Grid item xs={2}>
         <MenuBar />
       </Grid>
-      <Grid item xs={2}>
+      <Grid
+        item
+        xs={2}
+        style={{
+          height: "100vh",
+        }}
+      >
         <ResourcesList />
       </Grid>
-      <Grid item xs={8}>
+      <Grid
+        item
+        xs={8}
+        style={{
+          height: "100vh",
+          width: "100%",
+        }}
+      >
         <CytoScape />
       </Grid>
     </Grid>
