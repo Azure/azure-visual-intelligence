@@ -36,12 +36,3 @@ ReactDOM.render(
   </div>,
   document.getElementById("root")
 );
-
-/*  <div
-    style={{
-      height: "100%",
-      position: "absolute",
-      left: "0px",
-      width: "100%",
-    }}
-  >*/

@@ -44,7 +44,12 @@ const ResourcesList = () => {
       </Grid>
       <Grid item>
         <TreeView
-          style={{ height: "100%" }}
+          style={{
+            width: "100%",
+            maxWidth: "100%",
+            height: "100%",
+            overflow: "auto",
+          }}
           defaultCollapseIcon={<ExpandMoreIcon />}
           defaultExpandIcon={<ChevronRightIcon />}
           multiSelect
