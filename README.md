@@ -1,6 +1,10 @@
 # Azure Visual Intelligence
 
-# Inspiration
+## Current state
+
+![azure visual intelligence last screenshot](/doc/laststate.jpg)
+
+## Inspiration
 
 Be honest, every time you want to explain a new architecture to your customer, you pick a pen and you start drawing.
 
@@ -10,7 +14,7 @@ You have finished your implementation ? Are you compliant with the recommendatio
 
 What if you could use your concept diagram to implement , apply best practices, monitor, and well, everything else ?
 
-# Description
+## Description
 
 Every architecture starts with a diagram.
 
@@ -18,11 +22,7 @@ But then we are quickly submerged by Azure complexity : template language and to
 
 This project intends to put back diagram as the core representation of everything you will achieve in Azure
 
-# Current stage
-
-[[/doc/laststate.jpg|azure visual intelligence last screenshot]]
-
-# Usage
+## Usage
 
 This is still a verly early project so to use this you need to download it and compile it yourself
 
@@ -30,7 +30,7 @@ Pull sources from Git
 Edit config (you need to provide your tenant ID and your app ID)
 npm run start
 
-# Contribute
+## Contribute
 
 Early stages.
 Reach out to chboudry@microsoft.com
