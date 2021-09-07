@@ -1,4 +1,4 @@
-import { React, useEffect } from "react";
+import { React } from "react";
 import { useSelector } from "react-redux";
 //UI
 import CytoscapeComponent from "react-cytoscapejs";
@@ -11,99 +11,7 @@ const CytoScape = () => {
     spacingFactor: "spacing",
   };
 
-  const elements = {
-    nodes: [
-      { data: { id: "vnetA" } },
-      { data: { id: "subnetA", parent: "vnetA" } },
-      { data: { id: "subnetB", parent: "vnetA" } },
-      { data: { id: "subnetC", parent: "vnetA" } },
-
-      {
-        data: {
-          id: "A1",
-          parent: "subnetA",
-          img: "/assets/img/azure/original/microsoft.network/loadbalancers.svg",
-        },
-      },
-      {
-        data: {
-          id: "A2",
-          parent: "subnetA",
-          img: "/assets/img/azure/original/microsoft.compute/virtualmachines.svg",
-        },
-      },
-      {
-        data: {
-          id: "A3",
-          parent: "subnetA",
-          img: "/assets/img/azure/original/microsoft.compute/virtualmachines.svg",
-        },
-      },
-
-      {
-        data: {
-          id: "B1",
-          parent: "subnetB",
-          img: "/assets/img/azure/original/microsoft.network/loadbalancers.svg",
-        },
-      },
-      {
-        data: {
-          id: "B2",
-          parent: "subnetB",
-          img: "/assets/img/azure/original/microsoft.compute/virtualmachines.svg",
-        },
-      },
-      {
-        data: {
-          id: "B3",
-          parent: "subnetB",
-          img: "/assets/img/azure/original/microsoft.compute/virtualmachines.svg",
-        },
-      },
-    ],
-    edges: [
-      { data: { id: "A1A2", source: "A1", target: "A2" } },
-      { data: { id: "A1A3", source: "A1", target: "A3" } },
-
-      { data: { id: "B1B2", source: "B1", target: "B2" } },
-      { data: { id: "B1B3", source: "B1", target: "B3" } },
-
-      { data: { id: "A2B1", source: "A2", target: "B1" } },
-      { data: { id: "A3B1", source: "A3", target: "B1" } },
-    ],
-  };
-  /*    { data: { id: 'vnetA' },  img: 'default.svg' },
-
-      { data: { id: 'subnetA', parent: 'vnetA' },  img: 'default.svg'},
-      { data: { id: 'subnetB', parent: 'vnetA' },  img: 'default.svg'},
-      { data: { id: 'subnetC', parent: 'vnetA' },  img: 'default.svg'},
-
-      { data: { id: 'A1', parent: 'subnetA' },  img: 'default.svg'},
-      { data: { id: 'A2', parent: 'subnetA' },  img: 'microsoft.compute/virtualmachines.svg'},
-      { data: { id: 'A3', parent: 'subnetA' },  img: 'microsoft.computevirtualmachines.svg'},
-      { data: { id: 'A1A2', source: 'A1', target: 'A2' } },
-      { data: { id: 'A1A3', source: 'A1', target: 'A3' } },
-
-      { data: { id: 'B1', parent: 'subnetB' },  img: 'default.svg'},
-      { data: { id: 'B2', parent: 'subnetB' },  img: 'microsoft.compute/virtualmachines.svg'},
-      { data: { id: 'B3', parent: 'subnetB' },  img: 'microsoft.compute/virtualmachines.svg'},
-      { data: { id: 'B1B2', source: 'B1', target: 'B2' } },
-      { data: { id: 'B1B3', source: 'B1', target: 'B3' } },
-
-      { data: { id: 'C1', parent: 'subnetC' },  img: 'microsoft.compute/virtualmachines.svg'},
-      { data: { id: 'C2', parent: 'subnetC' },  img: 'microsoft.compute/virtualmachines.svg'},
-      { data: { id: 'C3', parent: 'subnetC' },  img: 'microsoft.compute/virtualmachines.svg'},
-      { data: { id: 'C1C2', source: 'C1', target: 'C2' } },
-      { data: { id: 'C1C3', source: 'C1', target: 'C3' } },
-
-*/
-
-  /*   { data: { id: 'e' },  img: 'default.svg' },
-      { data: { id: 'f', parent: 'e' },   img: 'microsoft.compute\virtualmachines.svg'},
-       
-
-      { data: { id: 'eb', source: 'e', target: 'vnetA' } }*/
+  const elements = useSelector((state) => state.diagram.elements);
 
   return (
     <CytoscapeComponent
@@ -160,7 +68,7 @@ const CytoScape = () => {
           selector: ":parent",
           style: {
             "background-image": "none",
-            //   'label': node => { return getLabel(node) }, //decodeURIComponent(node.data(labelField)) },
+            //   'label': node => { return getLabel(node) },
             "border-width": "4",
             // 'border-color': borderColor,
             "border-opacity": 0.3,
@@ -179,9 +87,6 @@ const CytoScape = () => {
         },
       ]}
       layout={layout}
-      /*  cy={(cy) => {
-        this.cy = cy;
-      }}*/
     />
   );
 };

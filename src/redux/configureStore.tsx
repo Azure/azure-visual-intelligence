@@ -3,6 +3,7 @@ import createSagaMiddleware from "redux-saga";
 import { watcherSaga } from "./sagas/rootSaga";
 import graphReducer from "./ducks/graphSlice";
 import userReducer from "./ducks/userSlice";
+import diagramReducer from "./ducks/diagramSlice";
 import resourcesReducer from "./ducks/resourcesSlice";
 
 const sagaMiddleware = createSagaMiddleware();
@@ -12,6 +13,7 @@ const store = configureStore({
     graph: graphReducer,
     user: userReducer,
     resources: resourcesReducer,
+    diagram: diagramReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ thunk: false }).concat(sagaMiddleware),
