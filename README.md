@@ -27,11 +27,15 @@ This project intends to put back diagram as the core representation of everythin
 This is still a verly early project so to use this you need to download it and compile it yourself
 
 Pull sources from Git
+
 Edit config (you need to provide your tenant ID and your app ID)
+
 npm run start
 
 ## Contribute
 
 Early stages.
+
 Reach out to chboudry@microsoft.com
+
 We welcome every enthusiasts.
