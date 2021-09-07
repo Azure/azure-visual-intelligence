@@ -42,7 +42,6 @@ const CytoScape = () => {
             },
             //'background-fit': 'contain',
             //'background-color' : 'transparent'
-            //node => { return iconPrefix + '/' + node.data('img') },
           },
         },
         {

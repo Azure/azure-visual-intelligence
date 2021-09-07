@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  name: "Demo Diagram",
   armtemplate: null,
   overlay: null,
   settings: null,
