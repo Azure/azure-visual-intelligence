@@ -1,46 +1,37 @@
-# Getting Started with Create React App
+# Azure Visual Intelligence
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Inspiration
 
-## Available Scripts
+Be honest, every time you want to explain a new architecture to your customer, you pick a pen and you start drawing.
 
-In the project directory, you can run:
+Moving on to the implementation phase : you need to learn ARM template, Biceps, Terraform, or doing it manually in the Portal with consistency, good luck, see you in 6 months minimum.
 
-### `npm start`
+You have finished your implementation ? Are you compliant with the recommendations Microsoft provides through Advisor ? Security Center ? default policies ? You were not aware all of those tools existed ? your lost.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+What if you could use your concept diagram to implement , apply best practices, monitor, and well, everything else ?
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+# Description
 
-### `npm test`
+Every architecture starts with a diagram.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+But then we are quickly submerged by Azure complexity : template language and tool diversity.
 
-### `npm run build`
+This project intends to put back diagram as the core representation of everything you will achieve in Azure
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# Current stage
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+[[/doc/laststate.jpg|azure visual intelligence last screenshot]]
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# Usage
 
-### `npm run eject`
+This is still a verly early project so to use this you need to download it and compile it yourself
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Pull sources from Git
+Edit config (you need to provide your tenant ID and your app ID)
+npm run start
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# Contribute
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Early stages.
+Reach out to chboudry@microsoft.com
+We welcome every enthusiasts.
