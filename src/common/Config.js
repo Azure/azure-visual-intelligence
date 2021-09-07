@@ -65,7 +65,7 @@ export const graphConfig = {
   graphMeEndpoint: "https://graph.microsoft.com/v1.0/me",
 };
 
-export const config = {
+/*export const config = {
   appId: "2ad0e3b2-8a7a-4b23-b670-0975771be43a",
   authority:
     "https://login.microsoftonline.com/2b0d1330-312c-497a-a034-f2374ee0be2a",
@@ -76,4 +76,4 @@ export const config = {
   ],
   argscopes: ["https://management.core.windows.net/user_impersonation"],
   storageAccount: "https://demostorageaccount.blob.core.windows.net",
-};
+};*/
