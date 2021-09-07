@@ -70,17 +70,16 @@ const initialState = {
 };
 
 const diagramSlice = createSlice({
-  name: "resources",
+  name: "diagram",
   initialState,
   reducers: {
     getDiagram() {},
     setDiagram(state, action) {
-      const diagramData = action.payload;
-      return [...state, ...diagramData];
+      return { ...state, elements: { ...state.elements, ...action.payload } };
     },
   },
 });
 
-export const { getResources, setResources } = diagramSlice.actions;
+export const { getDiagram, setDiagram } = diagramSlice.actions;
 
 export default diagramSlice.reducer;

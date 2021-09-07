@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
 import { watcherSaga } from "./sagas/rootSaga";
 import userReducer from "./ducks/userSlice";
+import settingsReducer from "./ducks/settingsSlice";
 import diagramReducer from "./ducks/diagramSlice";
 import resourcesReducer from "./ducks/resourcesSlice";
 
@@ -12,6 +13,7 @@ const store = configureStore({
     user: userReducer,
     resources: resourcesReducer,
     diagram: diagramReducer,
+    settings: settingsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ thunk: false }).concat(sagaMiddleware),

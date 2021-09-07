@@ -8,7 +8,6 @@ import { msalConfig } from "./common/Config";
 import { Provider } from "react-redux";
 
 const msalInstance = new PublicClientApplication(msalConfig);
-//const dispatch = useDispatch();
 
 msalInstance.addEventCallback((message) => {
   if (message.eventType === EventType.LOGIN_SUCCESS) {
