@@ -1,7 +1,7 @@
 import React from "react";
 import MenuBar from "./menubar/MenuBar";
 import ResourcesList from "./resourceslist/ResourcesList";
-import CytoScape from "./graph/Cytoscape";
+import CytoScape from "./diagram/Cytoscape";
 import { Grid } from "@material-ui/core";
 
 const App = () => {
