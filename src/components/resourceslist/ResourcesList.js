@@ -12,23 +12,27 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import { knightImage } from "./knightImage";
 
 const ResourcesList = () => {
+  //Getting Azure resources state from Redux
   const resources = useSelector((state) => state.resources);
 
+  //Converting Azure Resources list to a tree
   const tree = arrayToTree(resources, {
     id: "TreeID",
     parentId: "TreeParentID",
     childrenField: "children",
   });
 
+  //Styling for TreeItem so that text can't be selected
   const TreeItem = withStyles({
     root: {},
     selected: {},
     content: {},
     label: {
-      userSelect: "none", // This is to prevent text selection within the treeview item
+      userSelect: "none", // This is to prevent text selection within the treeview item, Thanks Doc
     },
   })(MuiTreeItem);
 
+  //recurise function to generate TreeItem tree with Drag embedded
   function Box({ treeItem }) {
     const [{ isDragging }, drag, preview] = useDrag(() => ({
       type: "TREEVIEW",
