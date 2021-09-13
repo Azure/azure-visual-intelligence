@@ -6,6 +6,8 @@ import { PublicClientApplication, EventType } from "@azure/msal-browser";
 import { MsalProvider } from "@azure/msal-react";
 import { msalConfig } from "./common/Config";
 import { Provider } from "react-redux";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
@@ -29,7 +31,9 @@ ReactDOM.render(
   >
     <MsalProvider instance={msalInstance}>
       <Provider store={store}>
-        <App />
+        <DndProvider backend={HTML5Backend}>
+          <App />
+        </DndProvider>
       </Provider>
     </MsalProvider>
   </div>,

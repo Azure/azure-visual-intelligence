@@ -11,7 +11,6 @@ const initialState = {
       { data: { id: "subnetA", parent: "vnetA" } },
       { data: { id: "subnetB", parent: "vnetA" } },
       { data: { id: "subnetC", parent: "vnetA" } },
-
       {
         data: {
           id: "A1",

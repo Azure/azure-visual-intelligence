@@ -1,12 +1,15 @@
-import React from "react";
+import { React } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { arrayToTree } from "../../common/arrayToTree";
+import { DragPreviewImage, useDrag } from "react-dnd";
 //UI
-import { Grid, Typography, Button } from "@material-ui/core";
-import { TreeView, TreeItem } from "@material-ui/lab";
+import { Grid, Typography, Button, withStyles } from "@material-ui/core";
+import { TreeView } from "@material-ui/lab";
+import MuiTreeItem from "@material-ui/lab/TreeItem";
 //Icons
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import { knightImage } from "./knightImage";
 
 const ResourcesList = () => {
   const resources = useSelector((state) => state.resources);
@@ -18,15 +21,43 @@ const ResourcesList = () => {
     childrenField: "children",
   });
 
-  const cb = (e) => {
+  const TreeItem = withStyles({
+    root: {},
+    selected: {},
+    content: {},
+    label: {
+      userSelect: "none", // This is to prevent text selection within the treeview item
+    },
+  })(MuiTreeItem);
+
+  const Box = (e) => {
+    const treeId = e.data.TreeID;
+    const [{ isDragging }, drag, preview] = useDrag(
+      {
+        type: "TREEVIEW",
+        item: { treeId },
+        collect: (monitor) => ({
+          isDragging: monitor.isDragging(),
+        }),
+      },
+      []
+    );
     return (
-      <TreeItem nodeId={e.data.TreeID} label={e.data.TreeName}>
-        {e.children && e.children.map(cb)}
-      </TreeItem>
+      <>
+        <DragPreviewImage connect={preview} src={knightImage} />
+        <TreeItem
+          nodeId={e.data.TreeID}
+          label={e.data.TreeName}
+          ref={drag}
+          style={{ isDragging }}
+        >
+          {e.children && e.children.map(Box)}
+        </TreeItem>
+      </>
     );
   };
 
-  const renderedListItems = tree.map(cb);
+  const renderedListItems = tree.map(Box);
 
   const testsubscriptions = {
     id: "/subscriptions/3bfaafd1-b638-4262-8794-370d23b971d7",
