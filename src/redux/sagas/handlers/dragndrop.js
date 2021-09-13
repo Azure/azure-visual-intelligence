@@ -1,14 +1,12 @@
 import { call, put } from "redux-saga/effects";
 import { setDiagram } from "../../ducks/diagramSlice";
+//import { useSelector } from "react-redux";
 
 export function* handleDragnDrop(action) {
-  console.log("here");
   try {
-    const response = yield call(addResourceToDiagram, {
+    const response = yield call(AddResourceToDiagram, {
       ...action.payload,
     });
-
-    console.log(response);
 
     yield put(setDiagram(response));
   } catch (error) {
@@ -16,7 +14,11 @@ export function* handleDragnDrop(action) {
   }
 }
 
-function addResourceToDiagram(payload) {
+function AddResourceToDiagram(payload) {
+  //get current diagram state
+  //const currentDiagram = useSelector((state) => state.diagram.elements);
+
+  //temp to be removed
   const elements = {
     nodes: [
       { data: { id: "vnetA" } },

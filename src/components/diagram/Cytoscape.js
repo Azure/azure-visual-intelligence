@@ -1,10 +1,12 @@
 import { React } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
 //UI
 import CytoscapeComponent from "react-cytoscapejs";
 
 const CytoScape = () => {
+  const dispatch = useDispatch();
+
   const layout = {
     avoidOverlap: true,
     name: "cose",
@@ -15,7 +17,11 @@ const CytoScape = () => {
   const [{ isOver, canDrop }, dnddrop] = useDrop(() => ({
     accept: "TREEVIEW",
     canDrop: () => true,
-    drop: (item) => console.log(item),
+    drop: (item) =>
+      dispatch({
+        type: "DRAGnDROP",
+        payload: item,
+      }),
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
       canDrop: !!monitor.canDrop(),

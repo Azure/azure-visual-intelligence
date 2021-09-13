@@ -13,7 +13,6 @@ import { knightImage } from "./knightImage";
 
 const ResourcesList = () => {
   const resources = useSelector((state) => state.resources);
-  const dispatch = useDispatch();
 
   const tree = arrayToTree(resources, {
     id: "TreeID",
@@ -30,82 +29,31 @@ const ResourcesList = () => {
     },
   })(MuiTreeItem);
 
-  const Box = (e) => {
-    const treeId = e.data.TreeID;
-    const [{ isDragging }, drag, preview] = useDrag(
-      {
-        type: "TREEVIEW",
-        item: { treeId },
-        collect: (monitor) => ({
-          isDragging: monitor.isDragging(),
-        }),
-      },
-      []
-    );
+  function Box({ treeItem }) {
+    const [{ isDragging }, drag, preview] = useDrag(() => ({
+      type: "TREEVIEW",
+      item: treeItem.data,
+      collect: (monitor) => ({
+        isDragging: monitor.isDragging(),
+      }),
+    }));
     return (
       <>
         <DragPreviewImage connect={preview} src={knightImage} />
         <TreeItem
-          nodeId={e.data.TreeID}
-          label={e.data.TreeName}
+          nodeId={treeItem.data.TreeID}
+          label={treeItem.data.TreeName}
           ref={drag}
           style={{ isDragging }}
         >
-          {e.children && e.children.map(Box)}
+          {treeItem.children &&
+            treeItem.children.map((treeItem) => <Box treeItem={treeItem} />)}
         </TreeItem>
       </>
     );
-  };
+  }
 
-  const renderedListItems = tree.map(Box);
-
-  const testsubscriptions = {
-    id: "/subscriptions/3bfaafd1-b638-4262-8794-370d23b971d7",
-    name: "MCT",
-    type: "microsoft.resources/subscriptions",
-    tenantId: "2b0d1330-312c-497a-a034-f2374ee0be2a",
-    kind: "",
-    location: "",
-    resourceGroup: "",
-    subscriptionId: "3bfaafd1-b638-4262-8794-370d23b971d7",
-    managedBy: "",
-    sku: null,
-    plan: null,
-    properties: {
-      managementGroupAncestorsChain: [
-        {
-          displayName: "mendacorp",
-          name: "mendacorp",
-        },
-        {
-          displayName: "Tenant Root Group",
-          name: "2b0d1330-312c-497a-a034-f2374ee0be2a",
-        },
-      ],
-      subscriptionPolicies: {
-        locationPlacementId: "Public_2014-09-01",
-        spendingLimit: "On",
-        quotaId: "MSDN_2014-09-01",
-      },
-      managedByTenants: [
-        {
-          tenantId: "2f4a9838-26b7-47ee-be60-ccc1fdec5953",
-        },
-      ],
-      state: "Enabled",
-    },
-    tags: null,
-    identity: null,
-    zones: null,
-    extendedLocation: null,
-    TreeParentID: "mendacorp",
-    TreeID: "3bfaafd1-b638-4262-8794-370d23b971d7",
-    TreeName: "MCT",
-  };
-  const test = {
-    type: "DRAG_FROM_AZURE_EXISTING_RESOURCES",
-    payload: { ...testsubscriptions },
-  };
+  const renderedListItems = tree.map((treeItem) => <Box treeItem={treeItem} />);
 
   return (
     <Grid
@@ -122,9 +70,6 @@ const ResourcesList = () => {
       <Grid item>
         <Typography variant="body1">Azure Existing resources</Typography>
       </Grid>
-      <Button onClick={() => dispatch(test)}>
-        ADD subscription to Diagram
-      </Button>
       <Grid item>
         <TreeView
           style={{
