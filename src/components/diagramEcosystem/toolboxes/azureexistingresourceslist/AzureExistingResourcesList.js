@@ -67,7 +67,6 @@ const AzureExistingResourcesList = () => {
         height: "100%",
         width: "100%",
         margin: "0px 0px 0px 0px",
-        background: "#f3f2f1",
       }}
     >
       <Grid item>

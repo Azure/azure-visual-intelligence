@@ -38,7 +38,7 @@ const DiagramMenu = () => {
   //const isAuthenticated = useIsAuthenticated();
   return (
     <Grid container direction="column">
-      <Typography variant="body1">Diagrams</Typography>
+      <Typography variant="h5">Diagrams</Typography>
       <Grid>
         <IconButton aria-label="New">
           <AddIcon />

@@ -17,7 +17,11 @@ const MenuBar = () => {
       container
       direction="column"
       justifyContent="space-between"
-      style={{ height: "100vh", background: "#f3f2f1" }}
+      style={{
+        height: "100vh",
+        background: "#f3f2f1",
+        padding: "0px 10px 10px 10px",
+      }}
     >
       <Grid item>
         <Grid container direction="column">

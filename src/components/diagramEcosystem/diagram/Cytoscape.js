@@ -31,7 +31,10 @@ const CytoScape = () => {
   const elements = useSelector((state) => state.diagram.elements);
 
   return (
-    <div ref={dnddrop} style={{ width: "100%", height: "100%" }}>
+    <div
+      ref={dnddrop}
+      style={{ width: "100%", height: "100%", background: "#ffffff" }}
+    >
       <CytoscapeComponent
         minZoom={0.2}
         maxZoom={4}

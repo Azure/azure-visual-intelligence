@@ -3,31 +3,44 @@ import AzureExistingResourcesList from "./azureexistingresourceslist/AzureExisti
 import CommonResourcesList from "./CommonResourcesList";
 import AzureResourcesList from "./AzureResourcesList";
 
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography, Box } from "@material-ui/core";
 
 const Toolboxes = () => {
   return (
-    <Grid
-      container
-      direction="column"
-      justifyContent="flex-start"
-      alignItems="center"
-      wrap="nowrap"
-      style={{ height: "inherit", overflow: "auto" }} // --> add scrollbar when overflow }}
+    <Box
+      border={1}
+      borderColor="#808080"
+      style={{
+        height: "inherit",
+        overflow: "auto",
+      }}
     >
-      <Grid item>
-        <Typography variant="h5">Toolboxes</Typography>
+      <Grid
+        container
+        direction="column"
+        justifyContent="flex-start"
+        alignItems="center"
+        wrap="nowrap"
+        style={{
+          height: "inherit",
+          overflow: "auto",
+          boxShadow: "2px 2px 4px 4px rgba(0, 0, 0, 0.2)",
+        }} // --> add scrollbar when overflow }}
+      >
+        <Grid item>
+          <Typography variant="h5">Toolboxes</Typography>
+        </Grid>
+        <Grid item style={{ width: "100%" }}>
+          <AzureExistingResourcesList />
+        </Grid>
+        <Grid item style={{ width: "100%" }}>
+          <CommonResourcesList />
+        </Grid>
+        <Grid item style={{ width: "100%" }}>
+          <AzureResourcesList />
+        </Grid>
       </Grid>
-      <Grid item style={{ width: "100%" }}>
-        <AzureExistingResourcesList />
-      </Grid>
-      <Grid item style={{ width: "100%" }}>
-        <CommonResourcesList />
-      </Grid>
-      <Grid item style={{ width: "100%" }}>
-        <AzureResourcesList />
-      </Grid>
-    </Grid>
+    </Box>
   );
 };
 export default Toolboxes;

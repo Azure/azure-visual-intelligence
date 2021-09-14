@@ -10,9 +10,15 @@ const DiagramEcosystem = () => {
       container
       direction="column"
       justifyContent="space-between"
-      style={{ height: "100vh", background: "#f3f2f1" }}
+      style={{ height: "100vh", background: "#ffffff" }}
     >
-      <Grid item style={{ height: "10vh" }}>
+      <Grid
+        item
+        style={{
+          height: "10vh",
+          padding: "5px 5px 5px 20px",
+        }}
+      >
         <DiagramHeader />
       </Grid>
       <Grid item style={{ height: "90vh" }}>
@@ -28,6 +34,8 @@ const DiagramEcosystem = () => {
             xs={2}
             style={{
               height: "100%",
+              background: "#ffffff",
+              padding: "5px 5px 5px 20px",
             }}
           >
             <Toolboxes />

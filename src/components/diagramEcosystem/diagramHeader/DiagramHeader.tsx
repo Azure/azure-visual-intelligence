@@ -5,6 +5,7 @@ import {
   IconButton,
   Typography,
   Grid,
+  Box,
   makeStyles,
   createStyles,
   Theme,
@@ -12,23 +13,18 @@ import {
 //Icons
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      flexGrow: 1,
-      textAlign: "center",
-      color: theme.palette.text.secondary,
-      padding: theme.spacing(2),
-    },
-  })
-);
-
 const DiagramHeader = () => {
   //const classes = useStyles();
   const diagramName = useSelector((state: any) => state.diagram.name);
   return (
-    <div>
-      <Grid container direction="column">
+    <Box border={1} borderColor="#808080">
+      <Grid
+        container
+        direction="column"
+        style={{
+          height: "inherit",
+        }}
+      >
         <Grid item>
           <Grid container justifyContent="center" alignItems="center">
             <Typography variant="h3"> {diagramName}</Typography>
@@ -44,7 +40,7 @@ const DiagramHeader = () => {
           </Grid>
         </Grid>
       </Grid>
-    </div>
+    </Box>
   );
 };
 export default DiagramHeader;
