@@ -1,9 +1,9 @@
 import { React } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { arrayToTree } from "../../../../common/arrayToTree";
 import { DragPreviewImage, useDrag } from "react-dnd";
 //UI
-import { Grid, Typography, Button, withStyles } from "@material-ui/core";
+import { Grid, Typography, withStyles } from "@material-ui/core";
 import { TreeView } from "@material-ui/lab";
 import MuiTreeItem from "@material-ui/lab/TreeItem";
 //Icons
@@ -66,13 +66,12 @@ const AzureExistingResourcesList = () => {
       style={{
         height: "100%",
         width: "100%",
-        margin: "0px 0px 0px 5px",
+        margin: "0px 0px 0px 0px",
         background: "#f3f2f1",
-        padding: "5px 5px 5px 5px",
       }}
     >
       <Grid item>
-        <Typography variant="body1">Azure Existing resources</Typography>
+        <Typography variant="h6">Azure existing resources</Typography>
       </Grid>
       <Grid item>
         <TreeView

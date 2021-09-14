@@ -4,6 +4,6 @@ import { Grid, Typography, Button, withStyles } from "@material-ui/core";
 //Icons
 
 const AzureResourcesList = () => {
-  return <Typography variant="body1">Azure resources list</Typography>;
+  return <Typography variant="h6">Azure resources</Typography>;
 };
 export default AzureResourcesList;

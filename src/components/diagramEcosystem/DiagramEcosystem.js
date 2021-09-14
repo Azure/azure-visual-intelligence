@@ -27,7 +27,7 @@ const DiagramEcosystem = () => {
             item
             xs={2}
             style={{
-              height: "90vh",
+              height: "100%",
             }}
           >
             <Toolboxes />
