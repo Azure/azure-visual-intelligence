@@ -1,7 +1,6 @@
 import React from "react";
 import MenuBar from "./menubar/MenuBar";
-import ResourcesList from "./resourceslist/ResourcesList";
-import CytoScape from "./diagram/Cytoscape";
+import DiagramEcosystem from "./diagramEcosystem/DiagramEcosystem";
 import { Grid } from "@material-ui/core";
 
 const App = () => {
@@ -18,22 +17,12 @@ const App = () => {
       </Grid>
       <Grid
         item
-        xs={2}
+        xs={10}
         style={{
           height: "100vh",
         }}
       >
-        <ResourcesList />
-      </Grid>
-      <Grid
-        item
-        xs={8}
-        style={{
-          height: "100vh",
-          width: "100%",
-        }}
-      >
-        <CytoScape />
+        <DiagramEcosystem />
       </Grid>
     </Grid>
   );

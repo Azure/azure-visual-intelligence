@@ -8,9 +8,9 @@ export function* handleDragnDrop(action) {
   try {
     // query the state using the exported selector
     const currentDiagram = yield select(getDiagram);
-    console.log("currentDiagram");
-    console.log(currentDiagram);
+
     const response = yield call(AddResourceToDiagram, {
+      // change parameters : diagram + ressrouces to add + setting
       ...action.payload,
     });
 
@@ -21,7 +21,18 @@ export function* handleDragnDrop(action) {
 }
 
 function AddResourceToDiagram(payload) {
-  //temp to be removed
+  //Final process
+  //new parameters : diagram + resources to add + settings
+
+  //GET setting display for the resource
+  //GET ARM of resources to add
+  // look for dependencies
+  // are dependencies currently in the diagram ? create diagram edge
+
+  //generate return
+
+  //temporary process to makes things easy
+  // each item should be added as is to the existing diagram
   const elements = {
     nodes: [
       { data: { id: "vnetA" } },

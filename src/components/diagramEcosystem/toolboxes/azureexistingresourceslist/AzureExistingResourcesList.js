@@ -1,6 +1,6 @@
 import { React } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { arrayToTree } from "../../common/arrayToTree";
+import { arrayToTree } from "../../../../common/arrayToTree";
 import { DragPreviewImage, useDrag } from "react-dnd";
 //UI
 import { Grid, Typography, Button, withStyles } from "@material-ui/core";
@@ -11,7 +11,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import { knightImage } from "./knightImage";
 
-const ResourcesList = () => {
+const AzureExistingResourcesList = () => {
   //Getting Azure resources state from Redux
   const resources = useSelector((state) => state.resources);
 
@@ -92,4 +92,4 @@ const ResourcesList = () => {
     </Grid>
   );
 };
-export default ResourcesList;
+export default AzureExistingResourcesList;
