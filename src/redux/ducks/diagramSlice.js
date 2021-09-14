@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   name: "Demo Diagram",
+  mode: "ReadOnly",
   armtemplate: null,
   overlay: null,
   settings: null,
@@ -74,11 +75,11 @@ const diagramSlice = createSlice({
   reducers: {
     getDiagram() {},
     setDiagram(state, action) {
-      return { ...state, elements: { ...state.elements, ...action.payload } };
+      //return { ...state, elements: { ...action.payload } };
+      return { ...state, ...action.payload };
     },
   },
 });
-
 export const { getDiagram, setDiagram } = diagramSlice.actions;
 
 export default diagramSlice.reducer;
