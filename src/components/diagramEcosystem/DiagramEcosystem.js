@@ -17,7 +17,7 @@ const DiagramEcosystem = () => {
         item
         style={{
           height: "10vh",
-          padding: "5px 5px 5px 20px",
+          padding: "5px 20px 5px 20px",
         }}
       >
         <DiagramHeader />
