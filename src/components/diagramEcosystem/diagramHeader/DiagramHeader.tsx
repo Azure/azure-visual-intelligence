@@ -10,6 +10,8 @@ import {
   createStyles,
   Theme,
 } from "@material-ui/core";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Switch from "@mui/material/Switch";
 //Icons
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 
@@ -37,6 +39,10 @@ const DiagramHeader = () => {
           <Grid container>
             <Button> Clear All</Button>
             <Button> Redraw</Button>
+            <FormControlLabel
+              control={<Switch />}
+              label="Azure Security Center Overlay"
+            />
           </Grid>
         </Grid>
       </Grid>
