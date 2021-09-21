@@ -47,8 +47,6 @@ function createResourcesFlatList(resources: any) {
         return resourceGroupItem.TreeID === resource.id;
       })
     ) {
-      //console.log("sdjfqshldqhsdl");
-      //console.log(resource);
       resource["TreeParentID"] =
         "/subscriptions/" +
         resource.subscriptionId +
@@ -56,7 +54,6 @@ function createResourcesFlatList(resources: any) {
         resource.resourceGroup;
       resource["TreeID"] = resource.id;
       resource["TreeName"] = resource.name;
-      //resource["TreeICON"] = ;
       flatList.push({
         ...resource,
       });
@@ -127,7 +124,7 @@ function addSubscriptionsToFlatList(tree: any, subscription: any) {
 
 function createMGFlatList(resourceContainers: any) {
   let flatList: any = [];
-  //We add management Group to the flatlist
+  //We add management Group to the flat list
   //Note : only the management group that have subscriptions will be present
   //This is because we are getting the management group from subscriptions properties
   resourceContainers.data.forEach((resourceContainer: any) => {

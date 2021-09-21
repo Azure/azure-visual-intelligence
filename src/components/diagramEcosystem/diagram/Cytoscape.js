@@ -60,10 +60,7 @@ const CytoScape = () => {
               "font-family": '"Segoe UI", Arial, Helvetica, sans-serif',
               "font-size": "20",
               "text-valign": "bottom",
-              //'color': textColor,
               "background-opacity": 0,
-              //'background-image': 'https://cdn.onlinewebfonts.com/svg/img_194174.png', working with background opactity 0 and that's all
-              //'background-image': node => { return `url(${process.env.PUBLIC_URL + '/virtualmachines.svg'}')`}
               "background-image": (node) => {
                 return `url(${process.env.PUBLIC_URL + node.data("img")}')`;
               },
@@ -113,6 +110,15 @@ const CytoScape = () => {
           },
         ]}
         layout={layout}
+        cy={(cy) => {
+          cy.on("click", "node", function (evt) {
+            dispatch({
+              type: "SELECT_NODE",
+              payload: this.id(),
+            });
+            console.log("clicked " + this.id());
+          });
+        }}
       />
     </div>
   );

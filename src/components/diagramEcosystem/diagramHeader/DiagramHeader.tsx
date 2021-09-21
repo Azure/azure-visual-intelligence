@@ -1,15 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import {
-  Button,
-  IconButton,
-  Typography,
-  Grid,
-  Box,
-  makeStyles,
-  createStyles,
-  Theme,
-} from "@material-ui/core";
+import { Button, IconButton, Typography, Grid, Box } from "@material-ui/core";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 //Icons

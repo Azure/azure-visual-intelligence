@@ -1,7 +1,10 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Grid, Typography, Box } from "@material-ui/core";
 
 const DetailPan = () => {
+  const detailData = useSelector((state) => state.detail);
+
   return (
     <Box
       border={1}
@@ -25,6 +28,9 @@ const DetailPan = () => {
       >
         <Grid item>
           <Typography variant="h5">Detail Pan</Typography>
+          <Typography variant="body">
+            ID : {detailData ? detailData.id : "test"}
+          </Typography>
         </Grid>
       </Grid>
     </Box>

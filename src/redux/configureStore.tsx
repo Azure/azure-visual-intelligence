@@ -4,6 +4,7 @@ import { watcherSaga } from "./sagas/rootSaga";
 import userReducer from "./ducks/userSlice";
 import settingsReducer from "./ducks/settingsSlice";
 import diagramReducer from "./ducks/diagramSlice";
+import detailReducer from "./ducks/detailSlice";
 import resourcesReducer from "./ducks/resourcesSlice";
 
 const sagaMiddleware = createSagaMiddleware();
@@ -13,6 +14,7 @@ const store = configureStore({
     user: userReducer,
     resources: resourcesReducer,
     diagram: diagramReducer,
+    detail: detailReducer,
     settings: settingsReducer,
   },
   middleware: (getDefaultMiddleware) =>
