@@ -47,6 +47,8 @@ function createResourcesFlatList(resources: any) {
         return resourceGroupItem.TreeID === resource.id;
       })
     ) {
+      //console.log("sdjfqshldqhsdl");
+      //console.log(resource);
       resource["TreeParentID"] =
         "/subscriptions/" +
         resource.subscriptionId +
@@ -54,6 +56,7 @@ function createResourcesFlatList(resources: any) {
         resource.resourceGroup;
       resource["TreeID"] = resource.id;
       resource["TreeName"] = resource.name;
+      //resource["TreeICON"] = ;
       flatList.push({
         ...resource,
       });

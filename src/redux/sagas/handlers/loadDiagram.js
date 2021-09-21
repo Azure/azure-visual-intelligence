@@ -25,11 +25,12 @@ function LoadDiagram(payload) {
       settings: null,
       elements: {
         nodes: [
-          { data: { id: "vnetA" } },
-          { data: { id: "subnetA", parent: "vnetA" } },
+          { data: { id: "vnetA", label: "vnetA" } },
+          { data: { id: "subnetA", label: "subnetA", parent: "vnetA" } },
           {
             data: {
               id: "A1",
+              label: "A1",
               parent: "subnetA",
               img: "/assets/img/azure/original/microsoft.network/loadbalancers.svg",
             },
@@ -48,13 +49,13 @@ function LoadDiagram(payload) {
       settings: null,
       elements: {
         nodes: [
-          { data: { id: "vnetA" } },
-          { data: { id: "subnetA", parent: "vnetA" } },
-          { data: { id: "subnetB", parent: "vnetA" } },
-          { data: { id: "subnetC", parent: "vnetA" } },
+          { data: { id: "vnetA", label: "vnetA" } },
+          { data: { id: "subnetA", label: "subnetA", parent: "vnetA" } },
+          { data: { id: "subnetB", label: "subnetB", parent: "vnetA" } },
           {
             data: {
               id: "A1",
+              label: "A1",
               parent: "subnetA",
               img: "/assets/img/azure/original/microsoft.network/loadbalancers.svg",
             },
@@ -62,6 +63,7 @@ function LoadDiagram(payload) {
           {
             data: {
               id: "A2",
+              label: "A2",
               parent: "subnetA",
               img: "/assets/img/azure/original/microsoft.compute/virtualmachines.svg",
             },
@@ -69,6 +71,7 @@ function LoadDiagram(payload) {
           {
             data: {
               id: "A3",
+              label: "A3",
               parent: "subnetA",
               img: "/assets/img/azure/original/microsoft.compute/virtualmachines.svg",
             },
@@ -77,6 +80,7 @@ function LoadDiagram(payload) {
           {
             data: {
               id: "B1",
+              label: "B1",
               parent: "subnetB",
               img: "/assets/img/azure/original/microsoft.network/loadbalancers.svg",
             },
@@ -84,6 +88,7 @@ function LoadDiagram(payload) {
           {
             data: {
               id: "B2",
+              label: "B2",
               parent: "subnetB",
               img: "/assets/img/azure/original/microsoft.compute/virtualmachines.svg",
             },
@@ -91,6 +96,7 @@ function LoadDiagram(payload) {
           {
             data: {
               id: "B3",
+              label: "B3",
               parent: "subnetB",
               img: "/assets/img/azure/original/microsoft.compute/virtualmachines.svg",
             },

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
 //UI
 import CytoscapeComponent from "react-cytoscapejs";
+import popper from "cytoscape-popper";
 
 const CytoScape = () => {
   const dispatch = useDispatch();
@@ -46,13 +47,18 @@ const CytoScape = () => {
             style: {
               "background-width": "90%",
               "background-height": "90%",
-              //'label':'VM',
+              //if label is empty we display ID, ID can't be empty
+              label: (node) => {
+                return node.data("label")
+                  ? node.data("label")
+                  : node.data("id");
+              },
               shape: "roundrectangle",
               width: "128",
               height: "128",
               "border-width": "0",
               "font-family": '"Segoe UI", Arial, Helvetica, sans-serif',
-              "font-size": "8",
+              "font-size": "20",
               "text-valign": "bottom",
               //'color': textColor,
               "background-opacity": 0,
@@ -100,9 +106,9 @@ const CytoScape = () => {
               // 'color': textColor,
               "text-valign": "bottom",
               "text-margin-y": "10vh",
-              // 'font-size': '20%',
+              "font-size": "20",
               // 'text-outline-color': textColorOutline,
-              "text-outline-width": "4",
+              //"text-outline-width": "4",
             },
           },
         ]}

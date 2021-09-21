@@ -8,13 +8,13 @@ const initialState = {
   settings: null,
   elements: {
     nodes: [
-      { data: { id: "vnetA" } },
-      { data: { id: "subnetA", parent: "vnetA" } },
-      { data: { id: "subnetB", parent: "vnetA" } },
-      { data: { id: "subnetC", parent: "vnetA" } },
+      { data: { id: "vnetA", label: "vnetA" } },
+      { data: { id: "subnetA", label: "subnetA", parent: "vnetA" } },
+      { data: { id: "subnetB", label: "subnetB", parent: "vnetA" } },
       {
         data: {
           id: "A1",
+          label: "A1",
           parent: "subnetA",
           img: "/assets/img/azure/original/microsoft.network/loadbalancers.svg",
         },
@@ -22,6 +22,7 @@ const initialState = {
       {
         data: {
           id: "A2",
+          label: "A2",
           parent: "subnetA",
           img: "/assets/img/azure/original/microsoft.compute/virtualmachines.svg",
         },
@@ -29,6 +30,7 @@ const initialState = {
       {
         data: {
           id: "A3",
+          label: "A3",
           parent: "subnetA",
           img: "/assets/img/azure/original/microsoft.compute/virtualmachines.svg",
         },
@@ -37,6 +39,7 @@ const initialState = {
       {
         data: {
           id: "B1",
+          label: "B1",
           parent: "subnetB",
           img: "/assets/img/azure/original/microsoft.network/loadbalancers.svg",
         },
@@ -44,6 +47,7 @@ const initialState = {
       {
         data: {
           id: "B2",
+          label: "B1",
           parent: "subnetB",
           img: "/assets/img/azure/original/microsoft.compute/virtualmachines.svg",
         },
@@ -51,6 +55,7 @@ const initialState = {
       {
         data: {
           id: "B3",
+          label: "B3",
           parent: "subnetB",
           img: "/assets/img/azure/original/microsoft.compute/virtualmachines.svg",
         },
@@ -75,11 +80,14 @@ const diagramSlice = createSlice({
   reducers: {
     getDiagram() {},
     setDiagram(state, action) {
-      //return { ...state, elements: { ...action.payload } };
       return { ...state, ...action.payload };
+    },
+    setDiagramElements(state, action) {
+      return { ...state, elements: { ...action.payload } };
     },
   },
 });
-export const { getDiagram, setDiagram } = diagramSlice.actions;
+export const { getDiagram, setDiagram, setDiagramElements } =
+  diagramSlice.actions;
 
 export default diagramSlice.reducer;

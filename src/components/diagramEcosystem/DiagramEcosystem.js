@@ -1,6 +1,7 @@
 import React from "react";
 import Toolboxes from "./toolboxes/Toolboxes";
 import CytoScape from "./diagram/Cytoscape";
+import DetailPan from "./detailPan/DetailPan";
 import DiagramHeader from "./diagramHeader/DiagramHeader";
 import { Grid } from "@material-ui/core";
 
@@ -42,13 +43,23 @@ const DiagramEcosystem = () => {
           </Grid>
           <Grid
             item
-            xs={10}
+            xs={8}
             style={{
               height: "90vh",
               width: "100%",
             }}
           >
             <CytoScape />
+          </Grid>
+          <Grid
+            item
+            xs={2}
+            style={{
+              height: "100%",
+              padding: "0px 20px 5px 0px",
+            }}
+          >
+            <DetailPan />
           </Grid>
         </Grid>
       </Grid>
