@@ -8,16 +8,16 @@ import {
   List,
   ListItem,
   ListItemText,
-} from "@material-ui/core";
+} from "@mui/material";
 
 //Icons
-import AddIcon from "@material-ui/icons/Add";
-import PublishIcon from "@material-ui/icons/Publish";
-import FileCopyIcon from "@material-ui/icons/FileCopy";
-import EditIcon from "@material-ui/icons/Edit";
-import GetAppIcon from "@material-ui/icons/GetApp";
-import LockIcon from "@material-ui/icons/Lock";
-import LockOpenIcon from "@material-ui/icons/LockOpen";
+import AddIcon from "@mui/icons-material/Add";
+import PublishIcon from "@mui/icons-material/Publish";
+import FileCopyIcon from "@mui/icons-material/FileCopy";
+import EditIcon from "@mui/icons-material/Edit";
+import GetAppIcon from "@mui/icons-material/GetApp";
+import LockIcon from "@mui/icons-material/Lock";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
 
 const DiagramMenu = () => {
   const dispatch = useDispatch();

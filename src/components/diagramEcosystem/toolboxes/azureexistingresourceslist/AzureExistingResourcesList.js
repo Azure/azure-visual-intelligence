@@ -3,12 +3,13 @@ import { useSelector } from "react-redux";
 import { arrayToTree } from "../../../../common/arrayToTree";
 import { DragPreviewImage, useDrag } from "react-dnd";
 //UI
-import { Grid, Typography, withStyles } from "@material-ui/core";
+import { Grid, Typography } from "@mui/material";
+import { withStyles } from "@mui/styles";
 import { TreeView } from "@material-ui/lab";
 import MuiTreeItem from "@material-ui/lab/TreeItem";
 //Icons
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { knightImage } from "./knightImage";
 
 const AzureExistingResourcesList = () => {

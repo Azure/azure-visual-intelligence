@@ -1,7 +1,7 @@
 import React from "react";
 import MenuBar from "./menubar/MenuBar";
 import DiagramEcosystem from "./diagramEcosystem/DiagramEcosystem";
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 
 const App = () => {
   return (

@@ -3,7 +3,7 @@ import AzureExistingResourcesList from "./azureexistingresourceslist/AzureExisti
 import CommonResourcesList from "./CommonResourcesList";
 import AzureResourcesList from "./AzureResourcesList";
 
-import { Grid, Typography, Box } from "@material-ui/core";
+import { Grid, Typography, Box } from "@mui/material";
 
 const Toolboxes = () => {
   return (

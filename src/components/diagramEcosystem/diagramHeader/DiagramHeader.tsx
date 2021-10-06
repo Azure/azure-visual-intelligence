@@ -1,12 +1,12 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, IconButton, Typography, Grid, Box } from "@material-ui/core";
+import { Button, IconButton, Typography, Grid, Box } from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 //Icons
-import LockOpenIcon from "@material-ui/icons/LockOpen";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
 
 const DiagramHeader = () => {
   const dispatch = useDispatch();

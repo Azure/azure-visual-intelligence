@@ -1,15 +1,9 @@
 import React from "react";
 import AuthenticationMenu from "./AuthenticationMenu";
 import DiagramMenu from "./DiagramMenu";
-import {
-  Button,
-  IconButton,
-  Typography,
-  Divider,
-  Grid,
-} from "@material-ui/core";
-import MenuIcon from "@material-ui/icons/Menu";
-import SettingsIcon from "@material-ui/icons/Settings";
+import { Button, IconButton, Typography, Divider, Grid } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 const MenuBar = () => {
   return (

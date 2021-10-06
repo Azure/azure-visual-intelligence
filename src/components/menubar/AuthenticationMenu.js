@@ -4,12 +4,12 @@ import { useMsal } from "@azure/msal-react";
 import { loginRequest } from "../../common/Config";
 import { useSelector } from "react-redux";
 //UI
-import { Alert } from "@material-ui/lab";
-import { Button, Typography, Grid } from "@material-ui/core";
+//import { Alert } from "@material-ui/lab";
+import { Button, Typography, Grid, Alert } from "@mui/material";
 //Icons
-import VpnKeyIcon from "@material-ui/icons/VpnKey";
-import PersonIcon from "@material-ui/icons/Person";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import VpnKeyIcon from "@mui/icons-material/VpnKey";
+import PersonIcon from "@mui/icons-material/Person";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 const AuthenticationMenu = () => {
   const { instance } = useMsal();

@@ -1,9 +1,11 @@
 import * as React from "react";
 import cytoscape from "cytoscape";
+import { useDispatch } from "react-redux";
 
 import style from "./style";
 
 const Graph = ({ elements }) => {
+  const dispatch = useDispatch();
   const container = React.useRef(null);
   const graph = React.useRef();
   const layout = React.useRef();
@@ -39,9 +41,15 @@ const Graph = ({ elements }) => {
           maxZoom: 4,
           container: container.current,
         });
+        graph.current.on("click", "node", function (evt) {
+          dispatch({
+            type: "SELECT_NODE",
+            payload: this.id(),
+          });
+          console.log("clicked " + this.id());
+        });
       }
     } catch (error) {
-      console.log("ici");
       console.error(error);
     }
     return () => {

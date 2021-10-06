@@ -1,6 +1,6 @@
 import { React } from "react";
 //UI
-import { Grid, Typography, Button, withStyles } from "@material-ui/core";
+import { Typography } from "@mui/material";
 //Icons
 
 const AzureResourcesList = () => {
