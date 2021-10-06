@@ -1,5 +1,4 @@
-import { call, put } from "redux-saga/effects";
-import { setDiagram } from "../../ducks/diagramSlice";
+import { put } from "redux-saga/effects";
 import { setDiagramElements } from "../../ducks/diagramSlice";
 
 export function* handleClearDiagram(action) {
