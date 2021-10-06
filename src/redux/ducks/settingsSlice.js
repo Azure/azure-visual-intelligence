@@ -8,6 +8,8 @@ const initialState = {
     DragnDropSubGovernanceResources: false,
     AlwaysAskDragnDropSubARMResources: false,
     DragnDropSubARMResources: false,
+    DefaultLayout: "governance",
+    CurrentLayout: "governance",
   },
   resources: {
     azure: [
@@ -68,6 +70,58 @@ const initialState = {
       },
     ],
   },
+  layout: [
+    {
+      name: "governance",
+      hierarchy: [
+        {
+          type: "ManagementGroup",
+          diagramprimitive: "box",
+        },
+        {
+          type: "microsoft.resources/subscriptions",
+          diagramprimitive: "box",
+          parent: {
+            type: "ManagementGroup",
+            query: "",
+          },
+        },
+        {
+          type: "microsoft.resources/subscriptions/resourcegroups",
+          diagramprimitive: "box",
+          parent_type: "microsoft.resources/subscriptions",
+        },
+        {
+          type: "defaut",
+          parenttype: "microsoft.resources/subscriptions/resourcegroups",
+          diagramprimitive: "item",
+        },
+      ],
+    },
+    {
+      name: "network",
+      hierarchy: [
+        {
+          type: "microsoft.resources/subscriptions",
+          diagramprimitive: "box",
+          parent: {
+            type: "ManagementGroup",
+            connector: "ExistingAzureResources",
+            query: "TreeParentID",
+          },
+        },
+        {
+          type: "microsoft.resources/subscriptions/resourcegroups",
+          diagramprimitive: "subitem",
+          parent_type: "microsoft.resources/subscriptions",
+        },
+        {
+          type: "defaut",
+          diagramprimitive: "item",
+        },
+      ],
+    },
+  ],
 };
 
 const settingsSlice = createSlice({
