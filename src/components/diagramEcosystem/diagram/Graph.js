@@ -37,7 +37,6 @@ const Graph = () => {
       }
       graph.current.elements().remove();
       graph.current.add(elements);
-      console.log(graph.current.nodes()[2]);
 
       layout.current = graph.current.elements().makeLayout({
         avoidOverlap: true,
@@ -46,15 +45,14 @@ const Graph = () => {
         spacingFactor: "spacing",
       });
 
-      let node = graph.current.nodes().first();
+      //Popper example
+      // does not do destroy properly when a new resource is added to the Graph
+      /*let node = graph.current.nodes().first();
       let popper1 = node.popper({
         content: () => {
           let div = document.createElement("div");
-
-          div.innerHTML = "Popper content";
-
+          div.innerHTML = "Overlay content";
           document.body.appendChild(div);
-
           return div;
         },
         popper: {}, // my popper options here
@@ -63,7 +61,7 @@ const Graph = () => {
         popper1.update();
       };
       graph.current.elements().on("position", update);
-      graph.current.on("pan zoom resize", update);
+      graph.current.on("pan zoom resize", update);*/
       layout.current.run();
     }
   }, [elements]);
