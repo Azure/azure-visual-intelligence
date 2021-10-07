@@ -43,7 +43,7 @@ const store = configureStore({
     getDefaultMiddleware({
       thunk: false,
       serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER], //https://redux-toolkit.js.org/usage/usage-guide#use-with-redux-persist
       },
     }).concat(sagaMiddleware),
 });
