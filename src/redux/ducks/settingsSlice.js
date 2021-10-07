@@ -92,7 +92,7 @@ const initialState = {
           parent_type: "microsoft.resources/subscriptions",
         },
         {
-          type: "defaut",
+          type: "default",
           parenttype: "microsoft.resources/subscriptions/resourcegroups",
           diagramprimitive: "item",
         },

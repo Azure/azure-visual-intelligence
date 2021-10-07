@@ -3,7 +3,8 @@ import { setDiagramElements } from "../../ducks/diagramSlice";
 //import { useSelector } from "react-redux";
 
 export const getDiagram = (state) => state.diagram.elements;
-export const getAzureSettings = (state) => state.settings.resources.azure;
+export const getAzureSettings = (state) => state.settings;
+export const getCurrentLayout = (state) => state.settings.diagram.CurrentLayout;
 
 export function* handleDragnDrop(action) {
   try {
@@ -11,6 +12,7 @@ export function* handleDragnDrop(action) {
 
     const currentDiagram = yield select(getDiagram);
     const azureSettings = yield select(getAzureSettings);
+    const currentLayout = yield select(getCurrentLayout);
 
     const response = yield call(
       AddResourceToDiagram,
@@ -18,7 +20,8 @@ export function* handleDragnDrop(action) {
         ...action.payload,
       },
       currentDiagram,
-      azureSettings
+      azureSettings,
+      currentLayout
     );
 
     yield put(setDiagramElements(response));
@@ -27,10 +30,8 @@ export function* handleDragnDrop(action) {
   }
 }
 
-function AddResourceToDiagram(payload, diagram, azureSettings) {
+function AddResourceToDiagram(payload, diagram, azureSettings, currentLayout) {
   //new parameters : diagram + resources to add + settings
-  var takeGovernanceChilds = false;
-  var takeGovernanceparents = false;
 
   //getDependenceFromArm(payload.TreeID);
 
@@ -42,30 +43,75 @@ function AddResourceToDiagram(payload, diagram, azureSettings) {
   //node is unique = not duplicate in Cytoscape but it is in redux, need to fix that
 
   // Get the settings for the node to add. ( ! This suppose only one node is selected within the toolbox treeview)
-  var nodeSettings = azureSettings.find(
-    (element) => element.type === payload.type
-  );
-  if (nodeSettings === undefined) {
-    nodeSettings = {
-      icon: "/assets/img/azure/original/default.svg",
-      diagramprimitive: "item",
-    };
+  switch (currentLayout) {
+    case "governance":
+      //get the azure resource metadata
+      var nodeSettings = azureSettings.resources.azure.find(
+        (element) => element.type === payload.type
+      );
+
+      //get the layout resource metadata
+      var layoutSettings = azureSettings.layout
+        .find((element) => element.name === "governance")
+        .hierarchy.find((element) => element.type === payload.type);
+
+      //if we don't find the resource type we still want a default display
+      if (nodeSettings === undefined) {
+        nodeSettings = {
+          icon: "/assets/img/azure/original/default.svg",
+          diagramprimitive: "item",
+        };
+      }
+
+      if (layoutSettings === undefined) {
+        layoutSettings = azureSettings.layout
+          .find((element) => element.name === "governance")
+          .hierarchy.find((element) => element.type === "default");
+      }
+
+      //if we find the resource type we provide the adequate layout
+      var newNodes = [
+        {
+          data: {
+            id: payload.TreeID,
+            label: payload.TreeName,
+            parentgovernance: payload.TreeParentID,
+            img: nodeSettings.icon,
+            diagramprimitive: layoutSettings.diagramprimitive,
+          },
+        },
+      ];
+
+      //we construct the nodes list from old nodes + new ones
+      var nodes = [...diagram.nodes, ...newNodes];
+
+      //edges are still a copy of the old ones
+      var edges = [...diagram.edges];
+
+      //we update parent relation ship to ALL nodes (relation of some old node may have change with this new node)
+      nodes.forEach(function (node, index) {
+        var ParentNode = nodes.find(
+          (element) => element.data.id === this[index].data.parentgovernance
+        );
+        //if undefined then node has no current parent displayed in the diagram.
+        //if not undefined then we need to update the parent field within the studied node
+        if (ParentNode !== undefined) {
+          this[index] = {
+            data: {
+              ...this[index].data,
+              parent: this[index].data.parentgovernance,
+            },
+          };
+        }
+      }, nodes);
+      //we save the new elements list
+      var returnElements = { nodes, edges };
+      break;
+
+    case "network":
+      break;
+    default:
+      break;
   }
-
-  var newNodes = [
-    {
-      data: {
-        id: payload.TreeID,
-        label: payload.TreeName,
-        //          parent: "subnetA",  // no parent for the newly add resources yet
-        img: nodeSettings.icon,
-      },
-    },
-  ];
-  var nodes = [...diagram.nodes, ...newNodes];
-
-  var edges = [...diagram.edges];
-
-  var returnElements = { nodes, edges };
   return returnElements;
 }
