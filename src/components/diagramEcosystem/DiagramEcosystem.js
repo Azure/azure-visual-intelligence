@@ -1,6 +1,6 @@
 import React from "react";
 import Toolboxes from "./toolboxes/Toolboxes";
-import GraphContainer from "./diagram/GraphContainer";
+import Graph from "./diagram/Graph";
 import DetailPan from "./detailPan/DetailPan";
 import DiagramHeader from "./diagramHeader/DiagramHeader";
 import { Grid } from "@mui/material";
@@ -49,7 +49,7 @@ const DiagramEcosystem = () => {
               width: "100%",
             }}
           >
-            <GraphContainer />
+            <Graph />
           </Grid>
           <Grid
             item

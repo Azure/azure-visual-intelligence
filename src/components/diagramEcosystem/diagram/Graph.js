@@ -1,14 +1,31 @@
 import * as React from "react";
 import cytoscape from "cytoscape";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useDrop } from "react-dnd";
 
 import style from "./style";
 
-const Graph = ({ elements }) => {
+const Graph = () => {
   const dispatch = useDispatch();
   const container = React.useRef(null);
   const graph = React.useRef();
   const layout = React.useRef();
+
+  const [{ isOver, canDrop }, dnddrop] = useDrop(() => ({
+    accept: "TREEVIEW",
+    canDrop: () => true,
+    drop: (item) =>
+      dispatch({
+        type: "DRAGnDROP",
+        payload: item,
+      }),
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+      canDrop: !!monitor.canDrop(),
+    }),
+  }));
+
+  const elements = useSelector((state) => state.diagram.elements);
 
   React.useEffect(() => {
     if (graph.current) {
@@ -59,10 +76,15 @@ const Graph = ({ elements }) => {
 
   return (
     <div
-      style={{ width: "100%", height: "100%" }}
-      className="graph"
-      ref={container}
-    />
+      ref={dnddrop}
+      style={{ width: "100%", height: "100%", background: "#ffffff" }}
+    >
+      <div
+        style={{ width: "100%", height: "100%" }}
+        className="graph"
+        ref={container}
+      />
+    </div>
   );
 };
 
