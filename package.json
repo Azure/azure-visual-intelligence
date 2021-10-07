@@ -22,6 +22,7 @@
     "@testing-library/user-event": "^12.8.3",
     "clsx": "^1.1.1",
     "cytoscape": "^3.19.1",
+    "cytoscape-fcose": "^2.1.0",
     "cytoscape-popper": "^2.0.0",
     "react": "^17.0.2",
     "react-dnd": "^14.0.3",

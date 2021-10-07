@@ -1,7 +1,10 @@
 import * as React from "react";
-import cytoscape from "cytoscape";
 import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
+//cytoscape and extensions
+import cytoscape from "cytoscape";
+import fcose from "cytoscape-fcose";
+import popper from "cytoscape-popper";
 
 import style from "./style";
 
@@ -34,12 +37,33 @@ const Graph = () => {
       }
       graph.current.elements().remove();
       graph.current.add(elements);
+      console.log(graph.current.nodes()[2]);
+
       layout.current = graph.current.elements().makeLayout({
         avoidOverlap: true,
         name: "cose",
         nodeDimensionsIncludeLabels: false,
         spacingFactor: "spacing",
       });
+
+      let node = graph.current.nodes().first();
+      let popper1 = node.popper({
+        content: () => {
+          let div = document.createElement("div");
+
+          div.innerHTML = "Popper content";
+
+          document.body.appendChild(div);
+
+          return div;
+        },
+        popper: {}, // my popper options here
+      });
+      const update = () => {
+        popper1.update();
+      };
+      graph.current.elements().on("position", update);
+      graph.current.on("pan zoom resize", update);
       layout.current.run();
     }
   }, [elements]);
@@ -50,7 +74,8 @@ const Graph = () => {
     }
     try {
       if (!graph.current) {
-        //cytoscape.use(fcose);
+        cytoscape.use(fcose);
+        cytoscape.use(popper);
         graph.current = cytoscape({
           elements,
           style,
