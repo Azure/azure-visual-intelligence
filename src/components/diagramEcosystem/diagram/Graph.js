@@ -43,7 +43,7 @@ const Graph = () => {
         name: "cose",
         nodeDimensionsIncludeLabels: false,
         spacingFactor: "spacing",
-        styleEnabled: false,
+        styleEnabled: true,
       });
 
       //Popper example

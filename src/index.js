@@ -1,13 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./components/App";
-import store from "./redux/configureStore";
+import { store, persistor } from "./redux/configureStore";
 import { PublicClientApplication, EventType } from "@azure/msal-browser";
 import { MsalProvider } from "@azure/msal-react";
 import { msalConfig } from "./common/Config";
 import { Provider } from "react-redux";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { PersistGate } from "redux-persist/integration/react";
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
@@ -31,9 +32,11 @@ ReactDOM.render(
   >
     <MsalProvider instance={msalInstance}>
       <Provider store={store}>
-        <DndProvider backend={HTML5Backend}>
-          <App />
-        </DndProvider>
+        <PersistGate loading={null} persistor={persistor}>
+          <DndProvider backend={HTML5Backend}>
+            <App />
+          </DndProvider>
+        </PersistGate>
       </Provider>
     </MsalProvider>
   </div>,
