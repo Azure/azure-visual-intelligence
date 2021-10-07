@@ -14,7 +14,7 @@ const Graph = () => {
   const graph = React.useRef();
   const layout = React.useRef();
 
-  const [{ isOver, canDrop }, dnddrop] = useDrop(() => ({
+  const [, dnddrop] = useDrop(() => ({
     accept: "TREEVIEW",
     canDrop: () => true,
     drop: (item) =>
@@ -38,15 +38,20 @@ const Graph = () => {
       graph.current.elements().remove();
       graph.current.add(elements);
 
-      layout.current = graph.current.elements().makeLayout({
+      layout.current = graph.current.makeLayout({
         avoidOverlap: true,
         name: "cose",
         nodeDimensionsIncludeLabels: false,
         spacingFactor: "spacing",
+        styleEnabled: false,
       });
 
       //Popper example
+      //Updates to do :
+      // need to handle empty graph
       // does not do destroy properly when a new resource is added to the Graph
+      //get the data from redux for each node
+
       /*let node = graph.current.nodes().first();
       let popper1 = node.popper({
         content: () => {
@@ -77,7 +82,7 @@ const Graph = () => {
         graph.current = cytoscape({
           elements,
           style,
-          minZoom: 0.2,
+          minZoom: 1,
           maxZoom: 4,
           container: container.current,
         });
@@ -90,6 +95,7 @@ const Graph = () => {
         });
       }
     } catch (error) {
+      console.log("error");
       console.error(error);
     }
     return () => {
