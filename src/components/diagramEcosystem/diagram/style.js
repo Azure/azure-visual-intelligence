@@ -62,7 +62,7 @@ const edgeStyles = [
       "font-family": '"Segoe UI", Arial, Helvetica, sans-serif',
       //"font-size": "15vh",
       // 'color': textColor,
-      "text-valign": "bottom",
+      "text-valign": "top",
       "text-margin-y": "10vh",
       "font-size": "20",
       // 'text-outline-color': textColorOutline,

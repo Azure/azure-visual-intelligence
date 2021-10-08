@@ -20,6 +20,8 @@ msalInstance.addEventCallback((message) => {
     });
   }
 });
+//To add between provider and dnd provider
+//<PersistGate loading={null} persistor={persistor}> </PersistGate>
 
 ReactDOM.render(
   <div
@@ -32,11 +34,9 @@ ReactDOM.render(
   >
     <MsalProvider instance={msalInstance}>
       <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <DndProvider backend={HTML5Backend}>
-            <App />
-          </DndProvider>
-        </PersistGate>
+        <DndProvider backend={HTML5Backend}>
+          <App />
+        </DndProvider>
       </Provider>
     </MsalProvider>
   </div>,

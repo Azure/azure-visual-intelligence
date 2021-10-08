@@ -82,7 +82,7 @@ const Graph = () => {
         graph.current = cytoscape({
           elements,
           style,
-          minZoom: 1,
+          minZoom: 0.2,
           maxZoom: 4,
           container: container.current,
         });

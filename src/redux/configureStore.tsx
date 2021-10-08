@@ -22,23 +22,30 @@ import resourcesReducer from "./ducks/resourcesSlice";
 
 const sagaMiddleware = createSagaMiddleware();
 
-const persistConfig = {
+const persistUserConfig = {
   key: "user",
   storage,
 };
 
-const rootReducer = combineReducers({
-  user: userReducer, //userReducer,
-  resources: resourcesReducer,
-  diagram: diagramReducer,
-  detail: detailReducer,
-  settings: settingsReducer,
-});
+const persistResourcesConfig = {
+  key: "resources",
+  storage,
+};
 
-const persistedRootReducer = persistReducer(persistConfig, rootReducer);
+const persistedUserReducer = persistReducer(persistUserConfig, userReducer);
+const persistedResourcesReducer = persistReducer(
+  persistResourcesConfig,
+  resourcesReducer
+);
 
 const store = configureStore({
-  reducer: persistedRootReducer,
+  reducer: {
+    user: userReducer,
+    resources: resourcesReducer,
+    diagram: diagramReducer,
+    detail: detailReducer,
+    settings: settingsReducer,
+  },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       thunk: false,
