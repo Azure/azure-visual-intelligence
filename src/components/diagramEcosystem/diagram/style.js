@@ -1,7 +1,3 @@
-const COLORS = {
-  purp: "#43447a",
-};
-
 const nodeStyles = [
   {
     selector: "node",

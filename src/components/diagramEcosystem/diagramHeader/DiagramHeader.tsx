@@ -27,6 +27,18 @@ const DiagramHeader = () => {
     //Implement Set curent layout
   };
 
+  const handleASCoverlayChange = (event: any, control: any) => {
+    if (control === false) {
+      dispatch({
+        type: "HIDE_OVERLAY_ASC",
+      });
+    } else {
+      dispatch({
+        type: "DISPLAY_OVERLAY_ASC",
+      });
+    }
+  };
+
   return (
     <Box border={1} borderColor="#808080">
       <Grid
@@ -49,7 +61,7 @@ const DiagramHeader = () => {
             <Button onClick={handleClearDiagram}> Clear All</Button>
             <Button> Redraw</Button>
             <FormControlLabel
-              control={<Switch />}
+              control={<Switch onChange={handleASCoverlayChange} />}
               label="Azure Security Center Overlay"
             />{" "}
             <TextField

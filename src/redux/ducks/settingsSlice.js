@@ -70,10 +70,6 @@ const initialState = {
         {
           type: "microsoft.resources/subscriptions",
           diagramprimitive: "box",
-          parent: {
-            type: "ManagementGroup",
-            query: "",
-          },
         },
         {
           type: "microsoft.resources/subscriptions/resourcegroups",
@@ -82,8 +78,8 @@ const initialState = {
         },
         {
           type: "default",
-          parenttype: "microsoft.resources/subscriptions/resourcegroups",
           diagramprimitive: "item",
+          parenttype: "microsoft.resources/subscriptions/resourcegroups",
         },
       ],
     },

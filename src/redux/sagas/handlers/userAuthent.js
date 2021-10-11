@@ -10,8 +10,6 @@ export function* handleUserAuthent(action) {
       ...action.payload,
     });
 
-    console.log(response);
-
     yield put(setResources(response));
   } catch (error) {
     console.log(error);
@@ -20,8 +18,4 @@ export function* handleUserAuthent(action) {
 
 export function requestGetResources(payload) {
   return azGetResourceContainersTree(payload.accessToken);
-  /*return axios.request({
-    method: "get",
-    url: "https://my-json-server.typicode.com/atothey/demo/user",
-  });*/
 }
