@@ -1,3 +1,12 @@
+const LABELMAXCHAR = 11;
+var makeLabel = function (node) {
+  return node.data("label")
+    ? node.data("label").length > LABELMAXCHAR + 3
+      ? node.data("label").substring(0, LABELMAXCHAR) + "..."
+      : node.data("label")
+    : node.data("id");
+};
+
 const nodeStyles = [
   {
     selector: "node",
@@ -6,12 +15,11 @@ const nodeStyles = [
       "background-height": "90%",
       //if label is empty we display ID, ID can't be empty
       label: (node) => {
-        return node.data("label") ? node.data("label") : node.data("id");
+        return makeLabel(node);
       },
       shape: "roundrectangle",
       width: "128",
       height: "128",
-      "border-width": "0",
       "font-family": '"Segoe UI", Arial, Helvetica, sans-serif',
       "font-size": "20",
       "text-valign": "bottom",
@@ -19,8 +27,12 @@ const nodeStyles = [
       "background-image": (node) => {
         return `url(${process.env.PUBLIC_URL + node.data("img")}')`;
       },
-      //'background-fit': 'contain',
-      //'background-color' : 'transparent'
+      "border-width": (node) => {
+        return node.data("RecommandationsASC") ? 4 : 0;
+      },
+      "border-color": (node) => {
+        return node.data("RecommandationsASC") ? "red" : "#DADADA";
+      },
     },
   },
   {
@@ -45,21 +57,14 @@ const edgeStyles = [
     selector: ":parent",
     style: {
       "background-image": "none",
-      //   'label': node => { return getLabel(node) },
       "border-width": "4",
-      // 'border-color': borderColor,
       "border-opacity": 0.3,
-      //  'background-color': borderColor,
       "background-opacity": 0.1,
       shape: "roundrectangle",
       "font-family": '"Segoe UI", Arial, Helvetica, sans-serif',
-      //"font-size": "15vh",
-      // 'color': textColor,
       "text-valign": "top",
       "text-margin-y": "10vh",
       "font-size": "20",
-      // 'text-outline-color': textColorOutline,
-      //"text-outline-width": "4",
     },
   },
 ];

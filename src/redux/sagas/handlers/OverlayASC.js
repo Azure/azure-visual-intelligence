@@ -1,12 +1,13 @@
-import { call, put, select, fork, all } from "redux-saga/effects";
+import { call, put, select } from "redux-saga/effects";
 import { azGetResourceGroupASCRecommandations } from "../../../api/azure/azasc";
 import { addResourceRecommandationASC } from "../../ducks/resourcesSlice";
+import { handleResourceRecommandationsChange } from "./updateDiagramResources";
 
 export const getDiagram = (state) => state.diagram.elements;
 export const getResources = (state) => state.resources;
 export const getAccessToken = (state) => state.user.accessToken;
 
-export function* handleHideOverlayASC(action) {
+export function* handleHideOverlayASC() {
   try {
     //Hide ASC Overlay
     //const response = yield call(getNodeInfo, action.payload);
@@ -16,7 +17,7 @@ export function* handleHideOverlayASC(action) {
   }
 }
 
-export function* handleDisplayOverlayASC(action) {
+export function* handleDisplayOverlayASC() {
   try {
     //Generate & display ASC Overlay
 
@@ -58,15 +59,12 @@ function* AddOverlayASC([accesToken, diagram, resources]) {
       ResourceGroupList.add(resource.TreeParentID);
     }
   }
-  console.log("ici1");
   //Now we get the ASC recommandations for each ResourceGroup
   for (var resourceGroup of ResourceGroupList) {
     var resourceGroupRecommandations = yield call(
       azGetResourceGroupASCRecommandations,
       [accesToken, resourceGroup]
     );
-    console.log("ici");
-    console.log(resourceGroupRecommandations);
 
     //for each reco
     for (var reco of resourceGroupRecommandations) {
@@ -88,4 +86,6 @@ function* AddOverlayASC([accesToken, diagram, resources]) {
       }
     }
   }
+
+  yield call(handleResourceRecommandationsChange);
 }

@@ -10,11 +10,9 @@ const resourcesSlice = createSlice({
       return [...state, ...resourcesData];
     },
     addResourceRecommandationASC(state, action) {
-      console.log(action);
       const index = action.payload.resourceIndex;
       return state.map((resource, i) => {
         if (i !== index) return resource;
-        console.log("here");
         return { ...resource, RecommandationsASC: action.payload.reco };
       });
     },

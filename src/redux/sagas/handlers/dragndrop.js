@@ -113,7 +113,6 @@ function AddResourceToDiagram(payload, diagram, azureSettings, currentLayout) {
               },
             },
           ];
-          console.log(newNodes);
           //we construct the nodes list from old nodes + new ones
           nodes = [...nodes, ...newNodes];
         });

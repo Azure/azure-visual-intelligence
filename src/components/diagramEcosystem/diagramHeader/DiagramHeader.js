@@ -23,12 +23,10 @@ const DiagramHeader = () => {
     (state) => state.settings.diagram.CurrentLayout
   );
 
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
   const MenuProps = {
     PaperProps: {
       style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        maxHeight: 500,
         width: 250,
       },
     },
@@ -100,6 +98,7 @@ const DiagramHeader = () => {
           >
             <Grid item>
               <Button onClick={handleClearDiagram}> Clear All</Button>
+              <Button> Recenter</Button>
               <Button> Redraw</Button>
             </Grid>
             <Grid item>
