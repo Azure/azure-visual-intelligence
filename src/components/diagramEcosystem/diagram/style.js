@@ -27,7 +27,6 @@ const nodeStyles = [
     selector: "node:selected",
     style: {
       "border-width": "4",
-      //"border-color": "borderColor", // invalid
     },
   },
 ];
@@ -38,9 +37,7 @@ const edgeStyles = [
       "target-arrow-shape": "triangle",
       "curve-style": "bezier",
       width: 6,
-      //"line-color": "lineColor", //invalid
       "arrow-scale": "1.5",
-      // "target-arrow-color": "lineColor", // invalid
       opacity: 0.3,
     },
   },
