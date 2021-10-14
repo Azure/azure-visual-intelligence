@@ -31,13 +31,18 @@ const Toolboxes = () => {
           <Typography variant="h5">Toolboxes</Typography>
         </Grid>
         <Grid item style={{ width: "100%" }}>
+          <Typography variant="h5" style={{ padding: "0 0 0 2px" }}>
+            Azure
+          </Typography>
+        </Grid>
+        <Grid item style={{ width: "100%" }}>
           <AzureExistingResourcesList />
         </Grid>
         <Grid item style={{ width: "100%" }}>
-          <CommonResourcesList />
+          <AzureResourcesList />
         </Grid>
         <Grid item style={{ width: "100%" }}>
-          <AzureResourcesList />
+          <CommonResourcesList />
         </Grid>
       </Grid>
     </Box>

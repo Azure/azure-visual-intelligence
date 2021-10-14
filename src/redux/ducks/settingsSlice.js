@@ -8,8 +8,8 @@ const initialState = {
     DragnDropSubGovernanceResources: false,
     AlwaysAskDragnDropSubARMResources: false,
     DragnDropSubARMResources: false,
-    DefaultLayout: "governance",
-    CurrentLayout: "governance",
+    DefaultLayout: "Governance",
+    CurrentLayout: "Governance",
   },
   resources: {
     azure: [
@@ -61,7 +61,7 @@ const initialState = {
   },
   layout: [
     {
-      name: "governance",
+      name: "Governance",
       hierarchy: [
         {
           type: "ManagementGroup",
@@ -84,7 +84,7 @@ const initialState = {
       ],
     },
     {
-      name: "network",
+      name: "Network",
       hierarchy: [
         {
           type: "microsoft.resources/subscriptions",
@@ -106,6 +106,13 @@ const initialState = {
         },
       ],
     },
+  ],
+  overlay: [
+    { name: "Security" },
+    { name: "Reliability" },
+    { name: "Cost" },
+    { name: "Performance" },
+    { name: "Latency" },
   ],
 };
 

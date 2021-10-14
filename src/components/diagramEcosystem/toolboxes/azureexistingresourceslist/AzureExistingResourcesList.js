@@ -37,11 +37,39 @@ const AzureExistingResourcesList = () => {
       },
     })(MuiTreeItem);
 
-    //recurise function to generate TreeItem tree with Drag embedded
+    //flattening the tree to pass all childs of the selected resource to the diagram
+    let flatten = (children, extractChildren, level, parent) =>
+      Array.prototype.concat.apply(
+        children.map((x) => ({
+          ...x.data,
+          level: level || 1,
+          parent: parent || null,
+        })),
+        children.map((x) =>
+          flatten(
+            extractChildren(x) || [],
+            extractChildren,
+            (level || 1) + 1,
+            x.id
+          )
+        )
+      );
+
+    let extractChildren = (x) => x.children;
+
+    //recursive function to generate TreeItem tree with Drag embedded
     function Box({ treeItem }) {
       const [{ isDragging }, drag, preview] = useDrag(() => ({
         type: "TREEVIEW",
-        item: treeItem.data,
+        item: !treeItem.children.length //if the resource has no child
+          ? treeItem.data // we provide only the resource data
+          : [
+              treeItem.data,
+              ...flatten(extractChildren(treeItem), extractChildren).map(
+                //other wise we provide resource + child resources
+                (x) => delete x.children && x
+              ),
+            ],
         collect: (monitor) => ({
           isDragging: monitor.isDragging(),
         }),
@@ -77,7 +105,9 @@ const AzureExistingResourcesList = () => {
         }}
       >
         <Grid item>
-          <Typography variant="h6">Azure existing resources</Typography>
+          <Typography variant="h6" style={{ padding: "0 0 0 10px" }}>
+            Existing resources
+          </Typography>
         </Grid>
         <Grid item>
           <TreeView

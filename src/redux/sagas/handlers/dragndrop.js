@@ -16,9 +16,7 @@ export function* handleDragnDrop(action) {
 
     const response = yield call(
       AddResourceToDiagram,
-      {
-        ...action.payload,
-      },
+      action.payload,
       currentDiagram,
       azureSettings,
       currentLayout
@@ -31,63 +29,95 @@ export function* handleDragnDrop(action) {
 }
 
 function AddResourceToDiagram(payload, diagram, azureSettings, currentLayout) {
-  //new parameters : diagram + resources to add + settings
-
-  //getDependenceFromArm(payload.TreeID);
-
-  //GET setting display for the resource
-  //GET ARM of resources to add
-  // look for dependencies
-  // are dependencies currently in the diagram ? create diagram edge
-
-  //node is unique = not duplicate in Cytoscape but it is in redux, need to fix that
+  // ! node is not duplicate in Cytoscape but it is in redux, need to fix that
 
   // Get the settings for the node to add. ( ! This suppose only one node is selected within the toolbox treeview)
   switch (currentLayout) {
-    case "governance":
-      //get the azure resource metadata
-      var nodeSettings = azureSettings.resources.azure.find(
-        (element) => element.type === payload.type
-      );
+    case "Governance":
+      var nodes = diagram.nodes;
+      var edges = diagram.edges;
+      if (!Array.isArray(payload)) {
+        //get the azure resource metadata
+        var nodeSettings = azureSettings.resources.azure.find(
+          (element) => element.type === payload.type
+        );
 
-      //get the layout resource metadata
-      var layoutSettings = azureSettings.layout
-        .find((element) => element.name === "governance")
-        .hierarchy.find((element) => element.type === payload.type);
+        //get the layout resource metadata
+        var layoutSettings = azureSettings.layout
+          .find((element) => element.name === "Governance")
+          .hierarchy.find((element) => element.type === payload.type);
 
-      //if we don't find the resource type we still want a default display
-      if (nodeSettings === undefined) {
-        nodeSettings = {
-          icon: "/assets/img/azure/original/default.svg",
-          diagramprimitive: "item",
-        };
-      }
+        //if we don't find the resource type we still want a default display
+        if (nodeSettings === undefined) {
+          nodeSettings = {
+            icon: "/assets/img/azure/original/default.svg",
+            diagramprimitive: "item",
+          };
+        }
 
-      if (layoutSettings === undefined) {
-        layoutSettings = azureSettings.layout
-          .find((element) => element.name === "governance")
-          .hierarchy.find((element) => element.type === "default");
-      }
+        if (layoutSettings === undefined) {
+          layoutSettings = azureSettings.layout
+            .find((element) => element.name === "Governance")
+            .hierarchy.find((element) => element.type === "default");
+        }
 
-      //if we find the resource type we provide the adequate layout
-      var newNodes = [
-        {
-          data: {
-            id: payload.TreeID,
-            label: payload.TreeName,
-            parentgovernance: payload.TreeParentID,
-            img: nodeSettings.icon,
-            diagramprimitive: layoutSettings.diagramprimitive,
+        //if we find the resource type we provide the adequate layout
+        var newNodes = [
+          {
+            data: {
+              id: payload.TreeID,
+              label: payload.TreeName,
+              parentgovernance: payload.TreeParentID,
+              img: nodeSettings.icon,
+              diagramprimitive: layoutSettings.diagramprimitive,
+            },
           },
-        },
-      ];
+        ];
 
-      //we construct the nodes list from old nodes + new ones
-      var nodes = [...diagram.nodes, ...newNodes];
+        //we construct the nodes list from old nodes + new ones
+        nodes = [...nodes, ...newNodes];
+      } else {
+        payload.forEach((nodeToAdd) => {
+          var nodeSettings = azureSettings.resources.azure.find(
+            (element) => element.type === nodeToAdd.type
+          );
 
-      //edges are still a copy of the old ones
-      var edges = [...diagram.edges];
+          //get the layout resource metadata
+          var layoutSettings = azureSettings.layout
+            .find((element) => element.name === "Governance")
+            .hierarchy.find((element) => element.type === nodeToAdd.type);
 
+          //if we don't find the resource type we still want a default display
+          if (nodeSettings === undefined) {
+            nodeSettings = {
+              icon: "/assets/img/azure/original/default.svg",
+              diagramprimitive: "item",
+            };
+          }
+
+          if (layoutSettings === undefined) {
+            layoutSettings = azureSettings.layout
+              .find((element) => element.name === "Governance")
+              .hierarchy.find((element) => element.type === "default");
+          }
+
+          //if we find the resource type we provide the adequate layout
+          var newNodes = [
+            {
+              data: {
+                id: nodeToAdd.TreeID,
+                label: nodeToAdd.TreeName,
+                parentgovernance: nodeToAdd.TreeParentID,
+                img: nodeSettings.icon,
+                diagramprimitive: layoutSettings.diagramprimitive,
+              },
+            },
+          ];
+          console.log(newNodes);
+          //we construct the nodes list from old nodes + new ones
+          nodes = [...nodes, ...newNodes];
+        });
+      }
       //we update parent relation ship to ALL nodes (relation of some old node may have change with this new node)
       nodes.forEach(function (node, index) {
         var ParentNode = nodes.find(
@@ -106,9 +136,10 @@ function AddResourceToDiagram(payload, diagram, azureSettings, currentLayout) {
       }, nodes);
       //we save the new elements list
       var returnElements = { nodes, edges };
+
       break;
 
-    case "network":
+    case "Network":
       break;
     default:
       break;
