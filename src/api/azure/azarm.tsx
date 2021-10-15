@@ -36,7 +36,25 @@ export async function azGetResourceContainersTree(accessToken: string) {
     ResourcesFlatList
   );
 
-  return tree;
+  //This is to fix resource group upper case ARM issue
+  let tree2 = ToLowerCase(tree);
+
+  return tree2;
+}
+
+function ToLowerCase(tree: any) {
+  let tree2: any = [];
+  tree.forEach((element: any) => {
+    console.log("element");
+    console.log(element);
+    element["TreeParentID"] = element["TreeParentID"]
+      ? element["TreeParentID"].toLowerCase()
+      : null;
+    element["TreeID"] = element["TreeID"].toLowerCase();
+    tree2.push(element);
+  });
+
+  return tree2;
 }
 
 function createResourcesFlatList(resources: any) {

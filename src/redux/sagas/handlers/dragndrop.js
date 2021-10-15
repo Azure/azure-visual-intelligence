@@ -39,13 +39,15 @@ function AddResourceToDiagram(payload, diagram, azureSettings, currentLayout) {
       if (!Array.isArray(payload)) {
         //get the azure resource metadata
         var nodeSettings = azureSettings.resources.azure.find(
-          (element) => element.type === payload.type
+          (element) => element.type === payload.type.toLowerCase()
         );
 
         //get the layout resource metadata
         var layoutSettings = azureSettings.layout
           .find((element) => element.name === "Governance")
-          .hierarchy.find((element) => element.type === payload.type);
+          .hierarchy.find(
+            (element) => element.type === payload.type.toLowerCase()
+          );
 
         //if we don't find the resource type we still want a default display
         if (nodeSettings === undefined) {

@@ -74,6 +74,7 @@ const AzureExistingResourcesList = () => {
           isDragging: monitor.isDragging(),
         }),
       }));
+
       return (
         <>
           <DragPreviewImage connect={preview} src={knightImage} />
@@ -93,7 +94,8 @@ const AzureExistingResourcesList = () => {
     const renderedListItems = tree.map((treeItem) => (
       <Box treeItem={treeItem} />
     ));
-
+    console.log("tree");
+    console.log(tree);
     return (
       <Grid
         container

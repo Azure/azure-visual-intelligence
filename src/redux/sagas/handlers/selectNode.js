@@ -13,6 +13,6 @@ export function* handleSelectNode(action) {
 
 export function getNodeInfo(payload) {
   return {
-    id: payload,
+    ...payload,
   };
 }

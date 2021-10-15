@@ -31,6 +31,13 @@ const Graph = () => {
 
   const elements = useSelector((state) => state.diagram.elements);
 
+  const DeployPortalLink =
+    "https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2FAzureStack-QuickStart-Templates%2Fmaster%2F101-vm-windows-create%2Fazuredeploy.json";
+
+  const DeployThroughPortal = (event) => {
+    window.open(DeployPortalLink, "_blank").focus();
+  };
+
   React.useEffect(() => {
     if (graph.current) {
       if (layout.current) {
@@ -156,9 +163,9 @@ const Graph = () => {
         graph.current.on("click", "node", function (evt) {
           dispatch({
             type: "SELECT_NODE",
-            payload: this.id(),
+            payload: this.data(),
           });
-          console.log("clicked " + this.id());
+          console.log("clicked " + this.data());
         });
       }
     } catch (error) {
@@ -180,11 +187,16 @@ const Graph = () => {
         className="graph"
         ref={container}
       />
+      <div style={{ position: "absolute", top: "1200px", left: "2000px" }}>
+        <Button variant="contained" onClick={DeployThroughPortal}>
+          Deploy
+        </Button>
+      </div>
     </div>
   );
 };
 
 export default Graph;
 /*      <div style={{ position: "absolute", top: "1200px", left: "2000px" }}>
-        <Button variant="contained">Deploy</Button>
+        <Button variant="contained" onClick={DeployThroughPortal}>Deploy</Button>
       </div>*/

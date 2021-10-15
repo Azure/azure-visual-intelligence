@@ -21,7 +21,7 @@ const defaultConfig: Config = {
   parentId: "parentId",
   dataField: "data",
   childrenField: "children",
-  throwIfOrphans: false,
+  throwIfOrphans: true,
   rootParentIds: { "": true },
   nestedIds: true,
 };
@@ -33,6 +33,8 @@ export function arrayToTree(
   items: Item[],
   config: Partial<Config> = {}
 ): TreeItem[] {
+  console.log("intree");
+  console.log(items);
   const conf: Config = { ...defaultConfig, ...config };
 
   // the resulting unflattened tree
