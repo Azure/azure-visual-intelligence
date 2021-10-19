@@ -5,7 +5,7 @@ import { Button, IconButton, Typography, Divider, Grid } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import SettingsIcon from "@mui/icons-material/Settings";
 
-const MenuBar = () => {
+const MenuBar = (props: any) => {
   return (
     <Grid
       container
@@ -22,7 +22,7 @@ const MenuBar = () => {
           <Grid item>
             <Grid container alignItems="center">
               <Grid item>
-                <IconButton onClick={() => console.log("Crop")}>
+                <IconButton onClick={() => props.toggleSideBarRef()}>
                   <MenuIcon />
                 </IconButton>
               </Grid>
@@ -54,8 +54,6 @@ const MenuBar = () => {
 
       <Grid item>
         <Button
-          //variant="contained"
-          //color="primary"
           startIcon={<SettingsIcon />}
           onClick={() => console.log("settings")}
         >

@@ -25,8 +25,6 @@ const AuthenticationMenu = () => {
         </Grid>
         <Grid item>
           <Button
-            //variant="contained"
-            //color="primary"
             startIcon={<ExitToAppIcon />}
             onClick={() =>
               instance.logoutPopup({
@@ -58,8 +56,6 @@ const AuthenticationMenu = () => {
 
         <Grid item>
           <Button
-            //variant="contained"
-            //color="primary"
             startIcon={<PersonIcon />}
             onClick={() => instance.loginPopup(loginRequest)}
           >
