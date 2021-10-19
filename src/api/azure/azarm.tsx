@@ -45,8 +45,6 @@ export async function azGetResourceContainersTree(accessToken: string) {
 function ToLowerCase(tree: any) {
   let tree2: any = [];
   tree.forEach((element: any) => {
-    console.log("element");
-    console.log(element);
     element["TreeParentID"] = element["TreeParentID"]
       ? element["TreeParentID"].toLowerCase()
       : null;

@@ -13,11 +13,6 @@ import {
 //Icons
 import AddIcon from "@mui/icons-material/Add";
 import PublishIcon from "@mui/icons-material/Publish";
-import FileCopyIcon from "@mui/icons-material/FileCopy";
-import EditIcon from "@mui/icons-material/Edit";
-import GetAppIcon from "@mui/icons-material/GetApp";
-import LockIcon from "@mui/icons-material/Lock";
-import LockOpenIcon from "@mui/icons-material/LockOpen";
 
 const DiagramMenu = () => {
   const dispatch = useDispatch();

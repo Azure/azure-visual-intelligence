@@ -77,25 +77,33 @@ const AzureExistingResourcesList = () => {
 
       return (
         <>
-          <DragPreviewImage connect={preview} src={knightImage} />
+          <DragPreviewImage
+            connect={preview}
+            src={knightImage}
+            key={"image".concat("", treeItem.data.TreeID)}
+          />
           <TreeItem
+            key={treeItem.data.TreeID}
             nodeId={treeItem.data.TreeID}
             label={treeItem.data.TreeName}
             ref={drag}
             style={{ isDragging }}
           >
             {treeItem.children &&
-              treeItem.children.map((treeItem) => <Box treeItem={treeItem} />)}
+              treeItem.children.map((treeItem) => (
+                <Box
+                  treeItem={treeItem}
+                  key={"box".concat("", treeItem.data.TreeID)}
+                />
+              ))}
           </TreeItem>
         </>
       );
     }
 
     const renderedListItems = tree.map((treeItem) => (
-      <Box treeItem={treeItem} />
+      <Box treeItem={treeItem} key={"box".concat("", treeItem.data.TreeID)} />
     ));
-    console.log("tree");
-    console.log(tree);
     return (
       <Grid
         container

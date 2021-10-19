@@ -1,10 +1,8 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, IconButton, Typography, Grid, Box } from "@mui/material";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-import Switch from "@mui/material/Switch";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
@@ -58,18 +56,6 @@ const DiagramHeader = () => {
     dispatch({
       type: "CLEAR_DIAGRAM",
     });
-  };
-
-  const handleASCoverlayChange = (event, control) => {
-    if (control === false) {
-      dispatch({
-        type: "HIDE_OVERLAY_ASC",
-      });
-    } else {
-      dispatch({
-        type: "DISPLAY_OVERLAY_ASC",
-      });
-    }
   };
 
   return (
@@ -148,8 +134,3 @@ const DiagramHeader = () => {
   );
 };
 export default DiagramHeader;
-/*
-            <FormControlLabel
-              control={<Switch onChange={handleASCoverlayChange} />}
-              label="Azure Security Center Overlay"
-            />*/

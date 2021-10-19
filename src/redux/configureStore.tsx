@@ -51,6 +51,18 @@ const store = configureStore({
       thunk: false,
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER], //https://redux-toolkit.js.org/usage/usage-guide#use-with-redux-persist
+        ignoredActionPaths: [
+          "payload.expiresOn",
+          "payload.extExpiresOn",
+          "user.expiresOn",
+          "user.extExpiresOn",
+        ],
+        ignoredPaths: [
+          "payload.expiresOn",
+          "payload.extExpiresOn",
+          "user.expiresOn",
+          "user.extExpiresOn",
+        ],
       },
     }).concat(sagaMiddleware),
 });

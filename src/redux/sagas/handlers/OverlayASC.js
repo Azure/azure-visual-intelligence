@@ -29,11 +29,7 @@ export function* handleDisplayOverlayASC() {
     //Get resources group list for all resources
     //Get ASC recommandations
     //& Map them to resources
-    const updatedResources = yield call(AddOverlayASC, [
-      accesToken,
-      currentDiagram,
-      currentResources,
-    ]);
+    yield call(AddOverlayASC, [accesToken, currentDiagram, currentResources]);
     //Get ASC recommandations
     //map them to resources
     //Update avi graph state with recommendation from resources states
