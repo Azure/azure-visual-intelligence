@@ -24,12 +24,7 @@ const App = () => {
       <Grid
         item
         style={{
-          ...(open && {
-            width: `${sideBarMax}px`,
-          }),
-          ...(!open && {
-            width: `${sideBarMin}px`,
-          }),
+          width: open ? `${sideBarMax}px` : `${sideBarMin}px`,
         }}
       >
         <MenuBar toggleSideBarRef={toggleSideBar} sideBarMinimized={open} />
@@ -38,12 +33,9 @@ const App = () => {
         item
         style={{
           height: "100vh",
-          ...(open && {
-            width: `calc(100% - ${sideBarMax}px)`,
-          }),
-          ...(!open && {
-            width: `calc(100% - ${sideBarMin}px)`,
-          }),
+          width: open
+            ? `calc(100% - ${sideBarMax}px)`
+            : `calc(100% - ${sideBarMin}px)`,
         }}
       >
         <DiagramEcosystem />
@@ -53,3 +45,9 @@ const App = () => {
 };
 
 export default App;
+/*          ...(open && {
+            width: `calc(100% - ${sideBarMax}px)`,
+          }),
+          ...(!open && {
+            width: `calc(100% - ${sideBarMin}px)`,
+          }),*/

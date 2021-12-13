@@ -27,7 +27,17 @@ const MenuBar = (props: any) => {
                 </IconButton>
               </Grid>
               <Grid item>
-                <Typography variant="body1">
+                <Typography
+                  variant="body1"
+                  style={{
+                    ...(!props.sideBarMinimized && {
+                      display: "none",
+                    }),
+                    ...(props.sideBarMinimized && {
+                      display: "block",
+                    }),
+                  }}
+                >
                   Azure Visual Intelligence
                 </Typography>
               </Grid>
@@ -46,7 +56,17 @@ const MenuBar = (props: any) => {
             <Divider />
           </Grid>
 
-          <Grid item>
+          <Grid
+            item
+            style={{
+              ...(!props.sideBarMinimized && {
+                display: "none",
+              }),
+              ...(props.sideBarMinimized && {
+                display: "block",
+              }),
+            }}
+          >
             <DiagramMenu />
           </Grid>
         </Grid>
