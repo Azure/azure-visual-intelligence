@@ -1,6 +1,6 @@
 import { call, put, select } from "redux-saga/effects";
 import { azGetResourceGroupASCRecommandations } from "../../../api/azure/azasc";
-import { addResourceRecommandationASC } from "../../ducks/resourcesSlice";
+//import { addResourceRecommandationASC } from "../../ducks/resourcesSlice";
 import { handleResourceRecommandationsChange } from "./updateDiagramResources";
 
 export const getDiagram = (state) => state.diagram.elements;
@@ -76,7 +76,7 @@ function* AddOverlayASC([accesToken, diagram, resources]) {
           //if we found an index that we have in resources
           if (resourceIndex !== -1) {
             //we edit the resources list
-            yield put(addResourceRecommandationASC({ reco, resourceIndex }));
+            //yield put(addResourceRecommandationASC({ reco, resourceIndex }));
           }
         }
       }

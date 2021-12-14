@@ -1,15 +1,11 @@
 import { put } from "redux-saga/effects";
-import { setDiagramElements } from "../../ducks/diagramSlice";
+import { setDiagramResources } from "../../ducks/diagramSlice";
 
-export function* handleClearDiagram(action) {
+export function* handleClearDiagramResources(action) {
   try {
-    var nodes = [];
+    var resources = [];
 
-    var edges = [];
-
-    var returnElements = { nodes, edges };
-
-    yield put(setDiagramElements(returnElements));
+    yield put(setDiagramResources(resources));
   } catch (error) {
     console.log(error);
   }

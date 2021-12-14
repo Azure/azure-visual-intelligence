@@ -29,7 +29,9 @@ const Graph = () => {
     }),
   }));
 
-  const elements = useSelector((state) => state.diagram.elements);
+  const elements = useSelector(
+    (state) => state.diagram.display.governance.elements
+  );
 
   const DeployPortalLink =
     "https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2FAzureStack-QuickStart-Templates%2Fmaster%2F101-vm-windows-create%2Fazuredeploy.json";

@@ -18,7 +18,7 @@ import { knightImage } from "./knightImage";
 
 const AzureExistingResourcesList = () => {
   //Getting Azure resources state from Redux
-  const resources = useSelector((state) => state.resources);
+  const resources = useSelector((state) => state.AvailableResources);
   if (resources !== undefined) {
     //Converting Azure Resources list to a tree
     const tree = arrayToTree(resources, {

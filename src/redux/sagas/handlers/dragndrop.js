@@ -1,35 +1,48 @@
 import { call, put, select } from "redux-saga/effects";
-import { setDiagramElements } from "../../ducks/diagramSlice";
+import { setDiagramResources } from "../../ducks/diagramSlice";
 //import { useSelector } from "react-redux";
 
-export const getDiagram = (state) => state.diagram.elements;
-export const getAzureSettings = (state) => state.settings;
-export const getCurrentLayout = (state) => state.settings.diagram.CurrentLayout;
+export const getDiagramResources = (state) => state.diagram.resources;
 
 export function* handleDragnDrop(action) {
   try {
-    // query the state using the exported selector
-
-    const currentDiagram = yield select(getDiagram);
-    const azureSettings = yield select(getAzureSettings);
-    const currentLayout = yield select(getCurrentLayout);
+    const currentDiagramResources = yield select(getDiagramResources);
 
     const response = yield call(
       AddResourceToDiagram,
       action.payload,
-      currentDiagram,
-      azureSettings,
-      currentLayout
+      currentDiagramResources
     );
 
-    yield put(setDiagramElements(response));
+    yield put(setDiagramResources(response));
   } catch (error) {
     console.log(error);
   }
 }
 
-function AddResourceToDiagram(payload, diagram, azureSettings, currentLayout) {
-  // ! node is not duplicate in Cytoscape but it is in redux, need to fix that
+function AddResourceToDiagram(payload, diagramResources) {
+  if (!Array.isArray(payload)) {
+    //if payload is a unique item we want to make it a list.
+    console.log("here");
+    payload = [payload];
+  }
+  var returnElements;
+  if (diagramResources.length === 0) {
+    //if diagramResources is currently empty, payload becomes the diagram resources
+    returnElements = payload;
+  } else {
+    //if we have existing items we want to add only new ones
+    returnElements = [...diagramResources];
+    for (const resource of payload) {
+      if (!returnElements.find((element) => element.id === resource.id)) {
+        returnElements.push(resource);
+      }
+    }
+  }
+  return [...returnElements];
+}
+
+/*  // ! node is not duplicate in Cytoscape but it is in redux, need to fix that
 
   // Get the settings for the node to add. ( ! This suppose only one node is selected within the toolbox treeview)
   switch (currentLayout) {
@@ -144,6 +157,4 @@ function AddResourceToDiagram(payload, diagram, azureSettings, currentLayout) {
       break;
     default:
       break;
-  }
-  return returnElements;
-}
+      */

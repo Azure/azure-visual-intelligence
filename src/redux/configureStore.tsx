@@ -41,7 +41,7 @@ const persistedResourcesReducer = persistReducer(
 const store = configureStore({
   reducer: {
     user: userReducer,
-    resources: resourcesReducer,
+    AvailableResources: resourcesReducer,
     diagram: diagramReducer,
     detail: detailReducer,
     settings: settingsReducer,

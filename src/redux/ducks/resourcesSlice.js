@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const resourcesSlice = createSlice({
-  name: "resources",
+  name: "AvailableResources",
   initialState: [],
   reducers: {
     getResources() {},
@@ -9,17 +9,17 @@ const resourcesSlice = createSlice({
       const resourcesData = action.payload;
       return [...state, ...resourcesData];
     },
-    addResourceRecommandationASC(state, action) {
+    /*addResourceRecommandationASC(state, action) {
       const index = action.payload.resourceIndex;
       return state.map((resource, i) => {
         if (i !== index) return resource;
         return { ...resource, RecommandationsASC: action.payload.reco };
       });
-    },
+    },*/
   },
 });
 
-export const { getResources, setResources, addResourceRecommandationASC } =
-  resourcesSlice.actions;
+export const { getResources, setResources } = resourcesSlice.actions;
+//addResourceRecommandationASC
 
 export default resourcesSlice.reducer;
