@@ -187,11 +187,6 @@ const Graph = () => {
         className="graph"
         ref={container}
       />
-      <div style={{ position: "absolute", top: "1200px", left: "2000px" }}>
-        <Button variant="contained" onClick={DeployThroughPortal}>
-          Deploy
-        </Button>
-      </div>
     </div>
   );
 };
