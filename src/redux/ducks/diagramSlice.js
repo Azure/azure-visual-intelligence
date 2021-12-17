@@ -35,13 +35,31 @@ const diagramSlice = createSlice({
     setDiagramElements(state, action) {
       return { ...state, elements: { ...action.payload } };
     },
+    setDiagramGovernanceNodes(state, action) {
+      console.log(action.payload);
+      return {
+        ...state,
+        display: {
+          ...state.display,
+          ["governance"]: {
+            ...state.display["governance"],
+            ["elements"]: {
+              ...state.display["governance"]["elements)"],
+              nodes: action.payload,
+            },
+          },
+        },
+      };
+    },
   },
 });
+
 export const {
   getDiagram,
   setDiagram,
   setDiagramElements,
   setDiagramResources,
+  setDiagramGovernanceNodes,
 } = diagramSlice.actions;
 
 export default diagramSlice.reducer;
