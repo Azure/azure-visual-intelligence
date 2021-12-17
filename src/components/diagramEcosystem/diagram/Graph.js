@@ -29,9 +29,11 @@ const Graph = () => {
     }),
   }));
 
-  const elements = useSelector(
-    (state) => state.diagram.display.governance.elements
+  const currentLayout = useSelector(
+    (state) => state.settings.diagram.CurrentLayout
   );
+  const diagramDisplay = useSelector((state) => state.diagram.display);
+  //const diagramDisplay = useSelector((state) => state.diagram.display);
 
   const DeployPortalLink =
     "https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2FAzureStack-QuickStart-Templates%2Fmaster%2F101-vm-windows-create%2Fazuredeploy.json";
@@ -46,7 +48,8 @@ const Graph = () => {
         layout.current.stop();
       }
       graph.current.elements().remove();
-      graph.current.add(elements);
+
+      graph.current.add(diagramDisplay[currentLayout].elements);
 
       layout.current = graph.current.makeLayout({
         //avoidOverlap: true,
@@ -145,7 +148,7 @@ const Graph = () => {
       graph.current.on("pan zoom resize", update);*/
       layout.current.run();
     }
-  }, [elements]);
+  }, [diagramDisplay, currentLayout]);
 
   React.useEffect(() => {
     if (!container.current) {
@@ -156,7 +159,7 @@ const Graph = () => {
         cytoscape.use(fcose);
         cytoscape.use(popper);
         graph.current = cytoscape({
-          elements,
+          ...diagramDisplay[currentLayout].elements,
           style,
           minZoom: 0.2,
           maxZoom: 4,

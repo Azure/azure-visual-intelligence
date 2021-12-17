@@ -6,13 +6,13 @@ const initialState = {
   resourcesrelations: [],
   recommendations: [],
   display: {
-    governance: {
+    Governance: {
       elements: {
         nodes: [],
         edges: [],
       },
     },
-    network: {
+    Network: {
       elements: {
         nodes: [],
         edges: [],
@@ -41,10 +41,10 @@ const diagramSlice = createSlice({
         ...state,
         display: {
           ...state.display,
-          ["governance"]: {
-            ...state.display["governance"],
+          ["Governance"]: {
+            ...state.display["Governance"],
             ["elements"]: {
-              ...state.display["governance"]["elements)"],
+              ...state.display["Governance"]["elements)"],
               nodes: action.payload,
             },
           },

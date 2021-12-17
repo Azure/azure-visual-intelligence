@@ -20,7 +20,7 @@ function LoadDiagram(payload) {
     diagram = {
       name: "Empty Diagram",
       display: {
-        governance: {
+        Governance: {
           elements: {
             nodes: [
               { data: { id: "vnetA", label: "vnetA" } },
@@ -44,7 +44,7 @@ function LoadDiagram(payload) {
     diagram = {
       name: "Demo Diagram",
       display: {
-        governance: {
+        Governance: {
           elements: {
             nodes: [
               { data: { id: "vnetA", label: "vnetA" } },

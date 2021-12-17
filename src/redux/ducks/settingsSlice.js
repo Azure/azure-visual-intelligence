@@ -761,9 +761,19 @@ const settingsSlice = createSlice({
       const settingsData = action.payload;
       return [...state, ...settingsData];
     },
+    setCurrentLayout(state, action) {
+      return {
+        ...state,
+        diagram: {
+          ...state.diagram,
+          CurrentLayout: action.payload,
+        },
+      };
+    },
   },
 });
 
-export const { getSettings, setSettings } = settingsSlice.actions;
+export const { getSettings, setSettings, setCurrentLayout } =
+  settingsSlice.actions;
 
 export default settingsSlice.reducer;
