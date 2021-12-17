@@ -12,6 +12,12 @@ const initialState = {
         edges: [],
       },
     },
+    ARM: {
+      elements: {
+        nodes: [],
+        edges: [],
+      },
+    },
     Network: {
       elements: {
         nodes: [],
@@ -35,8 +41,22 @@ const diagramSlice = createSlice({
     setDiagramElements(state, action) {
       return { ...state, elements: { ...action.payload } };
     },
+    setDiagramNodes(state, action) {
+      return {
+        ...state,
+        display: {
+          ...state.display,
+          [action.payload.Evaluatedlayout]: {
+            ...state.display[action.payload.Evaluatedlayout],
+            ["elements"]: {
+              ...state.display[action.payload.Evaluatedlayout]["elements)"],
+              nodes: action.payload.returnNodes,
+            },
+          },
+        },
+      };
+    },
     setDiagramGovernanceNodes(state, action) {
-      console.log(action.payload);
       return {
         ...state,
         display: {
@@ -59,6 +79,7 @@ export const {
   setDiagram,
   setDiagramElements,
   setDiagramResources,
+  setDiagramNodes,
   setDiagramGovernanceNodes,
 } = diagramSlice.actions;
 

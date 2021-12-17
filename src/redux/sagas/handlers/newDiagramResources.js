@@ -1,5 +1,5 @@
-import { call, put, select } from "redux-saga/effects";
-import { setDiagramGovernanceNodes } from "../../ducks/diagramSlice";
+import { call, put, select, all } from "redux-saga/effects";
+import { setDiagramNodes } from "../../ducks/diagramSlice";
 //import { useSelector } from "react-redux";
 
 export const getDiagramResources = (state) => state.diagram.resources;
@@ -10,16 +10,24 @@ export function* handleNewDiagramResources(action) {
   try {
     const currentDiagramResources = yield select(getDiagramResources);
     const azureSettings = yield select(getAzureSettings);
-    const currentLayout = yield select(getCurrentLayout);
 
-    const response = yield call(
-      AddDiagramResourceToDisplay,
-      currentDiagramResources,
-      azureSettings,
-      currentLayout
+    //Call
+    const responses = yield all(
+      azureSettings.layout.map((layout) =>
+        call(
+          AddDiagramResourceToDisplay,
+          currentDiagramResources,
+          azureSettings,
+          layout.name
+        )
+      )
     );
 
-    yield put(setDiagramGovernanceNodes(response));
+    yield all(
+      responses.map((response) => {
+        return put(setDiagramNodes(response));
+      })
+    );
   } catch (error) {
     console.log(error);
   }
@@ -28,12 +36,11 @@ export function* handleNewDiagramResources(action) {
 function AddDiagramResourceToDisplay(
   diagramResources,
   azureSettings,
-  currentLayout
+  Evaluatedlayout
 ) {
-  //Let's edit only the governance one first.
   //Resources can only be nodes - not edge.
   //For now we create a fresh new list each time we receive new item(s)
-  //GOVERNANCE
+  //This code is executed for all layout
   var returnNodes = [];
   for (const resource of diagramResources) {
     //get the azure resource metadata
@@ -42,10 +49,8 @@ function AddDiagramResourceToDisplay(
     );
     //get the layout resource metadata
     var layoutSettings = azureSettings.layout
-      .find((element) => element.name === "Governance")
-      .hierarchy.find(
-        (element) => element.type === resource.type.toLowerCase()
-      );
+      .find((layout) => layout.name === Evaluatedlayout)
+      .items.find((item) => item.type === resource.type.toLowerCase());
 
     //if we don't find the resource type we still want a default display
     if (nodeSettings === undefined) {
@@ -56,8 +61,8 @@ function AddDiagramResourceToDisplay(
     }
     if (layoutSettings === undefined) {
       layoutSettings = azureSettings.layout
-        .find((element) => element.name === "Governance")
-        .hierarchy.find((element) => element.type === "default");
+        .find((layout) => layout.name === Evaluatedlayout)
+        .items.find((item) => item.type === "default");
     }
 
     //we build the adequate layout info for the node
@@ -72,23 +77,23 @@ function AddDiagramResourceToDisplay(
     };
     returnNodes.push(newNode);
   }
-
-  //we update parent relation ship to ALL nodes (relation of some old node may have change with this new node)
-  returnNodes.forEach(function (node, index) {
-    var ParentNode = returnNodes.find(
-      (element) => element.data.id === this[index].data.parentgovernance
-    );
-    //if undefined then node has no current parent displayed in the diagram.
-    //if not undefined then we need to update the parent field within the studied node
-    if (ParentNode !== undefined) {
-      this[index] = {
-        data: {
-          ...this[index].data,
-          parent: this[index].data.parentgovernance,
-        },
-      };
-    }
-  }, returnNodes);
-  console.log(returnNodes);
-  return [...returnNodes];
+  if (Evaluatedlayout === "Governance") {
+    //we update parent relation ship to ALL nodes (relation of some old node may have change with this new node)
+    returnNodes.forEach(function (node, index) {
+      var ParentNode = returnNodes.find(
+        (element) => element.data.id === this[index].data.parentgovernance
+      );
+      //if undefined then node has no current parent displayed in the diagram.
+      //if not undefined then we need to update the parent field within the studied node
+      if (ParentNode !== undefined) {
+        this[index] = {
+          data: {
+            ...this[index].data,
+            parent: this[index].data.parentgovernance,
+          },
+        };
+      }
+    }, returnNodes);
+  }
+  return { Evaluatedlayout, returnNodes };
 }

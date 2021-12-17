@@ -697,8 +697,21 @@ const initialState = {
   },
   layout: [
     {
+      name: "ARM",
+      items: [
+        {
+          type: "ManagementGroup",
+          diagramprimitive: "box",
+        },
+        {
+          type: "default",
+          diagramprimitive: "item",
+        },
+      ],
+    },
+    {
       name: "Governance",
-      hierarchy: [
+      items: [
         {
           type: "ManagementGroup",
           diagramprimitive: "box",
@@ -710,18 +723,16 @@ const initialState = {
         {
           type: "microsoft.resources/subscriptions/resourcegroups",
           diagramprimitive: "box",
-          parent_type: "microsoft.resources/subscriptions",
         },
         {
           type: "default",
           diagramprimitive: "item",
-          parenttype: "microsoft.resources/subscriptions/resourcegroups",
         },
       ],
     },
     {
       name: "Network",
-      hierarchy: [
+      items: [
         {
           type: "microsoft.resources/subscriptions",
           diagramprimitive: "box",
@@ -734,10 +745,9 @@ const initialState = {
         {
           type: "microsoft.resources/subscriptions/resourcegroups",
           diagramprimitive: "subitem",
-          parent_type: "microsoft.resources/subscriptions",
         },
         {
-          type: "defaut",
+          type: "default",
           diagramprimitive: "item",
         },
       ],
