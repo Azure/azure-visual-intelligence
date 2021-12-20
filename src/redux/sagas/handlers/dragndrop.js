@@ -1,5 +1,8 @@
 import { call, put, select } from "redux-saga/effects";
 import { setDiagramResources } from "../../ducks/diagramSlice";
+import { azGetARMResourceGroup } from "../../../api/azure/azarm";
+
+export const getAccessToken = (state) => state.user.accessToken;
 //import { useSelector } from "react-redux";
 
 export const getDiagramResources = (state) => state.diagram.resources;
@@ -7,9 +10,11 @@ export const getDiagramResources = (state) => state.diagram.resources;
 export function* handleDragnDrop(action) {
   try {
     const currentDiagramResources = yield select(getDiagramResources);
+    const accessToken = yield select(getAccessToken);
 
     const response = yield call(
       AddResourceToDiagram,
+      accessToken,
       action.payload,
       currentDiagramResources
     );
@@ -20,20 +25,25 @@ export function* handleDragnDrop(action) {
   }
 }
 
-function AddResourceToDiagram(payload, diagramResources) {
+function* AddResourceToDiagram(accessToken, payload, diagramResources) {
   if (!Array.isArray(payload)) {
     //if payload is a unique item we want to make it a list.
-    console.log("here");
     payload = [payload];
   }
   var returnElements;
+  var resources = yield call(enrichResourcesARM, [accessToken, payload]);
   if (diagramResources.length === 0) {
     //if diagramResources is currently empty, payload becomes the diagram resources
-    returnElements = payload;
+    returnElements = resources;
   } else {
     //if we have existing items we want to add only new ones
-    returnElements = [...diagramResources];
-    for (const resource of payload) {
+    returnElements = [...resources];
+
+    //for each new element we want to do enrichment of the properties
+    //But if we do this in the loop it will be resource per resource, what we want is a bulk ARM query per RG, so we move that
+
+    console.log("there");
+    for (const resource of resources) {
       if (!returnElements.find((element) => element.id === resource.id)) {
         returnElements.push(resource);
       }
@@ -42,119 +52,44 @@ function AddResourceToDiagram(payload, diagramResources) {
   return [...returnElements];
 }
 
-/*  // ! node is not duplicate in Cytoscape but it is in redux, need to fix that
+function* enrichResourcesARM([accessToken, resources]) {
+  var ResourceGroupList = new Set();
+  for (var resource of resources) {
+    // We want to pick only resources
+    // ! Should pick only Existing Microsoft resources -> not done yet
+    if (
+      resource.type !== "microsoft.resources/subscriptions" &&
+      resource.type !== "ManagementGroup" &&
+      resource.type !== "microsoft.resources/subscriptions/resourcegroups"
+    ) {
+      //We add their resource group to the list
+      ResourceGroupList.add(resource.TreeParentID);
+    }
+  }
+  for (var resourceGroup of ResourceGroupList) {
+    var resourceGroupARM = yield call(azGetARMResourceGroup, [
+      accessToken,
+      resourceGroup,
+    ]);
 
-  // Get the settings for the node to add. ( ! This suppose only one node is selected within the toolbox treeview)
-  switch (currentLayout) {
-    case "Governance":
-      var nodes = diagram.nodes;
-      var edges = diagram.edges;
-      if (!Array.isArray(payload)) {
-        //get the azure resource metadata
-        var nodeSettings = azureSettings.resources.azure.find(
-          (element) => element.type === payload.type.toLowerCase()
-        );
-
-        //get the layout resource metadata
-        var layoutSettings = azureSettings.layout
-          .find((element) => element.name === "Governance")
-          .hierarchy.find(
-            (element) => element.type === payload.type.toLowerCase()
+    //for each reco
+    /*for (var reco of resourceGroupARM) {
+      // we may have multiple resourceidentifies for one reco, so for each resourceidentifiers
+      for (var id of reco.properties.resourceIdentifiers) {
+        //if the resourceidentifer is about an Azure resource
+        if (id.azureResourceId !== "undefined") {
+          //we want to get the index of the Resource related to it
+          var resourceIndex = resources.findIndex(
+            (r) => r.TreeID === id.azureResourceId
           );
-
-        //if we don't find the resource type we still want a default display
-        if (nodeSettings === undefined) {
-          nodeSettings = {
-            icon: "/assets/img/azure/original/default.svg",
-            diagramprimitive: "item",
-          };
-        }
-
-        if (layoutSettings === undefined) {
-          layoutSettings = azureSettings.layout
-            .find((element) => element.name === "Governance")
-            .hierarchy.find((element) => element.type === "default");
-        }
-
-        //if we find the resource type we provide the adequate layout
-        var newNodes = [
-          {
-            data: {
-              id: payload.TreeID,
-              label: payload.TreeName,
-              parentgovernance: payload.TreeParentID,
-              img: nodeSettings.icon,
-              diagramprimitive: layoutSettings.diagramprimitive,
-            },
-          },
-        ];
-
-        //we construct the nodes list from old nodes + new ones
-        nodes = [...nodes, ...newNodes];
-      } else {
-        payload.forEach((nodeToAdd) => {
-          var nodeSettings = azureSettings.resources.azure.find(
-            (element) => element.type === nodeToAdd.type
-          );
-
-          //get the layout resource metadata
-          var layoutSettings = azureSettings.layout
-            .find((element) => element.name === "Governance")
-            .hierarchy.find((element) => element.type === nodeToAdd.type);
-
-          //if we don't find the resource type we still want a default display
-          if (nodeSettings === undefined) {
-            nodeSettings = {
-              icon: "/assets/img/azure/original/default.svg",
-              diagramprimitive: "item",
-            };
+          console.log(resourceIndex);
+          //if we found an index that we have in resources
+          if (resourceIndex !== -1) {
+            //we edit the resources list
+            //yield put(addResourceRecommandationASC({ reco, resourceIndex }));
           }
-
-          if (layoutSettings === undefined) {
-            layoutSettings = azureSettings.layout
-              .find((element) => element.name === "Governance")
-              .hierarchy.find((element) => element.type === "default");
-          }
-
-          //if we find the resource type we provide the adequate layout
-          var newNodes = [
-            {
-              data: {
-                id: nodeToAdd.TreeID,
-                label: nodeToAdd.TreeName,
-                parentgovernance: nodeToAdd.TreeParentID,
-                img: nodeSettings.icon,
-                diagramprimitive: layoutSettings.diagramprimitive,
-              },
-            },
-          ];
-          //we construct the nodes list from old nodes + new ones
-          nodes = [...nodes, ...newNodes];
-        });
+        }
       }
-      //we update parent relation ship to ALL nodes (relation of some old node may have change with this new node)
-      nodes.forEach(function (node, index) {
-        var ParentNode = nodes.find(
-          (element) => element.data.id === this[index].data.parentgovernance
-        );
-        //if undefined then node has no current parent displayed in the diagram.
-        //if not undefined then we need to update the parent field within the studied node
-        if (ParentNode !== undefined) {
-          this[index] = {
-            data: {
-              ...this[index].data,
-              parent: this[index].data.parentgovernance,
-            },
-          };
-        }
-      }, nodes);
-      //we save the new elements list
-      var returnElements = { nodes, edges };
-
-      break;
-
-    case "Network":
-      break;
-    default:
-      break;
-      */
+    }*/
+  }
+}

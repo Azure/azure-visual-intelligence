@@ -70,7 +70,6 @@ function AddDiagramResourceToDisplay(
       data: {
         id: resource.TreeID,
         label: resource.TreeName,
-        parentgovernance: resource.TreeParentID,
         img: nodeSettings.icon,
         diagramprimitive: layoutSettings.diagramprimitive,
       },
@@ -81,7 +80,7 @@ function AddDiagramResourceToDisplay(
     //we update parent relation ship to ALL nodes (relation of some old node may have change with this new node)
     returnNodes.forEach(function (node, index) {
       var ParentNode = returnNodes.find(
-        (element) => element.data.id === this[index].data.parentgovernance
+        (element) => element.data.id === this[index].data.TreeParentID
       );
       //if undefined then node has no current parent displayed in the diagram.
       //if not undefined then we need to update the parent field within the studied node
@@ -89,7 +88,7 @@ function AddDiagramResourceToDisplay(
         this[index] = {
           data: {
             ...this[index].data,
-            parent: this[index].data.parentgovernance,
+            parent: this[index].data.TreeParentID,
           },
         };
       }
@@ -97,3 +96,7 @@ function AddDiagramResourceToDisplay(
   }
   return { Evaluatedlayout, returnNodes };
 }
+
+/*
+POST https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/
+my-resource-group/exportTemplate?api-version=2021-04-01*/

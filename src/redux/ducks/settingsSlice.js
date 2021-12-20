@@ -700,10 +700,6 @@ const initialState = {
       name: "ARM",
       items: [
         {
-          type: "ManagementGroup",
-          diagramprimitive: "box",
-        },
-        {
           type: "default",
           diagramprimitive: "item",
         },
@@ -715,18 +711,34 @@ const initialState = {
         {
           type: "ManagementGroup",
           diagramprimitive: "box",
+          parent: {
+            queryType: "field",
+            query: "TreeParentID",
+          },
         },
         {
           type: "microsoft.resources/subscriptions",
           diagramprimitive: "box",
+          parent: {
+            queryType: "field",
+            query: "TreeParentID",
+          },
         },
         {
           type: "microsoft.resources/subscriptions/resourcegroups",
           diagramprimitive: "box",
+          parent: {
+            queryType: "field",
+            query: "TreeParentID",
+          },
         },
         {
           type: "default",
           diagramprimitive: "item",
+          parent: {
+            queryType: "field",
+            query: "TreeParentID",
+          },
         },
       ],
     },
@@ -736,11 +748,6 @@ const initialState = {
         {
           type: "microsoft.resources/subscriptions",
           diagramprimitive: "box",
-          parent: {
-            type: "ManagementGroup",
-            connector: "ExistingAzureResources",
-            query: "TreeParentID",
-          },
         },
         {
           type: "microsoft.resources/subscriptions/resourcegroups",
