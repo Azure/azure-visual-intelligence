@@ -70,6 +70,7 @@ function AddDiagramResourceToDisplay(
       data: {
         id: resource.TreeID,
         label: resource.TreeName,
+        parentgovernance: resource.TreeParentID,
         img: nodeSettings.icon,
         diagramprimitive: layoutSettings.diagramprimitive,
       },
@@ -80,7 +81,7 @@ function AddDiagramResourceToDisplay(
     //we update parent relation ship to ALL nodes (relation of some old node may have change with this new node)
     returnNodes.forEach(function (node, index) {
       var ParentNode = returnNodes.find(
-        (element) => element.data.id === this[index].data.TreeParentID
+        (element) => element.data.id === this[index].data.parentgovernance
       );
       //if undefined then node has no current parent displayed in the diagram.
       //if not undefined then we need to update the parent field within the studied node
@@ -88,7 +89,7 @@ function AddDiagramResourceToDisplay(
         this[index] = {
           data: {
             ...this[index].data,
-            parent: this[index].data.TreeParentID,
+            parent: this[index].data.parentgovernance,
           },
         };
       }

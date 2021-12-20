@@ -41,9 +41,6 @@ function* AddResourceToDiagram(accessToken, payload, diagramResources) {
     //if we have existing items we want to add only new ones
     returnElements = [...resources];
 
-    //for each new element we want to do enrichment of the properties
-    //But if we do this in the loop it will be resource per resource, what we want is a bulk ARM query per RG, so we move that
-
     console.log("there");
     for (const resource of resources) {
       if (!returnElements.find((element) => element.id === resource.id)) {
@@ -79,38 +76,26 @@ function* enrichResourcesARM([accessToken, resources]) {
     console.log(resourceGroupARM);
 
     for (var resource of resources) {
-      for (var resourcetemplate of resourceGroupARM.template.resources) {
-        //if it is same resource we add template to resource
-        if (
-          resourcetemplate.name === resource.name &&
-          resourcetemplate.type.toLowerCase() === resource.type
-        ) {
-          resource["ARM"] = resourcetemplate;
-          console.log(resource);
-          break;
+      // We want to add ARM  only to resources
+      if (
+        resource.type !== "microsoft.resources/subscriptions" &&
+        resource.type !== "ManagementGroup" &&
+        resource.type !== "microsoft.resources/subscriptions/resourcegroups" &&
+        resource.ARM === undefined
+      ) {
+        for (var resourcetemplate of resourceGroupARM.template.resources) {
+          //if it is same resource we add template to resource
+          if (
+            resourcetemplate.name === resource.name &&
+            resourcetemplate.type.toLowerCase() === resource.type
+          ) {
+            resource["ARM"] = resourcetemplate;
+            break;
+          }
         }
       }
       returnElements.push(resource);
     }
-    //for each reco
-    /*for (var reco of resourceGroupARM) {
-      // we may have multiple resourceidentifies for one reco, so for each resourceidentifiers
-      for (var id of reco.properties.resourceIdentifiers) {
-        //if the resourceidentifer is about an Azure resource
-        if (id.azureResourceId !== "undefined") {
-          //we want to get the index of the Resource related to it
-          var resourceIndex = resources.findIndex(
-            (r) => r.TreeID === id.azureResourceId
-          );
-          console.log(resourceIndex);
-          //if we found an index that we have in resources
-          if (resourceIndex !== -1) {
-            //we edit the resources list
-            //yield put(addResourceRecommandationASC({ reco, resourceIndex }));
-          }
-        }
-      }
-    }*/
   }
   return returnElements;
 }
