@@ -17,13 +17,12 @@ export async function azGetARMResourceGroup([
     }),
     body: JSON.stringify({
       resources: ["*"],
-      options: "IncludeParameterDefaultValue,IncludeComments",
+      options: "SkipAllParameterization,IncludeComments",
     }),
   }).then((response) => {
     return response.json();
   });
 
-  console.log(resourceGroupARM);
   return resourceGroupARM;
 }
 

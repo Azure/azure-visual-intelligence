@@ -32,6 +32,8 @@ function* AddResourceToDiagram(accessToken, payload, diagramResources) {
   }
   var returnElements;
   var resources = yield call(enrichResourcesARM, [accessToken, payload]);
+  console.log("BACK TO MAIN");
+  console.log(resources);
   if (diagramResources.length === 0) {
     //if diagramResources is currently empty, payload becomes the diagram resources
     returnElements = resources;
@@ -54,6 +56,8 @@ function* AddResourceToDiagram(accessToken, payload, diagramResources) {
 
 function* enrichResourcesARM([accessToken, resources]) {
   var ResourceGroupList = new Set();
+  var returnElements = [];
+
   for (var resource of resources) {
     // We want to pick only resources
     // ! Should pick only Existing Microsoft resources -> not done yet
@@ -72,6 +76,22 @@ function* enrichResourcesARM([accessToken, resources]) {
       resourceGroup,
     ]);
 
+    console.log(resourceGroupARM);
+
+    for (var resource of resources) {
+      for (var resourcetemplate of resourceGroupARM.template.resources) {
+        //if it is same resource we add template to resource
+        if (
+          resourcetemplate.name === resource.name &&
+          resourcetemplate.type.toLowerCase() === resource.type
+        ) {
+          resource["ARM"] = resourcetemplate;
+          console.log(resource);
+          break;
+        }
+      }
+      returnElements.push(resource);
+    }
     //for each reco
     /*for (var reco of resourceGroupARM) {
       // we may have multiple resourceidentifies for one reco, so for each resourceidentifiers
@@ -92,4 +112,5 @@ function* enrichResourcesARM([accessToken, resources]) {
       }
     }*/
   }
+  return returnElements;
 }
