@@ -10,7 +10,14 @@ var makeLabel = function (node) {
 const nodeStyles = [
   {
     selector: "node",
-    style: {
+    css: {
+      width: "38px",
+      height: "38px",
+      "font-family": "Nokia Pure Regular",
+      "background-opacity": "1",
+      shape: "roundrectangle",
+    },
+    /*style: {
       "background-width": "90%",
       "background-height": "90%",
       //if label is empty we display ID, ID can't be empty
@@ -33,7 +40,7 @@ const nodeStyles = [
       "border-color": (node) => {
         return node.data("RecommandationsASC") ? "red" : "#DADADA";
       },
-    },
+    },*/
   },
   {
     selector: "node:selected",

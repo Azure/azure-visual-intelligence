@@ -703,6 +703,14 @@ const initialState = {
           type: "default",
           diagramprimitive: "item",
         },
+        {
+          type: "microsoft.compute/virtualmachines/extensions",
+          diagramprimitive: "hidden",
+        },
+        {
+          type: "microsoft.compute/disks",
+          diagramprimitive: "hidden",
+        },
       ],
     },
     {

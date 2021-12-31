@@ -42,6 +42,7 @@ function AddDiagramResourceToDisplay(
   //For now we create a fresh new list each time we receive new item(s)
   //This code is executed for all layout
   var returnNodes = [];
+  var returnEdges = [];
   for (const resource of diagramResources) {
     //get the azure resource metadata
     var nodeSettings = azureSettings.resources.azure.find(
@@ -65,18 +66,38 @@ function AddDiagramResourceToDisplay(
         .items.find((item) => item.type === "default");
     }
 
-    //we build the adequate layout info for the node
-    var newNode = {
-      data: {
-        id: resource.TreeID,
-        label: resource.TreeName,
-        parentgovernance: resource.TreeParentID,
-        img: nodeSettings.icon,
-        diagramprimitive: layoutSettings.diagramprimitive,
-      },
-    };
-    returnNodes.push(newNode);
+    if (layoutSettings.diagramprimitive !== "hidden") {
+      //we build the adequate layout info for the node
+      var newNode = {
+        data: {
+          id: resource.TreeID,
+          label: resource.TreeName,
+          parentgovernance: resource.TreeParentID,
+          img: nodeSettings.icon,
+          diagramprimitive: layoutSettings.diagramprimitive,
+        },
+      };
+      returnNodes.push(newNode);
+    }
+
+    if (Evaluatedlayout === "ARM" && resource["ARM"] !== undefined) {
+      if (resource.ARM["dependsOn"] !== undefined) {
+        for (var relation of resource.ARM["dependsOn"]) {
+          var newEdge = {
+            data: {
+              id: "test",
+              source: resource.id,
+              target: "test",
+            },
+          };
+          console.log('{ data: { id: "A3B1", source: "A3", target: "B1" } }');
+          console.log(resource.name);
+          console.log(resource.ARM.dependsOn);
+        }
+      }
+    }
   }
+
   if (Evaluatedlayout === "Governance") {
     //we update parent relation ship to ALL nodes (relation of some old node may have change with this new node)
     returnNodes.forEach(function (node, index) {

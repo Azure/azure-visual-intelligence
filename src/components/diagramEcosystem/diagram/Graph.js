@@ -7,9 +7,15 @@ import cytoscape from "cytoscape";
 import fcose from "cytoscape-fcose";
 import popper from "cytoscape-popper";
 
-import style from "./style";
+//import style from "./style";
+import "./styles.css";
+
+//inspiration to what to do
+//https://codesandbox.io/s/nostalgic-cdn-sni1y?file=/src/index.js:5896-6056
 
 const Graph = () => {
+  var nodeHtmlLabel = require("cytoscape-node-html-label");
+
   const dispatch = useDispatch();
   const container = React.useRef(null);
   const graph = React.useRef();
@@ -120,32 +126,12 @@ const Graph = () => {
         // Initial cooling factor for incremental layout
         initialEnergyOnIncremental: 0.3,
         name: "fcose",
+        spacingFactor: 1,
         //nodeDimensionsIncludeLabels: false,
         //spacingFactor: "spacing",
         //styleEnabled: true,
       });
 
-      //Popper example
-      //Updates to do :
-      // need to handle empty graph
-      // does not do destroy properly when a new resource is added to the Graph
-      //get the data from redux for each node
-
-      /*let node = graph.current.nodes().first();
-      let popper1 = node.popper({
-        content: () => {
-          let div = document.createElement("div");
-          div.innerHTML = "Overlay content";
-          document.body.appendChild(div);
-          return div;
-        },
-        popper: {}, // my popper options here
-      });
-      const update = () => {
-        popper1.update();
-      };
-      graph.current.elements().on("position", update);
-      graph.current.on("pan zoom resize", update);*/
       layout.current.run();
     }
   }, [diagramDisplay, currentLayout]);
@@ -157,10 +143,100 @@ const Graph = () => {
     try {
       if (!graph.current) {
         cytoscape.use(fcose);
-        cytoscape.use(popper);
+        if (typeof cytoscape("core", "nodeHtmlLabel") === "undefined") {
+          nodeHtmlLabel(cytoscape);
+        }
         graph.current = cytoscape({
           ...diagramDisplay[currentLayout].elements,
-          style,
+          style: [
+            //CORE
+            {
+              selector: "core",
+              css: {
+                "active-bg-size": 0, //The size of the active background indicator.
+              },
+            },
+
+            //NODE
+            {
+              selector: "node",
+              css: {
+                width: "100px",
+                height: "100px",
+                shape: "roundrectangle",
+                "font-family": "Nokia Pure Regular",
+                "background-opacity": "0",
+                "border-width": 1,
+                "border-color": "#f5f5f5",
+              },
+            },
+            //GROUP
+            {
+              selector: "node.cy-expand-collapse-collapsed-node",
+              css: {
+                width: "56px",
+                height: "56px",
+                "background-opacity": "0",
+                "font-family": "Nokia Pure Regular",
+              },
+            },
+            {
+              selector: "$node > node",
+              css: {
+                "background-color": "#fff",
+                "background-opacity": "1",
+                "border-width": "1px",
+                "border-color": "#dcdcdc",
+
+                //LABEL
+                //label: "data(name)",
+                color: "#000",
+                shape: "rectangle",
+                "text-opacity": "0.56",
+                "font-size": "10px",
+                "text-transform": "uppercase",
+                "text-wrap": "none",
+                "text-max-width": "75px",
+                "padding-top": "16px",
+                "padding-left": "16px",
+                "padding-bottom": "16px",
+                "padding-right": "16px",
+              },
+            },
+            {
+              selector: ":parent",
+              css: {
+                "text-valign": "top",
+                "text-halign": "center",
+              },
+            },
+            //EDGE
+            {
+              selector: "edge",
+              style: {
+                width: 1,
+                "line-color": "#b8b8b8",
+                "curve-style": "bezier",
+
+                //LABEL
+                label: "",
+              },
+            },
+            {
+              selector: "edge.hover",
+              style: {
+                width: 2,
+                "line-color": "#239df9",
+              },
+            },
+            {
+              selector: "edge:selected",
+              style: {
+                width: 1,
+                "line-color": "#239df9",
+              },
+            },
+          ],
           minZoom: 0.2,
           maxZoom: 4,
           container: container.current,
@@ -172,6 +248,39 @@ const Graph = () => {
           });
           console.log("clicked " + this.data());
         });
+        graph.current.nodeHtmlLabel([
+          {
+            query: ".nodeIcon",
+            halign: "center",
+            valign: "center",
+            halignBox: "center",
+            valignBox: "center",
+            tpl: function (data) {
+              return `<div class="element">                    
+                <span class="element-severity_badge">
+                  <span>3</span>
+                </span>
+                <span class="element-graphic">
+                  <div class="icon" style='background-image: url(${data.img})' ></div>
+                  <span class="overlay"></span>
+                </span>
+                <span title="${data.label}" class="element-label">${data.label}</span>
+              </div>`;
+            },
+          },
+        ]);
+        /*
+
+                <span class="element-pm_badge">
+                  <i class="icon icon-pm" /></i>
+                  <span>3 warnings</span>
+                </span>
+                <span class="element-graphic operationalState-${data.operationalState}">
+                  <i class="icon icon-${data.kind}" /></i>
+                  <span class="overlay"></span>
+                </span>
+                <span title="${data.displayName}" class="element-label">${data.displayName}</span>
+                */
       }
     } catch (error) {
       console.log("error");
@@ -188,7 +297,13 @@ const Graph = () => {
       style={{ width: "100%", height: "100%", background: "#ffffff" }}
     >
       <div
-        style={{ width: "100%", height: "100%" }}
+        style={{
+          width: "100%",
+          height: "100%",
+          background: "#fafafa",
+          backgroundImage: `radial-gradient(#bebebe 1px, transparent 0)`,
+          backgroundSize: `18px 18px`,
+        }}
         className="graph"
         ref={container}
       />

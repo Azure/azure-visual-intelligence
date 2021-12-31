@@ -1,0 +1,67 @@
+.element {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.icon {
+  mask-size: cover;
+  -webkit-mask-size: cover;
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+}
+
+.element-severity_badge {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  margin-left: 20px;
+  margin-top: -20px;
+  background: rgb(223, 0, 0);
+  z-index: 999;
+}
+
+.element-severity_badge > span {
+  top: -3px;
+  left: 4px;
+  font-size: 12px;
+  position: relative;
+  color: #ffffff;
+}
+
+.element-graphic {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 65px;
+}
+
+.icon {
+  width: 50px;
+  height: 50px;
+  background-size: 50px;
+}
+
+.element-label {
+  position: relative;
+  font-family: "Nokia Pure Regular";
+  font-size: 10px;
+  color: rgb(0, 0, 0, 0.87);
+  max-width: 80px;
+  overflow: hidden;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.element-graphic.hover > .overlay {
+  width: 38px;
+  height: 38px;
+  position: absolute;
+  background-color: #000000;
+  opacity: 0.3;
+  border-radius: 50%;
+}

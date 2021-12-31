@@ -24,7 +24,10 @@ function LoadDiagram(payload) {
           elements: {
             nodes: [
               { data: { id: "vnetA", label: "vnetA" } },
-              { data: { id: "subnetA", label: "subnetA", parent: "vnetA" } },
+              {
+                data: { id: "subnetA", label: "subnetA", parent: "vnetA" },
+                classes: "nodeIcon",
+              },
               {
                 data: {
                   id: "A1",
@@ -32,6 +35,7 @@ function LoadDiagram(payload) {
                   parent: "subnetA",
                   img: "/assets/img/azure/original/microsoft.network/loadbalancers.svg",
                 },
+                classes: "nodeIcon",
               },
             ],
             edges: [],
@@ -48,8 +52,12 @@ function LoadDiagram(payload) {
           elements: {
             nodes: [
               { data: { id: "vnetA", label: "vnetA" } },
-              { data: { id: "subnetA", label: "subnetA", parent: "vnetA" } },
-              { data: { id: "subnetB", label: "subnetB", parent: "vnetA" } },
+              {
+                data: { id: "subnetA", label: "subnetA", parent: "vnetA" },
+              },
+              {
+                data: { id: "subnetB", label: "subnetB", parent: "vnetA" },
+              },
               {
                 data: {
                   id: "A1",
@@ -57,6 +65,7 @@ function LoadDiagram(payload) {
                   parent: "subnetA",
                   img: "/assets/img/azure/original/microsoft.network/loadbalancers.svg",
                 },
+                classes: "nodeIcon",
               },
               {
                 data: {
@@ -65,6 +74,7 @@ function LoadDiagram(payload) {
                   parent: "subnetA",
                   img: "/assets/img/azure/original/microsoft.compute/virtualmachines.svg",
                 },
+                classes: "nodeIcon",
               },
               {
                 data: {
@@ -73,6 +83,7 @@ function LoadDiagram(payload) {
                   parent: "subnetA",
                   img: "/assets/img/azure/original/microsoft.compute/virtualmachines.svg",
                 },
+                classes: "nodeIcon",
               },
 
               {
@@ -82,6 +93,7 @@ function LoadDiagram(payload) {
                   parent: "subnetB",
                   img: "/assets/img/azure/original/microsoft.network/loadbalancers.svg",
                 },
+                classes: "nodeIcon",
               },
               {
                 data: {
@@ -90,6 +102,7 @@ function LoadDiagram(payload) {
                   parent: "subnetB",
                   img: "/assets/img/azure/original/microsoft.compute/virtualmachines.svg",
                 },
+                classes: "nodeIcon",
               },
               {
                 data: {
@@ -98,6 +111,7 @@ function LoadDiagram(payload) {
                   parent: "subnetB",
                   img: "/assets/img/azure/original/microsoft.compute/virtualmachines.svg",
                 },
+                classes: "nodeIcon",
               },
             ],
             edges: [
