@@ -14,21 +14,22 @@
 }
 
 .element-severity_badge {
-  position: relative;
-  width: 14px;
-  height: 14px;
+  position: absolute;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  margin-left: 20px;
-  margin-top: -20px;
+  margin-left: 60px;
+  margin-top: -15px;
   background: rgb(223, 0, 0);
-  z-index: 999;
 }
 
 .element-severity_badge > span {
-  top: -3px;
-  left: 4px;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  text-align: center;
   font-size: 12px;
-  position: relative;
+  top: 20%;
   color: #ffffff;
 }
 

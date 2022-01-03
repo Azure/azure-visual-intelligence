@@ -269,18 +269,6 @@ const Graph = () => {
             },
           },
         ]);
-        /*
-
-                <span class="element-pm_badge">
-                  <i class="icon icon-pm" /></i>
-                  <span>3 warnings</span>
-                </span>
-                <span class="element-graphic operationalState-${data.operationalState}">
-                  <i class="icon icon-${data.kind}" /></i>
-                  <span class="overlay"></span>
-                </span>
-                <span title="${data.displayName}" class="element-label">${data.displayName}</span>
-                */
       }
     } catch (error) {
       console.log("error");

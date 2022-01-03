@@ -1,3 +1,17 @@
+//this first function needs to handle 202 response
+
+/*cache-control: no-cache
+content-length: 0
+expires: -1
+location: https://management.azure.com/subscriptions/320c35fb-03ca-42b2-a67d-46a71839aad1/operationresults/eyJqb2JJZCI6IkV4cG9ydFRlbXBsYXRlSm9iLVBPQzo1RkRTQzo1RkNMVVNURVItMjEwRkY1OEM6MkQxRkJGfDczMjU4OTIxNDM4MENDQTUiLCJqb2JMb2NhdGlvbiI6Indlc3RldXJvcGUifQ?api-version=2021-04-01
+pragma: no-cache
+retry-after: 15
+x-ms-correlation-request-id: 210ff58c-1fbf-460d-b17a-8d5a1a86988b
+x-ms-ratelimit-remaining-subscription-reads: 11978
+x-ms-request-id: 210ff58c-1fbf-460d-b17a-8d5a1a86988b
+x-ms-routing-request-id: FRANCECENTRAL:20220103T091005Z:210ff58c-1fbf-460d-b17a-8d5a1a86988b
+*/
+
 export async function azGetARMResourceGroup([
   accessToken,
   subscriptionIdWithresourceGroupName,

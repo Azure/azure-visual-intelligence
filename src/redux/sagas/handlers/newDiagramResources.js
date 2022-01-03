@@ -80,6 +80,19 @@ function AddDiagramResourceToDisplay(
       returnNodes.push(newNode);
     }
 
+    //To improve, this is only to add classes to existing nodes
+    if (Evaluatedlayout === "ARM") {
+      //we update parent relation ship to ALL nodes (relation of some old node may have change with this new node)
+      returnNodes.forEach(function (node, index) {
+        this[index] = {
+          data: {
+            ...this[index].data,
+          },
+          classes: "nodeIcon",
+        };
+      }, returnNodes);
+    }
+
     if (Evaluatedlayout === "ARM" && resource["ARM"] !== undefined) {
       if (resource.ARM["dependsOn"] !== undefined) {
         for (var relation of resource.ARM["dependsOn"]) {
@@ -112,6 +125,7 @@ function AddDiagramResourceToDisplay(
             ...this[index].data,
             parent: this[index].data.parentgovernance,
           },
+          classes: "nodeIcon",
         };
       }
     }, returnNodes);

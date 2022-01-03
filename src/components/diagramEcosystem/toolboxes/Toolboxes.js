@@ -38,14 +38,17 @@ const Toolboxes = () => {
         <Grid item style={{ width: "100%" }}>
           <AzureExistingResourcesList />
         </Grid>
-        <Grid item style={{ width: "100%" }}>
-          <AzureResourcesList />
-        </Grid>
-        <Grid item style={{ width: "100%" }}>
-          <CommonResourcesList />
-        </Grid>
       </Grid>
     </Box>
   );
 };
 export default Toolboxes;
+
+/*
+        <Grid item style={{ width: "100%" }}>
+          <AzureResourcesList />
+        </Grid>
+                <Grid item style={{ width: "100%" }}>
+          <CommonResourcesList />
+        </Grid>
+        */
