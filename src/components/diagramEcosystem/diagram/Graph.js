@@ -5,7 +5,6 @@ import { Button } from "@mui/material";
 //cytoscape and extensions
 import cytoscape from "cytoscape";
 import fcose from "cytoscape-fcose";
-import popper from "cytoscape-popper";
 
 //import style from "./style";
 import "./styles.css";

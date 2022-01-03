@@ -1,4 +1,4 @@
-import { call, put, select } from "redux-saga/effects";
+import { call, select } from "redux-saga/effects";
 import { azGetResourceGroupASCRecommandations } from "../../../api/azure/azasc";
 //import { addResourceRecommandationASC } from "../../ducks/resourcesSlice";
 import { handleResourceRecommandationsChange } from "./updateDiagramResources";

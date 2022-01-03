@@ -2,12 +2,12 @@ import { call, put, select } from "redux-saga/effects";
 import { setDiagramResources } from "../../ducks/diagramSlice";
 import { azGetARMResourceGroup } from "../../../api/azure/azarm";
 
-export const getAccessToken = (state) => state.user.accessToken;
+export const getAccessToken = (state: any) => state.user.accessToken;
 //import { useSelector } from "react-redux";
 
-export const getDiagramResources = (state) => state.diagram.resources;
+export const getDiagramResources = (state: any) => state.diagram.resources;
 
-export function* handleDragnDrop(action) {
+export function* handleDragnDrop(action: any): Generator<any, any, any> {
   try {
     const currentDiagramResources = yield select(getDiagramResources);
     const accessToken = yield select(getAccessToken);
@@ -25,7 +25,11 @@ export function* handleDragnDrop(action) {
   }
 }
 
-function* AddResourceToDiagram(accessToken, payload, diagramResources) {
+function* AddResourceToDiagram(
+  accessToken: any,
+  payload: any,
+  diagramResources: any
+): Generator<any, any, any> {
   if (!Array.isArray(payload)) {
     //if payload is a unique item we want to make it a list.
     payload = [payload];
@@ -51,11 +55,15 @@ function* AddResourceToDiagram(accessToken, payload, diagramResources) {
   return [...returnElements];
 }
 
-function* enrichResourcesARM([accessToken, resources]) {
-  var ResourceGroupList = new Set();
+function* enrichResourcesARM([accessToken, resources]: [any, any]): Generator<
+  any,
+  any,
+  any
+> {
+  let ResourceGroupList: any[] = []; //new Set();
   var returnElements = [];
 
-  for (var resource of resources) {
+  for (let resource of resources) {
     // We want to pick only resources
     // ! Should pick only Existing Microsoft resources -> not done yet
     if (
@@ -64,7 +72,7 @@ function* enrichResourcesARM([accessToken, resources]) {
       resource.type !== "microsoft.resources/subscriptions/resourcegroups"
     ) {
       //We add their resource group to the list
-      ResourceGroupList.add(resource.TreeParentID);
+      ResourceGroupList.push(resource.TreeParentID);
     }
   }
   for (var resourceGroup of ResourceGroupList) {
@@ -75,7 +83,7 @@ function* enrichResourcesARM([accessToken, resources]) {
 
     console.log(resourceGroupARM);
 
-    for (var resource of resources) {
+    for (let resource of resources) {
       // We want to add ARM  only to resources
       if (
         resource.type !== "microsoft.resources/subscriptions" &&
