@@ -1,6 +1,5 @@
 import { call, put, select, all } from "redux-saga/effects";
 import { setDiagramNodes } from "../../ducks/diagramSlice";
-//import { useSelector } from "react-redux";
 
 export const getDiagramResources = (state) => state.diagram.resources;
 export const getAzureSettings = (state) => state.settings;
@@ -70,9 +69,9 @@ function AddDiagramResourceToDisplay(
       //we build the adequate layout info for the node
       var newNode = {
         data: {
-          id: resource.TreeID,
-          label: resource.TreeName,
-          parentgovernance: resource.TreeParentID,
+          id: resource.AVIresourceID,
+          label: resource.name,
+          parentgovernance: resource.enrichments["ARG"].parent,
           img: nodeSettings.icon,
           diagramprimitive: layoutSettings.diagramprimitive,
         },

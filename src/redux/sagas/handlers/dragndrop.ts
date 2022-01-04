@@ -46,7 +46,7 @@ function* AddResourceToDiagram(
   }
   //check items of the list are AVIresource and update them if need be
   let resources: AVIresource[] = yield call(
-    updatePayloadResourcestoAVIresources,
+    updateToolboxResourcestoAVIresources,
     payload
   );
 
@@ -72,9 +72,23 @@ function* AddResourceToDiagram(
   return resources;
 }
 
-function updatePayloadResourcestoAVIresources(payload: any) {
-  console.log("payload in update payload");
-  console.log(payload);
+function updateToolboxResourcestoAVIresources(Toolboxes: any) {
+  let payload: AVIresource[] = [];
+  for (const resource of Toolboxes) {
+    let AVIresource: AVIresource = {
+      AVIresourceID: resource.TreeID,
+      resourcegroup: resource.resourceGroup,
+      subscription: resource.subscriptionId,
+      type: resource.type,
+      name: resource.name,
+      enrichments: {
+        ARG: {
+          parent: resource.TreeParentID,
+        },
+      },
+    };
+    payload.push(AVIresource);
+  }
   return payload;
 }
 
