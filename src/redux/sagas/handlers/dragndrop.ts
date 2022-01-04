@@ -1,6 +1,7 @@
 import { call, put, select } from "redux-saga/effects";
 import { setDiagramResources } from "../../ducks/diagramSlice";
 import { azGetARMResourceGroup } from "../../../api/azure/azarm";
+import { AVIresource } from "../../../interfaces";
 
 export const getAccessToken = (state: any) => state.user.accessToken;
 //import { useSelector } from "react-redux";
@@ -25,16 +26,31 @@ export function* handleDragnDrop(action: any): Generator<any, any, any> {
   }
 }
 
+/* we accept payload as any for backwards compatibility
+ * Change payload to AVIresource[]
+ * should be removed when toolbox is updated
+ */
 function* AddResourceToDiagram(
   accessToken: any,
   payload: any,
   diagramResources: any
 ): Generator<any, any, any> {
+  /* we accept payload as any for backwards compatibility
+   * Change payload to AVIresource[]
+   * should be removed when toolbox is updated
+   */
+  //this should be removed later on but is used to create a proper list if need be.
   if (!Array.isArray(payload)) {
     //if payload is a unique item we want to make it a list.
     payload = [payload];
   }
-  var returnElements;
+  //check items of the list are AVIresource and update them if need be
+  let resources: AVIresource[] = yield call(
+    updatePayloadResourcestoAVIresources,
+    payload
+  );
+
+  /*var returnElements;
   var resources = yield call(enrichResourcesARM, [accessToken, payload]);
   console.log("BACK TO MAIN");
   console.log(resources);
@@ -52,7 +68,14 @@ function* AddResourceToDiagram(
       }
     }
   }
-  return [...returnElements];
+  return [...returnElements];*/
+  return resources;
+}
+
+function updatePayloadResourcestoAVIresources(payload: any) {
+  console.log("payload in update payload");
+  console.log(payload);
+  return payload;
 }
 
 function* enrichResourcesARM([accessToken, resources]: [any, any]): Generator<
@@ -60,7 +83,7 @@ function* enrichResourcesARM([accessToken, resources]: [any, any]): Generator<
   any,
   any
 > {
-  let ResourceGroupList: any[] = []; //new Set();
+  let ResourceGroupList = new Set<any>();
   var returnElements = [];
 
   for (let resource of resources) {
@@ -72,7 +95,7 @@ function* enrichResourcesARM([accessToken, resources]: [any, any]): Generator<
       resource.type !== "microsoft.resources/subscriptions/resourcegroups"
     ) {
       //We add their resource group to the list
-      ResourceGroupList.push(resource.TreeParentID);
+      ResourceGroupList.add(resource.TreeParentID);
     }
   }
   for (var resourceGroup of ResourceGroupList) {
