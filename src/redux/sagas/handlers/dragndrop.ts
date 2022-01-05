@@ -1,6 +1,5 @@
 import { call, put, select } from "redux-saga/effects";
 import { setDiagramResources } from "../../ducks/diagramSlice";
-import { azGetARMResourceGroup } from "../../../api/azure/azarm";
 import { AVIresource } from "../../../interfaces";
 import { armEngine } from "../../../resourcesengines/arm/arm";
 
@@ -12,15 +11,11 @@ export const getDiagramResources = (state: any) => state.diagram.resources;
 export function* handleDragnDrop(action: any): Generator<any, any, any> {
   try {
     const currentDiagramResources = yield select(getDiagramResources);
-    const accessToken = yield select(getAccessToken);
-
     const response = yield call(
       AddResourceToDiagram,
-      accessToken,
       action.payload,
       currentDiagramResources
     );
-
     yield put(setDiagramResources(response));
   } catch (error) {
     console.log(error);
@@ -31,13 +26,11 @@ export function* handleDragnDrop(action: any): Generator<any, any, any> {
  * should be removed when toolbox is updated
  */
 function* AddResourceToDiagram(
-  accessToken: any,
   payload: any,
   diagramResources: any
 ): Generator<any, AVIresource[], any> {
-  /* we accept payload as any for backwards compatibility
-   * Change payload to AVIresource[]
-   * should be removed when toolbox is updated
+  /* we accept payload as "any" for backwards compatibility
+   * payload should be changed to AVIresource[] when toolbox is updated
    */
   //this should be removed later on but is used to create a proper list if need be.
   if (!Array.isArray(payload)) {
@@ -53,6 +46,9 @@ function* AddResourceToDiagram(
   //Now we are working on legit AVIresource type.
   // Because they are coming from the ARG toolbox, we want to enrich them with ARM
   resources = yield call(armEngine.GetResources, resources);
+
+  //What we want to do next is create the relationship from all Engine
+
   /*var returnElements;
   var resources = yield call(enrichResourcesARM, [accessToken, payload]);
   console.log("BACK TO MAIN");
@@ -93,57 +89,4 @@ function updateToolboxResourcestoAVIresources(Toolboxes: any) {
     payload.push(AVIresource);
   }
   return payload;
-}
-
-function* enrichResourcesARM([accessToken, resources]: [any, any]): Generator<
-  any,
-  any,
-  any
-> {
-  let ResourceGroupList = new Set<any>();
-  var returnElements = [];
-
-  for (let resource of resources) {
-    // We want to pick only resources
-    // ! Should pick only Existing Microsoft resources -> not done yet
-    if (
-      resource.type !== "microsoft.resources/subscriptions" &&
-      resource.type !== "ManagementGroup" &&
-      resource.type !== "microsoft.resources/subscriptions/resourcegroups"
-    ) {
-      //We add their resource group to the list
-      ResourceGroupList.add(resource.TreeParentID);
-    }
-  }
-  for (var resourceGroup of ResourceGroupList) {
-    var resourceGroupARM = yield call(azGetARMResourceGroup, [
-      accessToken,
-      resourceGroup,
-    ]);
-
-    console.log(resourceGroupARM);
-
-    for (let resource of resources) {
-      // We want to add ARM  only to resources
-      if (
-        resource.type !== "microsoft.resources/subscriptions" &&
-        resource.type !== "ManagementGroup" &&
-        resource.type !== "microsoft.resources/subscriptions/resourcegroups" &&
-        resource.ARM === undefined
-      ) {
-        for (var resourcetemplate of resourceGroupARM.template.resources) {
-          //if it is same resource we add template to resource
-          if (
-            resourcetemplate.name === resource.name &&
-            resourcetemplate.type.toLowerCase() === resource.type
-          ) {
-            resource["ARM"] = resourcetemplate;
-            break;
-          }
-        }
-      }
-      returnElements.push(resource);
-    }
-  }
-  return returnElements;
 }

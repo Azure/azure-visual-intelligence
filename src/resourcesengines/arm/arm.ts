@@ -11,7 +11,6 @@ export class armEngine extends resourcesEngine {
   ): Generator<any, AVIresource[], any> {
     let ResourceGroupList = new Set<any>();
     var returnElements = [];
-
     for (let resource of resources) {
       // We want to pick only resources
       // ! Should pick only Existing Microsoft resources -> not done yet
@@ -21,15 +20,14 @@ export class armEngine extends resourcesEngine {
         resource.type !== "microsoft.resources/subscriptions/resourcegroups"
       ) {
         //We add their resource group to the list
-        ResourceGroupList.add(resource.enrichments["ARG"].parent);
+        yield ResourceGroupList.add(resource.enrichments.ARG.parent);
       }
     }
-    for (var resourceGroup of ResourceGroupList) {
+    for (const resourceGroup of ResourceGroupList) {
       var resourceGroupARM = yield call(
-        this.azGetARMResourceGroup,
+        armEngine.azGetARMResourceGroup,
         resourceGroup
       );
-
       for (let resource of resources) {
         // We want to add ARM  only to resources
         if (
@@ -41,7 +39,6 @@ export class armEngine extends resourcesEngine {
         ) {
           for (var resourcetemplate of resourceGroupARM.template.resources) {
             //if it is same resource we add template to resource
-            console.info("resourcetemplate", resourcetemplate);
             if (
               resourcetemplate.name === resource.name &&
               resourcetemplate.type.toLowerCase() === resource.type
@@ -62,6 +59,10 @@ export class armEngine extends resourcesEngine {
   ): Generator<any, any, any> {
     //https://docs.microsoft.com/fr-fr/rest/api/resources/resource-groups/export-template
     //POST https://management.azure.com/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/exportTemplate?api-version=2021-04-01
+    console.info(
+      "subscriptionIdWithresourceGroupName",
+      subscriptionIdWithresourceGroupName
+    );
     const accessToken = yield select(getAccessToken);
     const bearerToken = "Bearer " + accessToken;
     const url =
@@ -81,7 +82,6 @@ export class armEngine extends resourcesEngine {
     };
     const response = yield call(fetch, url, options);
     const data = yield call([response, response.json]);
-    console.info("data", data);
     return data;
   }
 }

@@ -12,34 +12,6 @@ x-ms-request-id: 210ff58c-1fbf-460d-b17a-8d5a1a86988b
 x-ms-routing-request-id: FRANCECENTRAL:20220103T091005Z:210ff58c-1fbf-460d-b17a-8d5a1a86988b
 */
 
-export async function azGetARMResourceGroup([
-  accessToken,
-  subscriptionIdWithresourceGroupName,
-]: [string, string]) {
-  //https://docs.microsoft.com/fr-fr/rest/api/resources/resource-groups/export-template
-  //POST https://management.azure.com/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/exportTemplate?api-version=2021-04-01
-  const bearerToken = "Bearer " + accessToken;
-  const url =
-    "https://management.azure.com/" +
-    subscriptionIdWithresourceGroupName +
-    "/exportTemplate?api-version=2021-04-01";
-  const resourceGroupARM = await fetch(url, {
-    method: "POST",
-    headers: new Headers({
-      Authorization: bearerToken,
-      "Content-Type": "application/json",
-    }),
-    body: JSON.stringify({
-      resources: ["*"],
-      options: "SkipAllParameterization,IncludeComments",
-    }),
-  }).then((response) => {
-    return response.json();
-  });
-
-  return resourceGroupARM;
-}
-
 export async function azGetResourceContainersTree(accessToken: string) {
   //We get all the subscriptions available
   let subscriptions = await azGetSubscriptions(accessToken);
