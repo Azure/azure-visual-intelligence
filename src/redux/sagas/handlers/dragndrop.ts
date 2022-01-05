@@ -2,6 +2,7 @@ import { call, put, select } from "redux-saga/effects";
 import { setDiagramResources } from "../../ducks/diagramSlice";
 import { azGetARMResourceGroup } from "../../../api/azure/azarm";
 import { AVIresource } from "../../../interfaces";
+import { armEngine } from "../../../resourcesengines/arm/arm";
 
 export const getAccessToken = (state: any) => state.user.accessToken;
 //import { useSelector } from "react-redux";
@@ -25,7 +26,6 @@ export function* handleDragnDrop(action: any): Generator<any, any, any> {
     console.log(error);
   }
 }
-
 /* we accept payload as any for backwards compatibility
  * Change payload to AVIresource[]
  * should be removed when toolbox is updated
@@ -34,7 +34,7 @@ function* AddResourceToDiagram(
   accessToken: any,
   payload: any,
   diagramResources: any
-): Generator<any, any, any> {
+): Generator<any, AVIresource[], any> {
   /* we accept payload as any for backwards compatibility
    * Change payload to AVIresource[]
    * should be removed when toolbox is updated
@@ -44,12 +44,15 @@ function* AddResourceToDiagram(
     //if payload is a unique item we want to make it a list.
     payload = [payload];
   }
-  //check items of the list are AVIresource and update them if need be
+  //update payload resources from toolbox to resource of AVIresource type
   let resources: AVIresource[] = yield call(
     updateToolboxResourcestoAVIresources,
     payload
   );
 
+  //Now we are working on legit AVIresource type.
+  // Because they are coming from the ARG toolbox, we want to enrich them with ARM
+  resources = yield call(armEngine.GetResources, resources);
   /*var returnElements;
   var resources = yield call(enrichResourcesARM, [accessToken, payload]);
   console.log("BACK TO MAIN");

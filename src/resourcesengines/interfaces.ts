@@ -4,21 +4,29 @@ import { AVIresource } from "./../interfaces";
  * resourcesEngine
  * resourcesEngine is used to provide a new AVIresources list or to complement existing ones with specific AVIresources information from the engine
  */
-interface resourcesEngine {
+export abstract class resourcesEngine {
   /**
    * GetResources
    * Get AVIresources from the tenant
    * used to populate toolbox list
    * Return a new list of AVIresources
    */
-  GetResources?(): AVIresource[];
+  //GetResources?(): AVIresource[];
 
   /**
    * GetResources(resources)
    * Complete each AVIresource item with the info from this resourceEngine
    * @param {AVIresource[]} resources List of AVIresources to get info from this resourceEngine
    */
-  GetResources?(resources: AVIresource[]): AVIresource[];
+  //GetResources?(resources: AVIresource[]): AVIresource[];
+  //function* GetResources?(resources: AVIresource[]): Generator<
+  public static *GetResources(
+    resources: AVIresource[]
+  ): Generator<any, AVIresource[], any> {
+    yield;
+    return resources;
+  }
+  //GetResources? [Symbol.iterator]: () => Generator<any, any, any>
 
   /**
    * GetRelatedResources
@@ -47,5 +55,3 @@ interface resourcesEngine {
     query: string
   ): AVIresource[];
 }
-
-export type { resourcesEngine };

@@ -25,6 +25,7 @@
     "cytoscape-context-menus": "^4.1.0",
     "cytoscape-fcose": "^2.1.0",
     "cytoscape-node-html-label": "^1.2.2",
+    "isomorphic-fetch": "^3.0.0",
     "react": "^17.0.2",
     "react-dnd": "^14.0.5",
     "react-dnd-html5-backend": "^14.1.0",
