@@ -33,7 +33,12 @@ export abstract class resourcesEngine {
    * Get all the Resources related from this Engine perspective to the evaluated resources and will return the full list of AVIresource (evaluated + new)
    * @param {AVIresource[]} resources List of AVIresources to list related AVIresources from
    */
-  GetRelatedResources?(resources: AVIresource[]): AVIresource[];
+  public static *GetResourcesAndRelatedResources(
+    resources: AVIresource[]
+  ): Generator<any, AVIresource[], any> {
+    yield;
+    return resources;
+  }
 
   /**
    * GetResourcesParent

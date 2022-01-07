@@ -1,11 +1,11 @@
 import { resourcesEngine } from "../interfaces";
 import { AVIresource } from "../../interfaces";
 
-const argResourceEngine: any = {
-  GetResourcesData(scope: string) {
-    let retourobjet = { AVIresourceID: "5" };
-    return retourobjet;
-  },
-};
-
-export { argResourceEngine };
+export class argEngine extends resourcesEngine {
+  public static *GetResources(
+    resources: AVIresource[]
+  ): Generator<any, AVIresource[], any> {
+    yield;
+    return resources;
+  }
+}

@@ -31,7 +31,6 @@ const diagramSlice = createSlice({
   name: "diagram",
   initialState,
   reducers: {
-    getDiagram() {},
     setDiagram(state, action) {
       return { ...state, ...action.payload };
     },
@@ -75,7 +74,6 @@ const diagramSlice = createSlice({
 });
 
 export const {
-  getDiagram,
   setDiagram,
   setDiagramElements,
   setDiagramResources,

@@ -3,9 +3,6 @@ import { setDiagramResources } from "../../ducks/diagramSlice";
 import { AVIresource } from "../../../interfaces";
 import { armEngine } from "../../../resourcesengines/arm/arm";
 
-export const getAccessToken = (state: any) => state.user.accessToken;
-//import { useSelector } from "react-redux";
-
 export const getDiagramResources = (state: any) => state.diagram.resources;
 
 export function* handleDragnDrop(action: any): Generator<any, any, any> {
@@ -44,23 +41,19 @@ function* AddResourceToDiagram(
   );
 
   //Now we are working on legit AVIresource type.
-  // Because they are coming from the ARG toolbox, we want to enrich them with ARM
+  //We ask armEngine to complete the list of resources with related resources and provide ARM info to all thoses resources
   resources = yield call(armEngine.GetResources, resources);
 
   //What we want to do next is create the relationship from all Engine
 
   /*var returnElements;
   var resources = yield call(enrichResourcesARM, [accessToken, payload]);
-  console.log("BACK TO MAIN");
-  console.log(resources);
   if (diagramResources.length === 0) {
     //if diagramResources is currently empty, payload becomes the diagram resources
     returnElements = resources;
   } else {
     //if we have existing items we want to add only new ones
     returnElements = [...resources];
-
-    console.log("there");
     for (const resource of resources) {
       if (!returnElements.find((element) => element.id === resource.id)) {
         returnElements.push(resource);

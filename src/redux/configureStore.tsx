@@ -19,6 +19,7 @@ import settingsReducer from "./ducks/settingsSlice";
 import diagramReducer from "./ducks/diagramSlice";
 import detailReducer from "./ducks/detailSlice";
 import resourcesReducer from "./ducks/resourcesSlice";
+import armEngineReducer from "./ducks/armEngineSlice";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -45,6 +46,7 @@ const store = configureStore({
     diagram: diagramReducer,
     detail: detailReducer,
     settings: settingsReducer,
+    armEngine: armEngineReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

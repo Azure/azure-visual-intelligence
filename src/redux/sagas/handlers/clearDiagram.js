@@ -4,7 +4,6 @@ import { setDiagramResources } from "../../ducks/diagramSlice";
 export function* handleClearDiagramResources(action) {
   try {
     var resources = [];
-
     yield put(setDiagramResources(resources));
   } catch (error) {
     console.log(error);

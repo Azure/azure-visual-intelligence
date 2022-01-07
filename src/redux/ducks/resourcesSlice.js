@@ -4,7 +4,6 @@ const resourcesSlice = createSlice({
   name: "AvailableResources",
   initialState: [],
   reducers: {
-    getResources() {},
     setResources(state, action) {
       const resourcesData = action.payload;
       return [...state, ...resourcesData];
@@ -19,7 +18,7 @@ const resourcesSlice = createSlice({
   },
 });
 
-export const { getResources, setResources } = resourcesSlice.actions;
+export const { setResources } = resourcesSlice.actions;
 //addResourceRecommandationASC
 
 export default resourcesSlice.reducer;
