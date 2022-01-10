@@ -1,4 +1,4 @@
-import { AVIresource } from "./../interfaces";
+import { AVIresource, AVIrelation } from "./../interfaces";
 
 /**
  * resourcesEngine
@@ -35,9 +35,9 @@ export abstract class resourcesEngine {
    */
   public static *GetResourcesAndRelatedResources(
     resources: AVIresource[]
-  ): Generator<any, AVIresource[], any> {
+  ): Generator<any, [AVIresource[], AVIrelation[]], any> {
     yield;
-    return resources;
+    return [resources, []];
   }
 
   /**

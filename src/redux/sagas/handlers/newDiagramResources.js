@@ -2,6 +2,7 @@ import { call, put, select, all } from "redux-saga/effects";
 import { setDiagramNodes } from "../../ducks/diagramSlice";
 
 export const getDiagramResources = (state) => state.diagram.resources;
+export const getDiagramRelations = (state) => state.diagram.relations;
 export const getAzureSettings = (state) => state.settings;
 export const getCurrentLayout = (state) => state.settings.diagram.CurrentLayout;
 
@@ -9,6 +10,7 @@ export function* handleNewDiagramResources(action) {
   try {
     const currentDiagramResources = yield select(getDiagramResources);
     const azureSettings = yield select(getAzureSettings);
+    const currentDiagramRelations = yield select(getDiagramRelations);
 
     //Call
     const responses = yield all(
@@ -16,6 +18,7 @@ export function* handleNewDiagramResources(action) {
         call(
           AddDiagramResourceToDisplay,
           currentDiagramResources,
+          currentDiagramRelations,
           azureSettings,
           layout.name
         )
@@ -34,6 +37,7 @@ export function* handleNewDiagramResources(action) {
 
 function AddDiagramResourceToDisplay(
   diagramResources,
+  diagramRelations,
   azureSettings,
   Evaluatedlayout
 ) {
@@ -91,22 +95,20 @@ function AddDiagramResourceToDisplay(
         };
       }, returnNodes);
     }
-
-    if (Evaluatedlayout === "ARM" && resource["ARM"] !== undefined) {
-      if (resource.ARM["dependsOn"] !== undefined) {
-        for (var relation of resource.ARM["dependsOn"]) {
-          var newEdge = {
-            data: {
-              id: "test",
-              source: resource.id,
-              target: "test",
-            },
-          };
-          console.log('{ data: { id: "A3B1", source: "A3", target: "B1" } }');
-          console.log(resource.name);
-          console.log(resource.ARM.dependsOn);
-        }
-      }
+  }
+  //edge
+  if (Evaluatedlayout === "ARM") {
+    console.log("diagramRelations", diagramRelations);
+    for (var relation of diagramRelations) {
+      console.log("relation", relation);
+      var newEdge = {
+        data: {
+          id: relation.AVIrelationID,
+          source: relation.sourceID,
+          target: relation.targetID,
+        },
+      };
+      returnEdges.push(newEdge);
     }
   }
 
@@ -129,7 +131,7 @@ function AddDiagramResourceToDisplay(
       }
     }, returnNodes);
   }
-  return { Evaluatedlayout, returnNodes };
+  return { Evaluatedlayout, returnNodes, returnEdges };
 }
 
 /*

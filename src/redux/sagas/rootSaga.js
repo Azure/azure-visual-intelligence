@@ -19,5 +19,6 @@ export function* watcherSaga() {
   yield takeLatest("CHANGE_OVERLAY", handleChangeOverlay);
 
   //cascading Action
-  yield takeLatest("diagram/setDiagramResources", handleNewDiagramResources);
+  //yield takeLatest("diagram/setDiagramResources", handleNewDiagramResources);
+  yield takeLatest("diagram/setDiagramRelations", handleNewDiagramResources);
 }

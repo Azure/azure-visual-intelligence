@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   name: "Demo Diagram",
   resources: [],
-  resourcesrelations: [],
+  relations: [],
   recommendations: [],
   display: {
     Governance: {
@@ -37,6 +37,9 @@ const diagramSlice = createSlice({
     setDiagramResources(state, action) {
       return { ...state, resources: [...action.payload] };
     },
+    setDiagramRelations(state, action) {
+      return { ...state, relations: [...action.payload] };
+    },
     setDiagramElements(state, action) {
       return { ...state, elements: { ...action.payload } };
     },
@@ -50,6 +53,7 @@ const diagramSlice = createSlice({
             ["elements"]: {
               ...state.display[action.payload.Evaluatedlayout]["elements)"],
               nodes: action.payload.returnNodes,
+              edges: action.payload.returnEdges,
             },
           },
         },
@@ -79,6 +83,7 @@ export const {
   setDiagramResources,
   setDiagramNodes,
   setDiagramGovernanceNodes,
+  setDiagramRelations,
 } = diagramSlice.actions;
 
 export default diagramSlice.reducer;

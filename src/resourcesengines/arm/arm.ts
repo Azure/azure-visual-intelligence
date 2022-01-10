@@ -53,7 +53,7 @@ export class armEngine extends resourcesEngine {
 
   public static *GetResourcesAndRelatedResources(
     resources: AVIresource[]
-  ): Generator<any, AVIresource[], any> {
+  ): Generator<any, [AVIresource[], AVIrelation[]], any> {
     //Exclude already enriched ARM resources
     var [resourcesToEnrich, resourcesAlreadyEnriched] =
       armEngine.GetResourcesToEnrich(resources);
@@ -62,6 +62,7 @@ export class armEngine extends resourcesEngine {
     const ARMresourceGroupsID = armEngine.GetResourceGroups(resourcesToEnrich);
 
     var returnElements = [];
+    var returnEdges: AVIrelation[] = [];
 
     //Resources already enriched are part of the response as is
     for (const resource of resourcesAlreadyEnriched) {
@@ -156,6 +157,24 @@ export class armEngine extends resourcesEngine {
                       console.log("Aviresource", AVIresource);
                       resourcesToEnrich.add(AVIresource);
                       console.log(resourcesToEnrich);
+                      let AVIrelation: AVIrelation = {
+                        AVIrelationID:
+                          AVIresource.AVIresourceID +
+                          "-->" +
+                          resource.AVIresourceID,
+                        sourceID: AVIresource.AVIresourceID,
+                        targetID:
+                          "/subscriptions/" +
+                          resourceGroupID.substring(15, 51) +
+                          "/resourcegroups/" +
+                          resourceGroupID.substring(67) +
+                          "/providers/" +
+                          result.groups.resourcetype.toLowerCase() +
+                          "/" +
+                          result.groups.resourcename,
+                        type: "dependson",
+                      };
+                      returnEdges.push(AVIrelation);
                     }
                   }
                 }
@@ -179,7 +198,7 @@ export class armEngine extends resourcesEngine {
       }
     }
 
-    return returnElements;
+    return [returnElements, returnEdges];
   }
 
   static GetResourcesToEnrich(resources: AVIresource[]) {

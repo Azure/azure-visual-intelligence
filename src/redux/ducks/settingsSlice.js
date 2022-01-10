@@ -8,8 +8,8 @@ const initialState = {
     DragnDropSubGovernanceResources: false,
     AlwaysAskDragnDropSubARMResources: false,
     DragnDropSubARMResources: false,
-    DefaultLayout: "Governance",
-    CurrentLayout: "Governance",
+    DefaultLayout: "ARM",
+    CurrentLayout: "ARM",
   },
   resources: {
     azure: [
@@ -747,6 +747,26 @@ const initialState = {
             queryType: "field",
             query: "TreeParentID",
           },
+        },
+        {
+          type: "microsoft.operationalinsights/workspaces/savedsearches",
+          diagramprimitive: "hidden",
+        },
+        {
+          type: "microsoft.storage/storageaccounts/queueservices",
+          diagramprimitive: "hidden",
+        },
+        {
+          type: "microsoft.storage/storageaccounts/tableservices",
+          diagramprimitive: "hidden",
+        },
+        {
+          type: "microsoft.storage/storageaccounts/blobservices",
+          diagramprimitive: "hidden",
+        },
+        {
+          type: "microsoft.storage/storageaccounts/fileservices",
+          diagramprimitive: "hidden",
         },
       ],
     },

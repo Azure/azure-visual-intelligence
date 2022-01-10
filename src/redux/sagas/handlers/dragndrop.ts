@@ -1,6 +1,9 @@
 import { call, put, select } from "redux-saga/effects";
-import { setDiagramResources } from "../../ducks/diagramSlice";
-import { AVIresource } from "../../../interfaces";
+import {
+  setDiagramResources,
+  setDiagramRelations,
+} from "../../ducks/diagramSlice";
+import { AVIresource, AVIrelation } from "../../../interfaces";
 import { armEngine } from "../../../resourcesengines/arm/arm";
 
 export const getDiagramResources = (state: any) => state.diagram.resources;
@@ -8,12 +11,13 @@ export const getDiagramResources = (state: any) => state.diagram.resources;
 export function* handleDragnDrop(action: any): Generator<any, any, any> {
   try {
     const currentDiagramResources = yield select(getDiagramResources);
-    const response = yield call(
+    const [resources, relations] = yield call(
       AddResourceToDiagram,
       action.payload,
       currentDiagramResources
     );
-    yield put(setDiagramResources(response));
+    yield put(setDiagramResources(resources));
+    yield put(setDiagramRelations(relations));
   } catch (error) {
     console.log(error);
   }
@@ -25,7 +29,7 @@ export function* handleDragnDrop(action: any): Generator<any, any, any> {
 function* AddResourceToDiagram(
   payload: any,
   diagramResources: any
-): Generator<any, AVIresource[], any> {
+): Generator<any, [AVIresource[], AVIrelation[]], any> {
   /* we accept payload as "any" for backwards compatibility
    * payload should be changed to AVIresource[] when toolbox is updated
    */
@@ -42,7 +46,11 @@ function* AddResourceToDiagram(
 
   //Now we are working on legit AVIresource type.
   //We ask armEngine to complete the list of resources with related resources and provide ARM info to all thoses resources
-  resources = yield call(armEngine.GetResources, resources);
+  var relations: AVIrelation[] = [];
+  [resources, relations] = yield call(
+    armEngine.GetResourcesAndRelatedResources,
+    resources
+  );
 
   //What we want to do next is create the relationship from all Engine
 
@@ -61,7 +69,7 @@ function* AddResourceToDiagram(
     }
   }
   return [...returnElements];*/
-  return resources;
+  return [resources, relations];
 }
 
 function updateToolboxResourcestoAVIresources(Toolboxes: any) {

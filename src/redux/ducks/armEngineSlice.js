@@ -9,7 +9,7 @@ const armEngineSlice = createSlice({
     },
   },
 });
-//    [getArmEngineResourceGroupTemplates, (id) => id],
+
 export const getArmEngineResourceGroupTemplates = (state) => state.armEngine;
 
 export const getArmEngineResourceGroupTemplate = (state, id) => {
@@ -26,28 +26,6 @@ export const getArmEngineResourceGroupTemplate = (state, id) => {
     }
   }
 };
-
-/*export const getArmEngineResourceGroupTemplate = (state, id) => {
-  console.log("id", id);
-  createSelector(
-    [
-      // Usual first input - extract value from `state`
-      (state) => state.armEngine,
-      // Take the second arg, `category`, and forward to the output selector
-      (state, id) => id,
-    ],
-    (templates, id) => {
-      console.log("id", id);
-      if (templates === undefined) {
-        return undefined;
-      } else {
-        return templates.find(
-          (item) => item.subscriptionIdWithresourceGroupName === id
-        );
-      }
-    }
-  );
-};*/
 
 export const { addResourceGroupTemplates } = armEngineSlice.actions;
 

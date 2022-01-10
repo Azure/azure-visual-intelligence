@@ -7,6 +7,13 @@ interface AVIresource {
   enrichments: enrichment;
 }
 
+interface AVIrelation {
+  AVIrelationID: string;
+  sourceID: string;
+  targetID: string;
+  type: string;
+}
+
 interface enrichment {
   [key: string]: {
     parent?: string;
@@ -21,4 +28,4 @@ interface enrichmentQuery {
   time: Date;
 }
 
-export type { AVIresource };
+export type { AVIresource, AVIrelation };
