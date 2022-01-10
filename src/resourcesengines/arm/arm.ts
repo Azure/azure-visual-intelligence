@@ -1,5 +1,5 @@
 import { resourcesEngine } from "../interfaces";
-import { AVIresource } from "../../interfaces";
+import { AVIresource, AVIrelation } from "../../interfaces";
 import {
   addResourceGroupTemplates,
   getArmEngineResourceGroupTemplate,
@@ -7,6 +7,7 @@ import {
 import { getAccessToken } from "../../redux/ducks/userSlice";
 import { call, delay, select, put } from "redux-saga/effects";
 import "isomorphic-fetch";
+import { isNullOrUndefined } from "util";
 
 export class armEngine extends resourcesEngine {
   public static *GetResources(
@@ -53,13 +54,132 @@ export class armEngine extends resourcesEngine {
   public static *GetResourcesAndRelatedResources(
     resources: AVIresource[]
   ): Generator<any, AVIresource[], any> {
-    //Enrich existing resources with their ARM properties
-    var enrichresources = yield call(armEngine.GetResources, resources);
+    //Exclude already enriched ARM resources
+    var [resourcesToEnrich, resourcesAlreadyEnriched] =
+      armEngine.GetResourcesToEnrich(resources);
 
-    //Look up for resources in ARM code that are not par of AVIresources list
-    //func do something
+    //Get compliant Resource Group ID for ARM API for the resources to enrich
+    const ARMresourceGroupsID = armEngine.GetResourceGroups(resourcesToEnrich);
 
-    return enrichresources;
+    var returnElements = [];
+
+    //Resources already enriched are part of the response as is
+    for (const resource of resourcesAlreadyEnriched) {
+      returnElements.push(resource);
+    }
+
+    //For each resource group
+    for (const resourceGroupID of ARMresourceGroupsID) {
+      var resourcegroupARMtemplate = yield call(
+        armEngine.azGetARMResourceGroup,
+        resourceGroupID
+      );
+
+      //For each resource of the template
+      for (let resource of resourcegroupARMtemplate.resources) {
+        if (resource.dependsOn !== undefined) {
+          console.log("resource ", resource.name);
+          console.log("resource depends On ", resource.dependsOn);
+          for (const dependon of resource.dependsOn) {
+            console.log("dependon", dependon);
+            const regex = new RegExp(
+              "\\[resourceId\\(\\'(?<resourcetype>.*?)\\',\\s\\'(?<resourcename>.*?)\\'"
+            );
+            const result = regex.exec(dependon);
+            console.log(result);
+            //if there is at least one dependson clause
+            if (result !== undefined && result !== null) {
+              if (result.groups !== undefined) {
+                if (
+                  result.groups.resourcetype !== undefined &&
+                  result.groups.resourcename !== undefined
+                ) {
+                  if (
+                    // if it is a depends clause on a n item to display
+                    resources.find((element) => element.name === resource.name)
+                  ) {
+                    console.log("I am resource", resource.name);
+                    console.log(
+                      "depends clause name ",
+                      result.groups.resourcename
+                    );
+                    console.log(
+                      "depends clause type ",
+                      result.groups.resourcetype
+                    );
+                  }
+                  if (
+                    //if the item to display is part of the depends clause
+                    resources.find(
+                      (element) =>
+                        element.name === result!.groups!.resourcename!
+                    )
+                  ) {
+                    console.log(
+                      "I am resource in a dependsOn",
+                      result.groups.resourcename
+                    );
+                    console.log("He depends on me name  ", resource.name);
+                    console.log("he depends on me type ", resource.type);
+                    if (
+                      isNullOrUndefined(
+                        resources.find(
+                          (element) => element.name === resource.name
+                        )
+                      )
+                    ) {
+                      //if the ARM resources does not exist we need to add it
+                      let AVIresource: AVIresource = {
+                        AVIresourceID:
+                          "/subscriptions/" +
+                          resourceGroupID.substring(15, 51) +
+                          "/resourcegroups/" +
+                          resourceGroupID.substring(67) +
+                          "/providers/" +
+                          resource.type.toLowerCase() +
+                          resource.name,
+                        resourcegroup: resourceGroupID.substring(52),
+                        subscription: resourceGroupID.substring(15, 51),
+                        type: resource.type.toLowerCase(),
+                        name: resource.name,
+                        enrichments: {
+                          ARG: {
+                            parent:
+                              "/subscriptions/" +
+                              resourceGroupID.substring(15, 51) +
+                              "/resourcegroups/" +
+                              resourceGroupID.substring(67),
+                          },
+                          ARM: resource,
+                        },
+                      };
+                      console.log("Aviresource", AVIresource);
+                      resourcesToEnrich.add(AVIresource);
+                      console.log(resourcesToEnrich);
+                    }
+                  }
+                }
+              } else {
+                console.log("depends on  regex failed", resource.dependsOn);
+              }
+            }
+          }
+        }
+      }
+    }
+    //Enrich the resource with info from the template
+    for (let resource of resourcesToEnrich) {
+      var EnrichedResources = armEngine.EnrichResourceFromARM(
+        resource,
+        resourcegroupARMtemplate
+      );
+      //Add enrich resources to response
+      for (const resource of EnrichedResources) {
+        returnElements.push(resource);
+      }
+    }
+
+    return returnElements;
   }
 
   static GetResourcesToEnrich(resources: AVIresource[]) {
@@ -116,6 +236,7 @@ export class armEngine extends resourcesEngine {
     );
 
     if (template !== undefined) {
+      //return cached template
       return template;
     } else {
       //https://docs.microsoft.com/fr-fr/rest/api/resources/resource-groups/export-template
