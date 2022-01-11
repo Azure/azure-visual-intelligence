@@ -3,7 +3,16 @@ import Toolboxes from "./toolboxes/Toolboxes";
 import Graph from "./diagram/Graph";
 import DetailPan from "./detailPan/DetailPan";
 import DiagramHeader from "./diagramHeader/DiagramHeader";
-import { Grid } from "@mui/material";
+
+import {
+  IconButton,
+  Typography,
+  Grid,
+  List,
+  ListItem,
+  ListItemText,
+} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 
 const DiagramEcosystem = () => {
   return (
@@ -32,18 +41,7 @@ const DiagramEcosystem = () => {
         >
           <Grid
             item
-            xs={2}
-            style={{
-              height: "100%",
-              background: "#ffffff",
-              padding: "5px 5px 5px 20px",
-            }}
-          >
-            <Toolboxes />
-          </Grid>
-          <Grid
-            item
-            xs={8}
+            xs={10}
             style={{
               height: "90vh",
               width: "100%",

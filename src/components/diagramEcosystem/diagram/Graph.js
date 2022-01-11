@@ -1,7 +1,17 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
-import { Button } from "@mui/material";
+import {
+  IconButton,
+  Typography,
+  Grid,
+  List,
+  ListItem,
+  ListItemText,
+} from "@mui/material";
+
+//Icons
+import AddIcon from "@mui/icons-material/Add";
 //cytoscape and extensions
 import cytoscape from "cytoscape";
 import fcose from "cytoscape-fcose";
@@ -294,6 +304,12 @@ const Graph = () => {
         className="graph"
         ref={container}
       />
+
+      <div style={{ position: "absolute", top: "150px", left: "400px" }}>
+        <IconButton aria-label="New">
+          <AddIcon />
+        </IconButton>
+      </div>
     </div>
   );
 };

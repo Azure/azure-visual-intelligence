@@ -1,5 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
+import Toolboxes from "../diagramEcosystem/toolboxes/Toolboxes";
 //UI
 import {
   IconButton,
@@ -58,6 +59,17 @@ const DiagramMenu = () => {
           <ListItemText primary="Empty Diagram" />
         </ListItem>
       </List>
+      <Grid
+        item
+        xs={2}
+        style={{
+          height: "100%",
+          background: "#ffffff",
+          padding: "5px 5px 5px 20px",
+        }}
+      >
+        <Toolboxes />
+      </Grid>
     </Grid>
   );
 };
