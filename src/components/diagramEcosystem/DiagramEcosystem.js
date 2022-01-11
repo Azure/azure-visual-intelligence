@@ -16,6 +16,38 @@ import AddIcon from "@mui/icons-material/Add";
 
 const DiagramEcosystem = () => {
   return (
+    <div style={{ display: "flex", flexflow: "row nowrap", height: "100vh" }}>
+      <div
+        style={{
+          height: "100vh",
+          width: "100%",
+          position: "relative",
+        }}
+      >
+        <Graph />
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          left: "50%",
+        }}
+      >
+        <Typography variant="h3">Demo Diagram </Typography>
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          right: "5%",
+          top: "10%",
+        }}
+      >
+        <DetailPan />
+      </div>
+    </div>
+  );
+};
+export default DiagramEcosystem;
+/*
     <Grid
       container
       direction="column"
@@ -32,7 +64,11 @@ const DiagramEcosystem = () => {
         <DiagramHeader />
       </Grid>
       <Grid item style={{ height: "90vh" }}>
-        <Grid
+
+      </Grid>
+    </Grid>*/
+/*
+<Grid
           container
           direction="row"
           justifyContent="flex-start"
@@ -60,8 +96,5 @@ const DiagramEcosystem = () => {
             <DetailPan />
           </Grid>
         </Grid>
-      </Grid>
-    </Grid>
-  );
-};
-export default DiagramEcosystem;
+
+        */

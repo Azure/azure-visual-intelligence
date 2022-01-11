@@ -304,12 +304,6 @@ const Graph = () => {
         className="graph"
         ref={container}
       />
-
-      <div style={{ position: "absolute", top: "150px", left: "400px" }}>
-        <IconButton aria-label="New">
-          <AddIcon />
-        </IconButton>
-      </div>
     </div>
   );
 };

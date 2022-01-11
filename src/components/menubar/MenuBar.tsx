@@ -14,7 +14,7 @@ const MenuBar = (props: any) => {
       style={{
         height: "100vh",
         background: "#f3f2f1",
-        padding: "0px 10px 10px 10px",
+        padding: "0px 0px 10px 0px",
       }}
     >
       <Grid item>
@@ -49,10 +49,6 @@ const MenuBar = (props: any) => {
           </Grid>
 
           <Grid item>
-            <AuthenticationMenu />
-          </Grid>
-
-          <Grid item>
             <Divider />
           </Grid>
 
@@ -84,3 +80,8 @@ const MenuBar = (props: any) => {
   );
 };
 export default MenuBar;
+
+/*
+          <Grid item>
+            <AuthenticationMenu />
+          </Grid>*/

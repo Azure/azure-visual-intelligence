@@ -115,11 +115,6 @@ const AzureExistingResourcesList = () => {
         }}
       >
         <Grid item>
-          <Typography variant="h6" style={{ padding: "0 0 0 10px" }}>
-            Existing resources
-          </Typography>
-        </Grid>
-        <Grid item>
           <TreeView
             style={{
               width: "100%",
