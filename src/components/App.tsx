@@ -1,12 +1,11 @@
 import React from "react";
-import MenuBar from "./menubar/MenuBar";
+import MenuBar from "./menu/MenuBar";
 import DiagramEcosystem from "./diagramEcosystem/DiagramEcosystem";
 import { Grid } from "@mui/material";
 
 const App = () => {
   const [open, setOpen] = React.useState(true);
   const toggleSideBar = () => {
-    console.log("rop");
     setOpen(!open);
   };
 

@@ -1,18 +1,6 @@
 import React from "react";
-import Toolboxes from "./toolboxes/Toolboxes";
 import Graph from "./diagram/Graph";
 import DetailPan from "./detailPan/DetailPan";
-import DiagramHeader from "./diagramHeader/DiagramHeader";
-
-import {
-  IconButton,
-  Typography,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-} from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
 
 const DiagramEcosystem = () => {
   return (
@@ -26,14 +14,7 @@ const DiagramEcosystem = () => {
       >
         <Graph />
       </div>
-      <div
-        style={{
-          position: "absolute",
-          left: "50%",
-        }}
-      >
-        <Typography variant="h3">Demo Diagram </Typography>
-      </div>
+
       <div
         style={{
           position: "absolute",
@@ -47,6 +28,17 @@ const DiagramEcosystem = () => {
   );
 };
 export default DiagramEcosystem;
+/*
+      <div
+        style={{
+          position: "absolute",
+          left: "50%",
+        }}
+      >
+        <Typography variant="h3">Mendacorp Architecture </Typography>
+      </div>
+
+      */
 /*
     <Grid
       container

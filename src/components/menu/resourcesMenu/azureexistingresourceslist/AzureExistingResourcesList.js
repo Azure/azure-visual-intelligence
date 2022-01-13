@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { arrayToTree } from "../../../../common/arrayToTree";
 import { DragPreviewImage, useDrag } from "react-dnd";
 //UI
-import { Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import { withStyles } from "@mui/styles";
 import { TreeView } from "@material-ui/lab";
 import MuiTreeItem from "@material-ui/lab/TreeItem";
@@ -131,6 +131,6 @@ const AzureExistingResourcesList = () => {
         </Grid>
       </Grid>
     );
-  }
+  } else return <div></div>;
 };
 export default AzureExistingResourcesList;
