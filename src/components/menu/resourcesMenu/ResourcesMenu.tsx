@@ -6,7 +6,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-const DiagramMenu = () => {
+const ResourcesMenu = () => {
   return (
     <Accordion defaultExpanded={true} style={{ background: "#f3f2f1" }}>
       <AccordionSummary
@@ -23,4 +23,4 @@ const DiagramMenu = () => {
   );
 };
 
-export default DiagramMenu;
+export default ResourcesMenu;

@@ -16,7 +16,7 @@ import Select from "@mui/material/Select";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Checkbox from "@mui/material/Checkbox";
 
-const DiagramMenu = () => {
+const DisplayMenu = () => {
   const dispatch = useDispatch();
   const layouts = useSelector((state: any) => state.settings.layout);
   const overlays = useSelector((state: any) => state.settings.overlay);
@@ -110,4 +110,4 @@ const DiagramMenu = () => {
   );
 };
 
-export default DiagramMenu;
+export default DisplayMenu;

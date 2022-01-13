@@ -15,7 +15,7 @@ import { Button, Typography, Grid, Alert } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
-const DiagramMenu = () => {
+const AuthenticationMenu = () => {
   const { instance } = useMsal();
   const isAuthenticated = useIsAuthenticated();
 
@@ -80,4 +80,4 @@ const DiagramMenu = () => {
   }
 };
 
-export default DiagramMenu;
+export default AuthenticationMenu;

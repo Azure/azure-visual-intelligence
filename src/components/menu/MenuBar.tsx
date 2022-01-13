@@ -3,12 +3,9 @@ import DiagramMenu from "./diagramMenu/DiagramMenu";
 import ResourcesMenu from "./resourcesMenu/ResourcesMenu";
 import DisplayMenu from "./displayMenu/DisplayMenu";
 import AuthenticationMenu from "./authenticationMenu/AuthenticationMenu";
+import SettingsMenu from "./settingsMenu/SettingsMenu";
 import { IconButton, Typography, Divider, Grid } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const MenuBar = (props: any) => {
   return (
@@ -108,13 +105,18 @@ const MenuBar = (props: any) => {
         </Grid>
       </Grid>
 
-      <Grid item>
-        <Accordion style={{ background: "#f3f2f1" }}>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>Advanced Settings</Typography>
-          </AccordionSummary>
-          <AccordionDetails></AccordionDetails>
-        </Accordion>
+      <Grid
+        item
+        style={{
+          ...(!props.sideBarMinimized && {
+            display: "none",
+          }),
+          ...(props.sideBarMinimized && {
+            display: "block",
+          }),
+        }}
+      >
+        <SettingsMenu />
       </Grid>
     </Grid>
   );

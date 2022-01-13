@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Grid, Typography, Box, Button, Link } from "@mui/material";
+import { Grid, Typography, Box, Button } from "@mui/material";
 
 /*Should be split in multiple files :
 return(
