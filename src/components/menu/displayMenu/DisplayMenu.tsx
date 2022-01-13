@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 //UI
-import { Typography, ListItemText, Button } from "@mui/material";
+import { Typography, ListItemText } from "@mui/material";
 
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -55,12 +55,6 @@ const DisplayMenu = () => {
     });
   };
 
-  const handleClearDiagram = (event: any) => {
-    dispatch({
-      type: "CLEAR_DIAGRAM",
-    });
-  };
-
   //const isAuthenticated = useIsAuthenticated();
   return (
     <Accordion defaultExpanded={true} style={{ background: "#f3f2f1" }}>
@@ -72,7 +66,6 @@ const DisplayMenu = () => {
         <Typography>Display</Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <Button onClick={handleClearDiagram}> Clear All</Button>
         <TextField
           sx={{ m: 0.5, width: 300 }}
           id="Layout"

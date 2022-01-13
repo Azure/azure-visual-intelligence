@@ -1,12 +1,18 @@
 import React from "react";
 import AzureExistingResourcesList from "./azureexistingresourceslist/AzureExistingResourcesList";
-import { Typography } from "@mui/material";
+import { Typography, Button } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const ResourcesMenu = () => {
+  const handleClearDiagram = (event: any) => {
+    dispatch({
+      type: "CLEAR_DIAGRAM",
+    });
+  };
+
   return (
     <Accordion defaultExpanded={true} style={{ background: "#f3f2f1" }}>
       <AccordionSummary
@@ -17,6 +23,7 @@ const ResourcesMenu = () => {
         <Typography>Resources</Typography>
       </AccordionSummary>
       <AccordionDetails>
+        <Button onClick={handleClearDiagram}> Clear All</Button>
         <AzureExistingResourcesList />
       </AccordionDetails>
     </Accordion>
