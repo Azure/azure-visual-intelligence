@@ -1,17 +1,7 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
-import {
-  IconButton,
-  Typography,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-} from "@mui/material";
 
-//Icons
-import AddIcon from "@mui/icons-material/Add";
 //cytoscape and extensions
 import cytoscape from "cytoscape";
 import fcose from "cytoscape-fcose";
@@ -49,13 +39,6 @@ const Graph = () => {
   );
   const diagramDisplay = useSelector((state) => state.diagram.display);
   //const diagramDisplay = useSelector((state) => state.diagram.display);
-
-  const DeployPortalLink =
-    "https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2FAzureStack-QuickStart-Templates%2Fmaster%2F101-vm-windows-create%2Fazuredeploy.json";
-
-  const DeployThroughPortal = (event) => {
-    window.open(DeployPortalLink, "_blank").focus();
-  };
 
   React.useEffect(() => {
     if (graph.current) {

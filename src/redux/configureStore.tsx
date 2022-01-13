@@ -1,10 +1,9 @@
-import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
 import { watcherSaga } from "./sagas/rootSaga";
 //Persist
 import {
   persistStore,
-  persistReducer,
   FLUSH,
   REHYDRATE,
   PAUSE,
@@ -12,7 +11,7 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
+//import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 //Slice
 import userReducer from "./ducks/userSlice";
 import settingsReducer from "./ducks/settingsSlice";
@@ -23,6 +22,7 @@ import armEngineReducer from "./ducks/armEngineSlice";
 
 const sagaMiddleware = createSagaMiddleware();
 
+/*
 const persistUserConfig = {
   key: "user",
   storage,
@@ -37,7 +37,7 @@ const persistedUserReducer = persistReducer(persistUserConfig, userReducer);
 const persistedResourcesReducer = persistReducer(
   persistResourcesConfig,
   resourcesReducer
-);
+);*/
 
 const store = configureStore({
   reducer: {

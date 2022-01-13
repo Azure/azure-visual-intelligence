@@ -1,11 +1,11 @@
-const LABELMAXCHAR = 11;
-var makeLabel = function (node) {
+//const LABELMAXCHAR = 11;
+/*var makeLabel = function (node: any) {
   return node.data("label")
     ? node.data("label").length > LABELMAXCHAR + 3
       ? node.data("label").substring(0, LABELMAXCHAR) + "..."
       : node.data("label")
     : node.data("id");
-};
+};*/
 
 const nodeStyles = [
   {
@@ -76,4 +76,5 @@ const edgeStyles = [
   },
 ];
 
-export default [...nodeStyles, ...edgeStyles];
+const array = [...nodeStyles, ...edgeStyles];
+export default array;
