@@ -98,9 +98,7 @@ function AddDiagramResourceToDisplay(
   }
   //edge
   if (Evaluatedlayout === "ARM") {
-    console.log("diagramRelations", diagramRelations);
     for (var relation of diagramRelations) {
-      console.log("relation", relation);
       var newEdge = {
         data: {
           id: relation.AVIrelationID,

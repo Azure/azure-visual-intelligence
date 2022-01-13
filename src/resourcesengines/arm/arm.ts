@@ -4,6 +4,7 @@ import {
   addResourceGroupTemplates,
   getArmEngineResourceGroupTemplate,
 } from "../../redux/ducks/armEngineSlice";
+import { getDiagramResource } from "../../redux/ducks/diagramSlice";
 import { getAccessToken } from "../../redux/ducks/userSlice";
 import { call, delay, select, put } from "redux-saga/effects";
 import "isomorphic-fetch";
@@ -71,130 +72,58 @@ export class armEngine extends resourcesEngine {
 
     //For each resource group
     for (const resourceGroupID of ARMresourceGroupsID) {
+      //get the ARM template
       var resourcegroupARMtemplate = yield call(
         armEngine.azGetARMResourceGroup,
         resourceGroupID
       );
 
-      //For each resource of the template
-      for (let resource of resourcegroupARMtemplate.resources) {
-        if (resource.dependsOn !== undefined) {
-          console.log("resource ", resource.name);
-          console.log("resource depends On ", resource.dependsOn);
-          for (const dependon of resource.dependsOn) {
-            console.log("dependon", dependon);
-            const regex = new RegExp(
-              "\\[resourceId\\(\\'(?<resourcetype>.*?)\\',\\s\\'(?<resourcename>.*?)\\'"
-            );
-            const result = regex.exec(dependon);
-            console.log(result);
-            //if there is at least one dependson clause
-            if (result !== undefined && result !== null) {
-              if (result.groups !== undefined) {
-                if (
-                  result.groups.resourcetype !== undefined &&
-                  result.groups.resourcename !== undefined
-                ) {
-                  if (
-                    // if it is a depends clause on a n item to display
-                    resources.find((element) => element.name === resource.name)
-                  ) {
-                    console.log("I am resource", resource.name);
-                    console.log(
-                      "depends clause name ",
-                      result.groups.resourcename
-                    );
-                    console.log(
-                      "depends clause type ",
-                      result.groups.resourcetype
-                    );
-                  }
-                  if (
-                    //if the item to display is part of the depends clause
-                    resources.find(
-                      (element) =>
-                        element.name === result!.groups!.resourcename!
-                    )
-                  ) {
-                    console.log(
-                      "I am resource in a dependsOn",
-                      result.groups.resourcename
-                    );
-                    console.log("He depends on me name  ", resource.name);
-                    console.log("he depends on me type ", resource.type);
-                    if (
-                      isNullOrUndefined(
-                        resources.find(
-                          (element) => element.name === resource.name
-                        )
-                      )
-                    ) {
-                      //if the ARM resources does not exist we need to add it
-                      let AVIresource: AVIresource = {
-                        AVIresourceID:
-                          "/subscriptions/" +
-                          resourceGroupID.substring(15, 51) +
-                          "/resourcegroups/" +
-                          resourceGroupID.substring(67) +
-                          "/providers/" +
-                          resource.type.toLowerCase() +
-                          resource.name,
-                        resourcegroup: resourceGroupID.substring(52),
-                        subscription: resourceGroupID.substring(15, 51),
-                        type: resource.type.toLowerCase(),
-                        name: resource.name,
-                        enrichments: {
-                          ARG: {
-                            parent:
-                              "/subscriptions/" +
-                              resourceGroupID.substring(15, 51) +
-                              "/resourcegroups/" +
-                              resourceGroupID.substring(67),
-                          },
-                          ARM: resource,
-                        },
-                      };
-                      console.log("Aviresource", AVIresource);
-                      resourcesToEnrich.add(AVIresource);
-                      console.log(resourcesToEnrich);
-                      let AVIrelation: AVIrelation = {
-                        AVIrelationID:
-                          AVIresource.AVIresourceID +
-                          "-->" +
-                          resource.AVIresourceID,
-                        sourceID: AVIresource.AVIresourceID,
-                        targetID:
-                          "/subscriptions/" +
-                          resourceGroupID.substring(15, 51) +
-                          "/resourcegroups/" +
-                          resourceGroupID.substring(67) +
-                          "/providers/" +
-                          result.groups.resourcetype.toLowerCase() +
-                          "/" +
-                          result.groups.resourcename,
-                        type: "dependson",
-                      };
-                      returnEdges.push(AVIrelation);
-                    }
-                  }
-                }
-              } else {
-                console.log("depends on  regex failed", resource.dependsOn);
-              }
-            }
-          }
+      //Enrich the resources in the parameters not yet enriched
+      for (let resource of resourcesToEnrich) {
+        var EnrichedResources = armEngine.EnrichResourceFromARM(
+          resource,
+          resourcegroupARMtemplate
+        );
+        //Add enrich resources to response
+        for (const resource of EnrichedResources) {
+          returnElements.push(resource);
         }
       }
-    }
-    //Enrich the resource with info from the template
-    for (let resource of resourcesToEnrich) {
-      var EnrichedResources = armEngine.EnrichResourceFromARM(
-        resource,
-        resourcegroupARMtemplate
-      );
-      //Add enrich resources to response
-      for (const resource of EnrichedResources) {
-        returnElements.push(resource);
+
+      for (let resource of resourcegroupARMtemplate.resources) {
+        //ADD and Enrich subtype related to resources part of the parameters
+        //ADD the relation between main type and subtype
+        if (armEngine.isSubType(resource)) {
+          const mainResourceId: string = armEngine.GetMainResourceAVIID(
+            resourceGroupID,
+            resource
+          );
+          if (armEngine.isResourcePartOfList(returnElements, mainResourceId)) {
+            // yield armEngine.isResourcePartOfDiagram(mainResourceId) ||
+            const AVIresource: AVIresource =
+              armEngine.GenerateAVIResourceFromTemplate(
+                resourceGroupID,
+                resource
+              );
+            returnElements.push(AVIresource);
+            returnEdges.push(
+              armEngine.GenerateAVIARMSubTypeRelation(
+                mainResourceId,
+                AVIresource.AVIresourceID
+              )
+            );
+          } else {
+            console.log(
+              "sub type not added because main type not in diagram",
+              resource
+            );
+          }
+        } else {
+          console.log(
+            "This is not a subtype, we should add other relations",
+            resource
+          );
+        }
       }
     }
 
@@ -217,6 +146,88 @@ export class armEngine extends resourcesEngine {
       }
     }
     return [resourcesToKeep, resourcesAlreadyEnriched];
+  }
+
+  static isSubType(resource: any) {
+    if (resource.type.split("/").length - 1 > 1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  static GenerateAVIARMSubTypeRelation(sourceID: string, targetID: string) {
+    let AVIrelation: AVIrelation = {
+      AVIrelationID: sourceID + targetID,
+      sourceID: sourceID,
+      targetID: targetID,
+      type: "SubType",
+    };
+    return AVIrelation;
+  }
+
+  static GenerateAVIResourceFromTemplate(
+    resourceGroupID: string,
+    resourceTemplate: any
+  ) {
+    let AVIresource: AVIresource = {
+      AVIresourceID:
+        resourceGroupID +
+        "/" +
+        resourceTemplate.type.split("/")[0].toLowerCase() +
+        "/" +
+        resourceTemplate.type.split("/")[1].toLowerCase() +
+        "/" +
+        resourceTemplate.name.split("/")[0].toLowerCase() +
+        "/" +
+        resourceTemplate.type.split("/")[2].toLowerCase() +
+        "/" +
+        resourceTemplate.name.split("/")[1].toLowerCase(),
+      resourcegroup: resourceGroupID.substring(67),
+      subscription: resourceGroupID.substring(15, 51),
+      type: resourceTemplate.type.toLowerCase(),
+      name: resourceTemplate.name,
+      enrichments: {
+        ARG: {
+          parent:
+            "/subscriptions/" +
+            resourceGroupID.substring(15, 51) +
+            "/resourcegroups/" +
+            resourceGroupID.substring(67),
+        },
+        ARM: resourceTemplate,
+      },
+    };
+    return AVIresource;
+  }
+
+  static isResourcePartOfList(list: AVIresource[], AVIID: string) {
+    const result = list.find((item) => item.AVIresourceID === AVIID);
+    if (result === undefined) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  static *isResourcePartOfDiagram(AVIID: string): Generator<any, any, any> {
+    const template = yield select(getDiagramResource, AVIID);
+    if (template !== undefined) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  static GetMainResourceAVIID(resourceGroupID: string, resourcetemplate: any) {
+    const MainResourceAVIID: string =
+      resourceGroupID +
+      "/providers/" +
+      resourcetemplate.type.split("/")[0].toLowerCase() +
+      "/" +
+      resourcetemplate.type.split("/")[1].toLowerCase() +
+      "/" +
+      resourcetemplate.name.split("/")[0].toLowerCase();
+    return MainResourceAVIID;
   }
 
   static GetResourceGroups(resources: Set<AVIresource>) {

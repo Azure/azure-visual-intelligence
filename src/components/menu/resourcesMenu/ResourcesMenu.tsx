@@ -1,4 +1,5 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import AzureExistingResourcesList from "./azureexistingresourceslist/AzureExistingResourcesList";
 import { Typography, Button } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
@@ -7,6 +8,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const ResourcesMenu = () => {
+  const dispatch = useDispatch();
   const handleClearDiagram = (event: any) => {
     dispatch({
       type: "CLEAR_DIAGRAM",
