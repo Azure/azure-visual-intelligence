@@ -44,6 +44,7 @@ const diagramSlice = createSlice({
       return { ...state, elements: { ...action.payload } };
     },
     setDiagramNodes(state, action) {
+      console.log("setDiagramNodes-Start");
       return {
         ...state,
         display: {
@@ -77,21 +78,20 @@ const diagramSlice = createSlice({
   },
 });
 
+export const getDiagramResources = (state) => {
+  return state.diagram.resources;
+};
+
 export const getDiagramResource = (state, id) => {
   if (state.diagram === undefined) {
     return undefined;
   } else {
-    console.log(state.diagram.resources);
-    console.log(id);
-
     const result = state.diagram.resources.find(
       (item) => item.AVIresourceID === id
     );
     if (result === undefined) {
-      console.log("not found");
       return undefined;
     } else {
-      console.log("found");
       return result;
     }
   }
