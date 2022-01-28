@@ -231,6 +231,7 @@ const Graph = () => {
           ],
           minZoom: 0.2,
           maxZoom: 4,
+          wheelSensitivity: 0.5,
           container: container.current,
         });
         graph.current.on("click", "node", function (evt) {

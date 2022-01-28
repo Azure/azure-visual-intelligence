@@ -1,7 +1,10 @@
 import { call, put, select, all } from "redux-saga/effects";
-import { setDiagramNodes } from "../../ducks/diagramSlice";
+import {
+  setDiagramNodes,
+  getDiagramResources,
+  getDiagramResource,
+} from "../../ducks/diagramSlice";
 
-export const getDiagramResources = (state) => state.diagram.resources;
 export const getDiagramRelations = (state) => state.diagram.relations;
 export const getAzureSettings = (state) => state.settings;
 export const getCurrentLayout = (state) => state.settings.diagram.CurrentLayout;
@@ -14,7 +17,7 @@ export function* handleNewDiagramResources(action) {
 
     //Call
     const responses = yield all(
-      azureSettings.layout.map((layout) =>
+      yield azureSettings.layout.map((layout) =>
         call(
           AddDiagramResourceToDisplay,
           currentDiagramResources,
@@ -25,6 +28,8 @@ export function* handleNewDiagramResources(action) {
       )
     );
 
+    console.log("ended");
+
     yield all(
       responses.map((response) => {
         return put(setDiagramNodes(response));
@@ -33,9 +38,10 @@ export function* handleNewDiagramResources(action) {
   } catch (error) {
     console.log(error);
   }
+  console.log("All setDiagramNodes ended");
 }
 
-function AddDiagramResourceToDisplay(
+function* AddDiagramResourceToDisplay(
   diagramResources,
   diagramRelations,
   azureSettings,
@@ -47,6 +53,7 @@ function AddDiagramResourceToDisplay(
   var returnNodes = [];
   var returnEdges = [];
   for (const resource of diagramResources) {
+    console.log("doing something");
     //get the azure resource metadata
     var nodeSettings = azureSettings.resources.azure.find(
       (element) => element.type === resource.type
@@ -98,21 +105,38 @@ function AddDiagramResourceToDisplay(
   }
   //edge
   if (Evaluatedlayout === "ARM") {
-    for (var relation of diagramRelations) {
-      var newEdge = {
-        data: {
-          id: relation.AVIrelationID,
-          source: relation.sourceID,
-          target: relation.targetID,
-        },
-      };
-      returnEdges.push(newEdge);
+    let cpt = 0;
+    let diagramResources = yield select(getDiagramResources);
+    for (let relation of diagramRelations) {
+      cpt++;
+      console.log("cpt", cpt);
+      console.log("doing something in relation loop", relation);
+      if (
+        isResourcePartOfDiagram(diagramResources, relation.sourceID) &&
+        isResourcePartOfDiagram(diagramResources, relation.targetID)
+      ) {
+        let newEdge = {
+          data: {
+            id: relation.AVIrelationID,
+            source: relation.sourceID,
+            target: relation.targetID,
+          },
+        };
+        returnEdges.push(newEdge);
+      } else {
+        console.log(
+          "Creating relation : source or target does not exist :",
+          relation
+        );
+      }
     }
+    console.log("out");
   }
 
   if (Evaluatedlayout === "Governance") {
     //we update parent relation ship to ALL nodes (relation of some old node may have change with this new node)
     returnNodes.forEach(function (node, index) {
+      console.log("doing something in governance loop");
       var ParentNode = returnNodes.find(
         (element) => element.data.id === this[index].data.parentgovernance
       );
@@ -129,7 +153,18 @@ function AddDiagramResourceToDisplay(
       }
     }, returnNodes);
   }
+  console.log("AddDiagramResourceToDisplay finished", Evaluatedlayout);
   return { Evaluatedlayout, returnNodes, returnEdges };
+}
+
+function isResourcePartOfDiagram(diagramResources, AVIID) {
+  //const template = yield select(getDiagramResource, AVIID);
+  const result = diagramResources.find((item) => item.AVIresourceID === AVIID);
+  if (result !== undefined) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 /*

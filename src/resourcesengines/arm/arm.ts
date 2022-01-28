@@ -91,6 +91,15 @@ export class armEngine extends resourcesEngine {
       }
 
       for (let resource of resourcegroupARMtemplate.resources) {
+        //let's be bold and add ID relation, assuming required subtype will be added later anyway :p
+        const IDrelations: AVIrelation[] = armEngine.GenerateAVIARMIDRelations(
+          resourceGroupID,
+          resource
+        );
+        for (var IDrelation of IDrelations) {
+          returnEdges.push(IDrelation);
+        }
+
         //ADD and Enrich subtype related to resources part of the parameters
         //ADD the relation between main type and subtype
         if (armEngine.isSubType(resource)) {
@@ -165,14 +174,119 @@ export class armEngine extends resourcesEngine {
     return AVIrelation;
   }
 
+  static getDeepKeys(obj: any) {
+    var keys = [];
+    for (var key in obj) {
+      if (key === "id") {
+        keys.push(obj[key]);
+      }
+      if (typeof obj[key] === "object") {
+        var subkeys: any = armEngine.getDeepKeys(obj[key]);
+        keys = keys.concat(
+          subkeys.map(function (subkey: any) {
+            return subkey;
+          })
+        );
+      }
+    }
+    return keys;
+  }
+  static GenerateAVIARMIDRelations(
+    resourceGroupID: string,
+    resourceTemplate: any
+  ) {
+    let returnRelations: AVIrelation[] = [];
+    if (armEngine.isSubType(resourceTemplate)) {
+      const AVIresourceID =
+        resourceGroupID.toLowerCase() +
+        "/providers/" +
+        resourceTemplate.type.split("/")[0].toLowerCase() +
+        "/" +
+        resourceTemplate.type.split("/")[1].toLowerCase() +
+        "/" +
+        resourceTemplate.name.split("/")[0].toLowerCase() +
+        "/" +
+        resourceTemplate.type.split("/")[2].toLowerCase() +
+        "/" +
+        resourceTemplate.name.split("/")[1].toLowerCase();
+      let IDrelations = armEngine.getDeepKeys(resourceTemplate);
+      for (let IDtarget of IDrelations) {
+        if (IDtarget.startsWith("[resourceId")) {
+          const regex = new RegExp(
+            "\\[resourceId\\(\\'(?<resourcetype>.*?)\\',\\s\\'(?<resourcename>.*?)\\'"
+          );
+          const result = regex.exec(IDtarget);
+          if (result !== undefined && result !== null) {
+            if (result.groups !== undefined) {
+              const target =
+                resourceGroupID.toLowerCase() +
+                "/providers/" +
+                result.groups.resourcetype.toLowerCase() +
+                "/" +
+                result.groups.resourcename.toLowerCase();
+              if (IDtarget !== AVIresourceID) {
+                let AVIrelation: AVIrelation = {
+                  AVIrelationID: AVIresourceID + IDtarget,
+                  sourceID: AVIresourceID,
+                  targetID: target,
+                  type: "ref",
+                };
+                returnRelations.push(AVIrelation);
+              }
+            }
+          }
+        }
+      }
+    } else {
+      const AVIresourceID =
+        resourceGroupID.toLowerCase() +
+        "/providers/" +
+        resourceTemplate.type.split("/")[0].toLowerCase() +
+        "/" +
+        resourceTemplate.type.split("/")[1].toLowerCase() +
+        "/" +
+        resourceTemplate.name.split("/")[0].toLowerCase();
+      let IDrelations = armEngine.getDeepKeys(resourceTemplate);
+      for (let IDtarget of IDrelations) {
+        if (IDtarget.startsWith("[resourceId")) {
+          const regex = new RegExp(
+            "\\[resourceId\\(\\'(?<resourcetype>.*?)\\',\\s\\'(?<resourcename>.*?)\\'"
+          );
+          const result = regex.exec(IDtarget);
+          if (result !== undefined && result !== null) {
+            if (result.groups !== undefined) {
+              const target =
+                resourceGroupID.toLowerCase() +
+                "/providers/" +
+                result.groups.resourcetype.toLowerCase() +
+                "/" +
+                result.groups.resourcename.toLowerCase();
+              if (IDtarget !== AVIresourceID) {
+                let AVIrelation: AVIrelation = {
+                  AVIrelationID: AVIresourceID + IDtarget,
+                  sourceID: AVIresourceID,
+                  targetID: target,
+                  type: "ref",
+                };
+                returnRelations.push(AVIrelation);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return returnRelations;
+  }
+
   static GenerateAVIResourceFromTemplate(
     resourceGroupID: string,
     resourceTemplate: any
   ) {
     let AVIresource: AVIresource = {
       AVIresourceID:
-        resourceGroupID +
-        "/" +
+        resourceGroupID.toLowerCase() +
+        "/providers/" +
         resourceTemplate.type.split("/")[0].toLowerCase() +
         "/" +
         resourceTemplate.type.split("/")[1].toLowerCase() +

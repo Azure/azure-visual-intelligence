@@ -44,6 +44,7 @@ function* AddResourceToDiagram(
     payload
   );
 
+  console.log("resources", resources);
   //Now we are working on legit AVIresource type.
   //We ask armEngine to complete the list of resources with related resources and provide ARM info to all thoses resources
   var relations: AVIrelation[] = [];
@@ -76,14 +77,14 @@ function updateToolboxResourcestoAVIresources(Toolboxes: any) {
   let payload: AVIresource[] = [];
   for (const resource of Toolboxes) {
     let AVIresource: AVIresource = {
-      AVIresourceID: resource.TreeID,
-      resourcegroup: resource.resourceGroup,
-      subscription: resource.subscriptionId,
-      type: resource.type,
-      name: resource.name,
+      AVIresourceID: resource.TreeID.toLowerCase(),
+      resourcegroup: resource.resourceGroup.toLowerCase(),
+      subscription: resource.subscriptionId.toLowerCase(),
+      type: resource.type.toLowerCase(),
+      name: resource.name.toLowerCase(),
       enrichments: {
         ARG: {
-          parent: resource.TreeParentID,
+          parent: resource.TreeParentID.toLowerCase(),
         },
       },
     };
