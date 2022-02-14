@@ -29,72 +29,51 @@ const DetailPan = () => {
     };
 
     return (
-      <Box
-        border={1}
-        borderColor="#808080"
+      <Grid
+        container
+        direction="column"
+        justifyContent="flex-start"
+        alignItems="left"
+        wrap="nowrap"
         style={{
           height: "inherit",
           overflow: "auto",
-        }}
+        }} // --> add scrollbar when overflow }}
       >
-        <Grid
-          container
-          direction="column"
-          justifyContent="flex-start"
-          alignItems="left"
-          wrap="nowrap"
-          style={{
-            height: "inherit",
-            overflow: "auto",
-            boxShadow: "2px 2px 4px 4px rgba(0, 0, 0, 0.2)",
-          }} // --> add scrollbar when overflow }}
-        >
-          <Grid item>
-            <Typography variant="h5">Detail Pan</Typography>
-          </Grid>
-          <Grid item>
-            <Typography variant="body">
-              Resource name : {detailData.label}
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Button onClick={openResourceInPortal}>
-              See me on Azure Portal
-            </Button>
-          </Grid>
-          <Grid item>
-            <Typography variant="h6">Recommendations</Typography>
-          </Grid>
+        <Grid item>
+          <Typography variant="h5">Details</Typography>
         </Grid>
-      </Box>
+        <Grid item>
+          <Typography variant="body">
+            Resource name : {detailData.label}
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Button onClick={openResourceInPortal}>See me on Azure Portal</Button>
+        </Grid>
+        <Grid item>
+          <Typography variant="h6">Recommendations</Typography>
+        </Grid>
+      </Grid>
     );
   } else {
     return (
-      <Box
-        border={1}
-        borderColor="#808080"
+      <Grid
+        container
+        direction="column"
+        justifyContent="flex-start"
+        alignItems="center"
+        wrap="nowrap"
         style={{
           height: "inherit",
           overflow: "auto",
-        }}
+          boxShadow: "2px 2px 4px 4px rgba(0, 0, 0, 0.2)",
+        }} // --> add scrollbar when overflow }}
       >
-        <Grid
-          container
-          direction="column"
-          justifyContent="flex-start"
-          alignItems="center"
-          wrap="nowrap"
-          style={{
-            height: "inherit",
-            overflow: "auto",
-            boxShadow: "2px 2px 4px 4px rgba(0, 0, 0, 0.2)",
-          }} // --> add scrollbar when overflow }}
-        >
-          <Grid item>
-            <Typography variant="h5">Detail Pan</Typography>
-          </Grid>
+        <Grid item>
+          <Typography variant="h5">Details</Typography>
         </Grid>
-      </Box>
+      </Grid>
     );
   }
 };

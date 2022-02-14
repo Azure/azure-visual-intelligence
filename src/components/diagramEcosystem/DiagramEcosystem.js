@@ -8,7 +8,7 @@ const DiagramEcosystem = () => {
       <div
         style={{
           height: "100vh",
-          width: "100%",
+          width: "80%",
           position: "relative",
         }}
       >
@@ -17,9 +17,10 @@ const DiagramEcosystem = () => {
 
       <div
         style={{
-          position: "absolute",
-          right: "5%",
-          top: "10%",
+          height: "100vh",
+          width: "20%",
+          position: "relative",
+          background: "#f3f2f1",
         }}
       >
         <DetailPan />
