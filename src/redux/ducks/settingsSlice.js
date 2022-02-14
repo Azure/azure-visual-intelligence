@@ -703,6 +703,10 @@ const initialState = {
           type: "default",
           diagramprimitive: "item",
         },
+        {
+          type: "microsoft.resources/subscriptions/resourcegroups",
+          diagramprimitive: "hidden",
+        },
       ],
     },
     {

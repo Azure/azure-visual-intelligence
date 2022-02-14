@@ -249,26 +249,77 @@ export class armEngine extends resourcesEngine {
       let IDrelations = armEngine.getDeepKeys(resourceTemplate);
       for (let IDtarget of IDrelations) {
         if (IDtarget.startsWith("[resourceId")) {
-          const regex = new RegExp(
-            "\\[resourceId\\(\\'(?<resourcetype>.*?)\\',\\s\\'(?<resourcename>.*?)\\'"
-          );
-          const result = regex.exec(IDtarget);
-          if (result !== undefined && result !== null) {
-            if (result.groups !== undefined) {
-              const target =
-                resourceGroupID.toLowerCase() +
-                "/providers/" +
-                result.groups.resourcetype.toLowerCase() +
-                "/" +
-                result.groups.resourcename.toLowerCase();
-              if (IDtarget !== AVIresourceID) {
-                let AVIrelation: AVIrelation = {
-                  AVIrelationID: AVIresourceID + IDtarget,
-                  sourceID: AVIresourceID,
-                  targetID: target,
-                  type: "ref",
-                };
-                returnRelations.push(AVIrelation);
+          //if it is a subtype
+          if (IDtarget.split(",").length - 1 > 1) {
+            console.log("subtype DETECTED");
+            const regex = new RegExp(
+              "\\[resourceId\\(\\'(?<resourcetype>.*?)\\',\\s\\'(?<resourceparentname>.*?)\\',\\s\\'(?<resourcename>.*?)\\'"
+            );
+            /*example : 
+            resourcetype:"Microsoft.Network/virtualNetworks/subnets",
+            resourceparentname:"mendacorp_online-vnet",
+            resourcename:"default"
+            */
+            const result = regex.exec(IDtarget);
+
+            if (result !== undefined && result !== null) {
+              if (result.groups !== undefined) {
+                //We split the resourcetype again :
+                const provider = result.groups.resourcetype
+                  .split("/")[0]
+                  .toLowerCase();
+                const parenttype = result.groups.resourcetype
+                  .split("/")[1]
+                  .toLowerCase();
+                const resourcesubtype = result.groups.resourcetype
+                  .split("/")[2]
+                  .toLowerCase();
+
+                const target =
+                  resourceGroupID.toLowerCase() +
+                  "/providers/" +
+                  provider +
+                  "/" +
+                  parenttype +
+                  "/" +
+                  result.groups.resourceparentname.toLowerCase() +
+                  "/" +
+                  resourcesubtype +
+                  "/" +
+                  result.groups.resourcename.toLowerCase();
+                if (IDtarget !== AVIresourceID) {
+                  let AVIrelation: AVIrelation = {
+                    AVIrelationID: AVIresourceID + IDtarget,
+                    sourceID: AVIresourceID,
+                    targetID: target,
+                    type: "ref",
+                  };
+                  returnRelations.push(AVIrelation);
+                }
+              }
+            }
+          } else {
+            const regex = new RegExp(
+              "\\[resourceId\\(\\'(?<resourcetype>.*?)\\',\\s\\'(?<resourcename>.*?)\\'"
+            );
+            const result = regex.exec(IDtarget);
+            if (result !== undefined && result !== null) {
+              if (result.groups !== undefined) {
+                const target =
+                  resourceGroupID.toLowerCase() +
+                  "/providers/" +
+                  result.groups.resourcetype.toLowerCase() +
+                  "/" +
+                  result.groups.resourcename.toLowerCase();
+                if (IDtarget !== AVIresourceID) {
+                  let AVIrelation: AVIrelation = {
+                    AVIrelationID: AVIresourceID + IDtarget,
+                    sourceID: AVIresourceID,
+                    targetID: target,
+                    type: "ref",
+                  };
+                  returnRelations.push(AVIrelation);
+                }
               }
             }
           }
