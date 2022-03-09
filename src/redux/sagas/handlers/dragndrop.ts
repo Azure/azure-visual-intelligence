@@ -55,21 +55,6 @@ function* AddResourceToDiagram(
 
   //What we want to do next is create the relationship from all Engine
 
-  /*var returnElements;
-  var resources = yield call(enrichResourcesARM, [accessToken, payload]);
-  if (diagramResources.length === 0) {
-    //if diagramResources is currently empty, payload becomes the diagram resources
-    returnElements = resources;
-  } else {
-    //if we have existing items we want to add only new ones
-    returnElements = [...resources];
-    for (const resource of resources) {
-      if (!returnElements.find((element) => element.id === resource.id)) {
-        returnElements.push(resource);
-      }
-    }
-  }
-  return [...returnElements];*/
   return [resources, relations];
 }
 

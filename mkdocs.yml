@@ -1,0 +1,35 @@
+site_name: Azure Visual Intelligence
+site_url: https://github.com/Azure/azure-visual-intelligence
+site_description: Azure Visual Intelligence
+site_author: Microsoft
+
+repo_url: https://github.com/Azure/azure-visual-intelligence
+edit_uri: ""
+
+theme:
+  name: material
+  custom_dir: mkdocs-overrides
+  font:
+    text: Roboto
+    code: Roboto Mono
+  palette:
+    scheme: default
+    primary: blue grey
+    accent: indigo
+  logo: assets/ms_icon.png
+  favicon: assets/ms_icon.png
+  features:
+    - navigation.instant
+    - navigation.indexes
+
+nav:
+  - Overview: "index.md"
+  - Quickstart:
+      - Installation: "installation.md"
+      - Usage: "usage.md"
+  - Concept:
+      - Engine: "engine.md"
+      - Layout: "layout.md"
+  - Contribute:
+      - Overview: "index1.md"
+      - Develop: "index2.md"

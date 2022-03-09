@@ -700,12 +700,34 @@ const initialState = {
       name: "ARM",
       items: [
         {
-          type: "default",
-          diagramprimitive: "item",
+          type: "ManagementGroup",
+          parentType: "none",
+          diagramprimitive: "hidden",
+        },
+        {
+          type: "microsoft.resources/subscriptions",
+          parentType: "ManagementGroup",
+          diagramprimitive: "hidden",
         },
         {
           type: "microsoft.resources/subscriptions/resourcegroups",
-          diagramprimitive: "hidden",
+          parentType: "none",
+          diagramprimitive: "box",
+        },
+        {
+          type: "default",
+          parentType: "microsoft.resources/subscriptions/resourcegroups",
+          diagramprimitive: "item",
+          relations: [
+            {
+              engine: "ARM",
+              type: "ref",
+            },
+            {
+              engine: "ARM",
+              type: "subtype",
+            },
+          ],
         },
       ],
     },
@@ -715,53 +737,46 @@ const initialState = {
         {
           type: "ManagementGroup",
           diagramprimitive: "box",
-          parent: {
-            queryType: "field",
-            query: "TreeParentID",
-          },
+          parentType: "none",
         },
         {
           type: "microsoft.resources/subscriptions",
           diagramprimitive: "box",
-          parent: {
-            queryType: "field",
-            query: "TreeParentID",
-          },
+          parentType: "ManagementGroup",
         },
         {
           type: "microsoft.resources/subscriptions/resourcegroups",
           diagramprimitive: "box",
-          parent: {
-            queryType: "field",
-            query: "TreeParentID",
-          },
+          parentType: "microsoft.resources/subscriptions",
         },
         {
           type: "default",
           diagramprimitive: "item",
-          parent: {
-            queryType: "field",
-            query: "TreeParentID",
-          },
+          parentType: "microsoft.resources/subscriptions/resourcegroups",
         },
         {
           type: "microsoft.operationalinsights/workspaces/savedsearches",
           diagramprimitive: "hidden",
+          parentType: "microsoft.resources/subscriptions/resourcegroups",
         },
         {
           type: "microsoft.storage/storageaccounts/queueservices",
           diagramprimitive: "hidden",
+          parentType: "microsoft.resources/subscriptions/resourcegroups",
         },
         {
           type: "microsoft.storage/storageaccounts/tableservices",
+          parentType: "microsoft.resources/subscriptions/resourcegroups",
           diagramprimitive: "hidden",
         },
         {
           type: "microsoft.storage/storageaccounts/blobservices",
+          parentType: "microsoft.resources/subscriptions/resourcegroups",
           diagramprimitive: "hidden",
         },
         {
           type: "microsoft.storage/storageaccounts/fileservices",
+          parentType: "microsoft.resources/subscriptions/resourcegroups",
           diagramprimitive: "hidden",
         },
       ],
