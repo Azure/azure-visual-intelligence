@@ -2,8 +2,6 @@
 
 [Full documentation](https://azure.github.io/azure-visual-intelligence/)
 
-## Current state
-
 ![azure visual intelligence last screenshot](/docs/assets/laststate.jpg)
 
 ## Project Status
