@@ -1,6 +1,6 @@
 # Azure Visual Intelligence
 
-[Full documentation](https://github.com/Azure/azure-visual-intelligence)
+[Full documentation](https://azure.github.io/azure-visual-intelligence/)
 
 ## Current state
 
