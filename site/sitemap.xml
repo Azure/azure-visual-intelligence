@@ -2,7 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://github.com/Azure/azure-visual-intelligence/</loc>
-         <lastmod>2022-03-09</lastmod>
+         <lastmod>2022-03-18</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://github.com/Azure/azure-visual-intelligence/doc-contribution/</loc>
+         <lastmod>2022-03-18</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://github.com/Azure/azure-visual-intelligence/installation/</loc>
+         <lastmod>2022-03-18</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://github.com/Azure/azure-visual-intelligence/workflow/</loc>
+         <lastmod>2022-03-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
