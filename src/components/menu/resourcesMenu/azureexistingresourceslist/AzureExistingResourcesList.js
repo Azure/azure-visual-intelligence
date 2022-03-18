@@ -4,12 +4,8 @@ import { arrayToTree } from "../../../../common/arrayToTree";
 import { DragPreviewImage, useDrag } from "react-dnd";
 //UI
 import { Grid } from "@mui/material";
-import { withStyles } from "@mui/styles";
-import { TreeView } from "@material-ui/lab";
-import MuiTreeItem from "@material-ui/lab/TreeItem";
-
-//https://github.com/mui-org/material-ui/blob/v4.x/packages/material-ui-lab/src/TreeItem/TreeItem.js
-//https://github.com/mui-org/material-ui/blob/master/packages/mui-lab/src/TreeItem/TreeItem.js
+import { TreeView } from "@mui/lab";
+import TreeItem from "@mui/lab/TreeItem";
 
 //Icons
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -26,16 +22,6 @@ const AzureExistingResourcesList = () => {
       parentId: "TreeParentID",
       childrenField: "children",
     });
-
-    //Styling for TreeItem so that text can't be selected
-    const TreeItem = withStyles({
-      root: {},
-      selected: {},
-      content: {},
-      label: {
-        userSelect: "none", // This is to prevent text selection within the treeview item, Thanks Doc
-      },
-    })(MuiTreeItem);
 
     //flattening the tree to pass all childs of the selected resource to the diagram
     let flatten = (children, extractChildren, level, parent) =>
@@ -88,6 +74,7 @@ const AzureExistingResourcesList = () => {
             label={treeItem.data.TreeName}
             ref={drag}
             style={{ isDragging }}
+            onFocusCapture={e => e.stopPropagation()}
           >
             {treeItem.children &&
               treeItem.children.map((treeItem) => (
