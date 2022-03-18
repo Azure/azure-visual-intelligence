@@ -30,6 +30,8 @@ nav:
   - Concept:
       - Engine: "engine.md"
       - Layout: "layout.md"
+      - Workflow: "workflow.md"
   - Contribute:
       - Overview: "index1.md"
+      - Documentation: "doc-contribution.md"
       - Develop: "index2.md"

@@ -10,9 +10,7 @@ interface AVIresource {
 interface AVIrelation {
   AVIrelationID: string;
   sourceID: string;
-  sourceType: string;
   targetID: string;
-  targetType: string;
   type: string;
 }
 
