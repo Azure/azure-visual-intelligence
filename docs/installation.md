@@ -1,5 +1,6 @@
 # Installation
 
-![azure visual intelligence last screenshot](assets/laststate.jpg)
-
-## Create a Container Instance
+Get the last source on https://github.com/Azure/azure-visual-intelligence
+Create app registration
+Open Visual studio code, edit src/common/Config.ts 
+open a ternminal and run `npm run start`

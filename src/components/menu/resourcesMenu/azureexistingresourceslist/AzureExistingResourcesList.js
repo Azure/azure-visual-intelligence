@@ -1,4 +1,4 @@
-import { React } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { arrayToTree } from "../../../../common/arrayToTree";
 import { DragPreviewImage, useDrag } from "react-dnd";
@@ -74,7 +74,7 @@ const AzureExistingResourcesList = () => {
             label={treeItem.data.TreeName}
             ref={drag}
             style={{ isDragging }}
-            onFocusCapture={e => e.stopPropagation()}
+            onFocusCapture={(e) => e.stopPropagation()}
           >
             {treeItem.children &&
               treeItem.children.map((treeItem) => (
