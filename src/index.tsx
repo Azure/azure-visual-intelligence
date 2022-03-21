@@ -3,7 +3,11 @@ import ReactDOM from "react-dom";
 import App from "./components/App";
 import { store } from "./redux/configureStore";
 //import { store, persistor } from "./redux/configureStore";
-import { PublicClientApplication, EventType } from "@azure/msal-browser";
+import {
+  PublicClientApplication,
+  Configuration,
+  EventType,
+} from "@azure/msal-browser";
 import { MsalProvider } from "@azure/msal-react";
 import { msalConfig } from "./common/Config";
 import { Provider } from "react-redux";
