@@ -1,10 +1,12 @@
-## Setup dev environment
+## Dev environment setup
 
-Prerequisites :
+### Prerequisites
 
 - Azure AD admin to create app registrations
 - Visual Studio Code - Node.js latest
 - Typescript latest
+
+### Steps
 
 1. Create an App registration
    - SPA with Access tokens and ID tokens
@@ -19,9 +21,11 @@ Prerequisites :
 1. Open in Visual Studio Code
 1. Copy-paste /src/common/Config.env.ts to /src/common/Config._dev_.ts
 1. Edit /src/common/Config._dev_.ts and fill in those 3 placeholders :
-   - clientId: "**_APP_ID_**",
-   - authority: "https://login.microsoftonline.com/___TENANT_ID___",
-   - redirectUri: "**_REDIRECT_URI_**",
+   ```
+   clientId: "**_APP_ID_**",
+   authority: "https://login.microsoftonline.com/___TENANT_ID___",
+   redirectUri: "**_REDIRECT_URI_**",
+   ```
 1. Open a terminal and run `npm install`
 1. Run `npm start`
 
@@ -29,3 +33,19 @@ Prerequisites :
 
 Look at the issues here :
 https://github.com/Azure/azure-visual-intelligence/issues
+
+```
+
+```
+
+```
+
+```
+
+```
+
+```
+
+```
+
+```

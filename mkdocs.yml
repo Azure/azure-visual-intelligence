@@ -33,3 +33,9 @@ nav:
   - Contribute:
       - Documentation: "contribution-doc.md"
       - Develop: "contribution-dev.md"
+
+markdown_extensions:
+  - pymdownx.superfences:
+
+extra_css:
+  - theme/css/python_markdown_extension.css
