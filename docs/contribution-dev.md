@@ -33,19 +33,3 @@
 
 Look at the issues here :
 https://github.com/Azure/azure-visual-intelligence/issues
-
-```
-
-```
-
-```
-
-```
-
-```
-
-```
-
-```
-
-```
