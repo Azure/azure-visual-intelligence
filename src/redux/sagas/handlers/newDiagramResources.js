@@ -15,7 +15,6 @@ export function* handleNewDiagramResources(action) {
     const azureSettings = yield select(getAzureSettings);
     const currentDiagramRelations = yield select(getDiagramRelations);
 
-    //Call
     const responses = yield all(
       yield azureSettings.layout.map((layout) =>
         call(
@@ -133,6 +132,10 @@ function* AddDiagramResourceToDisplay(
     console.log("out");
   }
 
+  //This is necessary because Governance parent is not seen as a relationship
+  //In order to make governance layout generic we need to make RG/ resources relationship as a relation.
+  //This specific part should not be done in layout but in AddResourcesToDiagram
+  //Layout should only handle a generic parent
   if (Evaluatedlayout === "Governance") {
     //we update parent relation ship to ALL nodes (relation of some old node may have change with this new node)
     returnNodes.forEach(function (node, index) {

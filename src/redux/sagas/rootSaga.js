@@ -7,6 +7,7 @@ import { handleNewDiagramResources } from "./handlers/newDiagramResources.js";
 import { handleSelectNode } from "./handlers/selectNode";
 import { handleChangeLayout } from "./handlers/changeLayout";
 import { handleChangeOverlay } from "./handlers/changeOverlay";
+import { handleResourcesMenu } from "./handlers/handleResourcesMenu";
 
 export function* watcherSaga() {
   //user Action
@@ -21,4 +22,6 @@ export function* watcherSaga() {
   //cascading Action
   //yield takeLatest("diagram/setDiagramResources", handleNewDiagramResources);
   yield takeLatest("diagram/setDiagramRelations", handleNewDiagramResources);
+  yield takeLatest("user/setUser", handleResourcesMenu);
+  
 }
