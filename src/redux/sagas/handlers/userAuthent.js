@@ -1,7 +1,6 @@
 import { call, put } from "redux-saga/effects";
 import { setUser } from "../../ducks/userSlice";
 import { setResources } from "../../ducks/resourcesSlice";
-import { azGetResourceContainersTree } from "../../../api/azure/azarm";
 
 export function* handleUserAuthent(action) {
   try {

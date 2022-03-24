@@ -8,7 +8,6 @@ import { getDiagramResource } from "../../redux/ducks/diagramSlice";
 import { getAccessToken } from "../../redux/ducks/userSlice";
 import { call, delay, select, put } from "redux-saga/effects";
 import "isomorphic-fetch";
-import { isNullOrUndefined } from "util";
 
 export class armEngine extends resourcesEngine {
   public static *GetResources(

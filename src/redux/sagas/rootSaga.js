@@ -7,7 +7,7 @@ import { handleNewDiagramResources } from "./handlers/newDiagramResources.js";
 import { handleSelectNode } from "./handlers/selectNode";
 import { handleChangeLayout } from "./handlers/changeLayout";
 import { handleChangeOverlay } from "./handlers/changeOverlay";
-import { handleResourcesMenu } from "./handlers/handleResourcesMenu";
+import { handleResourcesMenu } from "./handlers/ResourcesMenu";
 
 export function* watcherSaga() {
   //user Action
