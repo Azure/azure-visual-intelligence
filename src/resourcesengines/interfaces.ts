@@ -34,7 +34,8 @@ export abstract class resourcesEngine {
    * @param {AVIresource[]} resources List of AVIresources to list related AVIresources from
    */
   public static *GetResourcesAndRelatedResources(
-    resources: AVIresource[]
+    resources: AVIresource[],
+    relations: AVIrelation[]
   ): Generator<any, [AVIresource[], AVIrelation[]], any> {
     yield;
     return [resources, []];

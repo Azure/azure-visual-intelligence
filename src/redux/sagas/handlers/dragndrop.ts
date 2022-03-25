@@ -34,23 +34,14 @@ function* AddResourceToDiagram(
   var relations: AVIrelation[] = [];
 
   [resources, relations] = yield call(argEngine.GetResourceAndChilds, payload);
-  //this should be removed later on but is used to create a proper list if need be.
-  /*if (!Array.isArray(payload)) {
-    //if payload is a unique item we want to make it a list.
-    payload = [payload];
-  }*/
-  //update payload resources from toolbox to resource of AVIresource type
-  /*let resources: AVIresource[] = yield call(
-    updateToolboxResourcestoAVIresources,
-    payload
-  );*/
 
   console.log("resources", resources);
-  //We ask armEngine to complete the list of resources with related resources and provide ARM info to all thoses resources
-  var relations: AVIrelation[] = [];
+  console.log("relations", relations);
+
   [resources, relations] = yield call(
     armEngine.GetResourcesAndRelatedResources,
-    resources
+    resources,
+    relations
   );
 
   return [resources, relations];

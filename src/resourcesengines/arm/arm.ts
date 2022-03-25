@@ -52,7 +52,8 @@ export class armEngine extends resourcesEngine {
   }
 
   public static *GetResourcesAndRelatedResources(
-    resources: AVIresource[]
+    resources: AVIresource[],
+    relations: AVIrelation[]
   ): Generator<any, [AVIresource[], AVIrelation[]], any> {
     //Exclude already enriched ARM resources
     var [resourcesToEnrich, resourcesAlreadyEnriched] =
@@ -62,7 +63,6 @@ export class armEngine extends resourcesEngine {
     const ARMresourceGroupsID = armEngine.GetResourceGroups(resourcesToEnrich);
 
     var returnElements = [];
-    var returnEdges: AVIrelation[] = [];
 
     //Resources already enriched are part of the response as is
     for (const resource of resourcesAlreadyEnriched) {
@@ -76,7 +76,7 @@ export class armEngine extends resourcesEngine {
         armEngine.azGetARMResourceGroup,
         resourceGroupID
       );
-
+      console.log("resourcegroupARMtemplate", resourcegroupARMtemplate);
       //Enrich the resources in the parameters not yet enriched
       for (let resource of resourcesToEnrich) {
         var EnrichedResources = armEngine.EnrichResourceFromARM(
@@ -96,7 +96,7 @@ export class armEngine extends resourcesEngine {
           resource
         );
         for (var IDrelation of IDrelations) {
-          returnEdges.push(IDrelation);
+          relations.push(IDrelation);
         }
 
         //ADD and Enrich subtype related to resources part of the parameters
@@ -114,7 +114,7 @@ export class armEngine extends resourcesEngine {
                 resource
               );
             returnElements.push(AVIresource);
-            returnEdges.push(
+            relations.push(
               armEngine.GenerateAVIARMSubTypeRelation(
                 mainResourceId,
                 AVIresource.AVIresourceID
@@ -135,7 +135,7 @@ export class armEngine extends resourcesEngine {
       }
     }
 
-    return [returnElements, returnEdges];
+    return [returnElements, relations];
   }
 
   static GetResourcesToEnrich(resources: AVIresource[]) {
@@ -409,14 +409,19 @@ export class armEngine extends resourcesEngine {
 
   static EnrichResourceFromARM(resource: AVIresource, template: any) {
     var resources: AVIresource[] = [];
+    let enrichedresource: AVIresource;
     const match = template.resources.find(
       (elem: any) =>
         elem.name === resource.name && elem.type.toLowerCase() === resource.type
     );
     if (match !== undefined) {
-      resource.enrichments.ARM = match;
+      enrichedresource = {
+        ...resource,
+        enrichments: { ARG: resource.enrichments.ARG, ARM: match },
+      };
+      resources.push(enrichedresource);
     }
-    resources.push(resource);
+
     return resources;
   }
 

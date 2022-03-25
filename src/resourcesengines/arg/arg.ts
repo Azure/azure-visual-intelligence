@@ -2,7 +2,12 @@ import { resourcesEngine } from "../interfaces";
 import { AVIresource, AVIrelation } from "../../interfaces";
 import { getAccessToken } from "../../redux/ducks/userSlice";
 import { call, delay, select, put } from "redux-saga/effects";
-import { addResources, addRelations } from "../../redux/ducks/argEngineSlice";
+import {
+  addResources,
+  addRelations,
+  getArmEngineResources,
+  getArmEngineRelations,
+} from "../../redux/ducks/argEngineSlice";
 import "isomorphic-fetch";
 
 export class argEngine extends resourcesEngine {
@@ -39,8 +44,25 @@ export class argEngine extends resourcesEngine {
     resource: AVIresource
   ): Generator<any, [AVIresource[], AVIrelation[]], any> {
     yield;
+    const armresouces = yield select(getArmEngineResources);
+    const armrelations = yield select(getArmEngineRelations);
 
-    return [[resource], []];
+    let resources: AVIresource[] = [resource];
+    let relations: AVIrelation[] = [];
+
+    //This is only doing first level for now
+    armrelations.forEach((relation: AVIrelation) => {
+      if (relation.sourceID === resource.AVIresourceID) {
+        let temp: any = armresouces.find(
+          (element: any) => element.AVIresourceID === relation.targetID
+        );
+        if (temp !== null) {
+          resources.push(temp);
+          relations.push(relation);
+        }
+      }
+    });
+    return [resources, relations];
   }
 
   private static createResources(
@@ -100,31 +122,33 @@ export class argEngine extends resourcesEngine {
       })
     ) {
       let AVIresource: AVIresource = {
-        AVIresourceID: rawresource.id,
-        resourcegroup: rawresource.resourceGroup,
-        subscription: rawresource.subscriptionId,
-        type: rawresource.type,
-        name: rawresource.name,
+        AVIresourceID: rawresource.id.toLowerCase(),
+        resourcegroup: rawresource.resourceGroup.toLowerCase(),
+        subscription: rawresource.subscriptionId.toLowerCase(),
+        type: rawresource.type.toLowerCase(),
+        name: rawresource.name.toLowerCase(),
         enrichments: {
           ARG: {
             parent:
               "/subscriptions/" +
-              rawresource.subscriptionId +
-              "/resourceGroups/" +
-              rawresource.resourceGroup,
+              rawresource.subscriptionId.toLowerCase() +
+              "/resourcegroups/" +
+              rawresource.resourceGroup.toLowerCase(),
           },
         },
       };
       resources.push(AVIresource);
 
       let AVIrelation: AVIrelation = {
-        AVIrelationID: rawresource.subscriptionId + rawresource.id,
+        AVIrelationID:
+          rawresource.subscriptionId.toLowerCase() +
+          rawresource.id.toLowerCase(),
         sourceID:
           "/subscriptions/" +
-          rawresource.subscriptionId +
-          "/resourceGroups/" +
-          rawresource.resourceGroup,
-        targetID: rawresource.id,
+          rawresource.subscriptionId.toLowerCase() +
+          "/resourcegroups/" +
+          rawresource.resourceGroup.toLowerCase(),
+        targetID: rawresource.id.toLowerCase(),
         type: "ARG",
       };
       relations.push(AVIrelation);
@@ -144,23 +168,25 @@ export class argEngine extends resourcesEngine {
       })
     ) {
       let AVIresource: AVIresource = {
-        AVIresourceID: resourcegroup.id,
+        AVIresourceID: resourcegroup.id.toLowerCase(),
         resourcegroup: "",
         subscription: "",
-        type: resourcegroup.type,
-        name: resourcegroup.name,
+        type: resourcegroup.type.toLowerCase(),
+        name: resourcegroup.name.toLowerCase(),
         enrichments: {
           ARG: {
-            parent: "/subscriptions/" + resourcegroup.subscriptionId,
+            parent:
+              "/subscriptions/" + resourcegroup.subscriptionId.toLowerCase(),
           },
         },
       };
       resources.push(AVIresource);
 
       let AVIrelation: AVIrelation = {
-        AVIrelationID: resourcegroup.subscriptionId + resourcegroup.id,
-        sourceID: resourcegroup.subscriptionId,
-        targetID: resourcegroup.id,
+        AVIrelationID:
+          resourcegroup.subscriptionId + resourcegroup.id.toLowerCase(),
+        sourceID: resourcegroup.subscriptionId.toLowerCase(),
+        targetID: resourcegroup.id.toLowerCase(),
         type: "ARG",
       };
       relations.push(AVIrelation);
@@ -180,16 +206,15 @@ export class argEngine extends resourcesEngine {
       })
     ) {
       let AVIresource: AVIresource = {
-        AVIresourceID: resourceContainer.id,
+        AVIresourceID: resourceContainer.id.toLowerCase(),
         resourcegroup: "",
         subscription: "",
-        type: resourceContainer.type,
-        name: resourceContainer.name,
+        type: resourceContainer.type.toLowerCase(),
+        name: resourceContainer.name.toLowerCase(),
         enrichments: {
           ARG: {
             parent:
-              resourceContainer.properties.managementGroupAncestorsChain[0]
-                .name,
+              resourceContainer.properties.managementGroupAncestorsChain[0].name.toLowerCase(),
           },
         },
       };
@@ -197,11 +222,11 @@ export class argEngine extends resourcesEngine {
 
       let AVIrelation: AVIrelation = {
         AVIrelationID:
-          resourceContainer.properties.managementGroupAncestorsChain[0].name +
-          resourceContainer.id,
+          resourceContainer.properties.managementGroupAncestorsChain[0].name.toLowerCase() +
+          resourceContainer.id.toLowerCase(),
         sourceID:
-          resourceContainer.properties.managementGroupAncestorsChain[0].name,
-        targetID: resourceContainer.id,
+          resourceContainer.properties.managementGroupAncestorsChain[0].name.toLowerCase(),
+        targetID: resourceContainer.id.toLowerCase(),
         type: "ARG",
       };
       relations.push(AVIrelation);
@@ -223,17 +248,17 @@ export class argEngine extends resourcesEngine {
         })
       ) {
         let AVIresource: AVIresource = {
-          AVIresourceID: managementGroupAncestorsChain[i].name,
+          AVIresourceID: managementGroupAncestorsChain[i].name.toLowerCase(),
           resourcegroup: "",
           subscription: "",
-          type: "ManagementGroup",
-          name: managementGroupAncestorsChain[i].displayName,
+          type: "managementgroup",
+          name: managementGroupAncestorsChain[i].displayName.toLowerCase(),
           enrichments: {
             ARG: {
               parent:
                 i === managementGroupAncestorsChain.length - 1
                   ? null
-                  : managementGroupAncestorsChain[i + 1].name,
+                  : managementGroupAncestorsChain[i + 1].name.toLowerCase(),
             },
           },
         };
@@ -242,10 +267,10 @@ export class argEngine extends resourcesEngine {
         if (i !== managementGroupAncestorsChain.length - 1) {
           let AVIrelation: AVIrelation = {
             AVIrelationID:
-              managementGroupAncestorsChain[i].name +
-              managementGroupAncestorsChain[i + 1].name,
-            sourceID: managementGroupAncestorsChain[i].name,
-            targetID: managementGroupAncestorsChain[i + 1].name,
+              managementGroupAncestorsChain[i].name.toLowerCase() +
+              managementGroupAncestorsChain[i + 1].name.toLowerCase(),
+            sourceID: managementGroupAncestorsChain[i].name.toLowerCase(),
+            targetID: managementGroupAncestorsChain[i + 1].name.toLowerCase(),
             type: "ARG",
           };
           relations.push(AVIrelation);
