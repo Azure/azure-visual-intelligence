@@ -24,26 +24,6 @@ const AzureExistingResourcesList = () => {
       childrenField: "children",
     });
 
-    //flattening the tree to pass all childs of the selected resource to the diagram
-    /*let flatten = (children, extractChildren, level, parent) =>
-      Array.prototype.concat.apply(
-        children.map((x) => ({
-          ...x.data,
-          level: level || 1,
-          parent: parent || null,
-        })),
-        children.map((x) =>
-          flatten(
-            extractChildren(x) || [],
-            extractChildren,
-            (level || 1) + 1,
-            x.id
-          )
-        )
-      );*/
-
-    //let extractChildren = (x) => x.children;
-
     //recursive function to generate TreeItem tree with Drag embedded
     function Box({ treeItem }) {
       const [{ isDragging }, drag, preview] = useDrag(() => ({

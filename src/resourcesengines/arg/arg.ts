@@ -28,11 +28,12 @@ export class argEngine extends resourcesEngine {
     return [resources, relations];
   }
 
-  public static *GetResources(
-    resources: AVIresource[]
-  ): Generator<any, AVIresource[], any> {
+  public static *GetResourceAndRelatedresources(
+    resource: AVIresource
+  ): Generator<any, [AVIresource[], AVIrelation[]], any> {
     yield;
-    return resources;
+    console.log("should get");
+    return [[resource], []];
   }
 
   private static createResources(

@@ -5,6 +5,7 @@ import {
 } from "../../ducks/diagramSlice";
 import { AVIresource, AVIrelation } from "../../../interfaces";
 import { armEngine } from "../../../resourcesengines/arm/arm";
+import { argEngine } from "../../../resourcesengines/arg/arg";
 
 export const getDiagramResources = (state: any) => state.diagram.resources;
 
@@ -33,16 +34,26 @@ function* AddResourceToDiagram(
   /* we accept payload as "any" for backwards compatibility
    * payload should be changed to AVIresource[] when toolbox is updated
    */
-  //this should be removed later on but is used to create a proper list if need be.
-  if (!Array.isArray(payload)) {
-    //if payload is a unique item we want to make it a list.
-    payload = [payload];
-  }
-  //update payload resources from toolbox to resource of AVIresource type
-  let resources: AVIresource[] = yield call(
-    updateToolboxResourcestoAVIresources,
+  //should be a single item.
+  console.log(payload);
+
+  var resources: AVIresource[] = [];
+  var relations: AVIrelation[] = [];
+
+  [resources, relations] = yield call(
+    argEngine.GetResourceAndRelatedresources,
     payload
   );
+  //this should be removed later on but is used to create a proper list if need be.
+  /*if (!Array.isArray(payload)) {
+    //if payload is a unique item we want to make it a list.
+    payload = [payload];
+  }*/
+  //update payload resources from toolbox to resource of AVIresource type
+  /*let resources: AVIresource[] = yield call(
+    updateToolboxResourcestoAVIresources,
+    payload
+  );*/
 
   console.log("resources", resources);
   //Now we are working on legit AVIresource type.
