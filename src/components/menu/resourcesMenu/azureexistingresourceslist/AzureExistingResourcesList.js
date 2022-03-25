@@ -14,17 +14,18 @@ import { knightImage } from "./knightImage";
 
 const AzureExistingResourcesList = () => {
   //Getting Azure resources state from Redux
-  const resources = useSelector((state) => state.AvailableResources);
+  //const resources = useSelector((state) => state.AvailableResources);
+  const resources = useSelector((state) => state.argEngine.resources);
   if (resources !== undefined) {
     //Converting Azure Resources list to a tree
     const tree = arrayToTree(resources, {
-      id: "TreeID",
-      parentId: "TreeParentID",
+      id: "AVIresourceID",
+      parentId: "enrichments.ARG.parent",
       childrenField: "children",
     });
 
     //flattening the tree to pass all childs of the selected resource to the diagram
-    let flatten = (children, extractChildren, level, parent) =>
+    /*let flatten = (children, extractChildren, level, parent) =>
       Array.prototype.concat.apply(
         children.map((x) => ({
           ...x.data,
@@ -39,23 +40,15 @@ const AzureExistingResourcesList = () => {
             x.id
           )
         )
-      );
+      );*/
 
-    let extractChildren = (x) => x.children;
+    //let extractChildren = (x) => x.children;
 
     //recursive function to generate TreeItem tree with Drag embedded
     function Box({ treeItem }) {
       const [{ isDragging }, drag, preview] = useDrag(() => ({
         type: "TREEVIEW",
-        item: !treeItem.children.length //if the resource has no child
-          ? treeItem.data // we provide only the resource data
-          : [
-              treeItem.data,
-              ...flatten(extractChildren(treeItem), extractChildren).map(
-                //other wise we provide resource + child resources
-                (x) => delete x.children && x
-              ),
-            ],
+        item: treeItem.data,
         collect: (monitor) => ({
           isDragging: monitor.isDragging(),
         }),
@@ -66,12 +59,12 @@ const AzureExistingResourcesList = () => {
           <DragPreviewImage
             connect={preview}
             src={knightImage}
-            key={"image".concat("", treeItem.data.TreeID)}
+            key={"image".concat("", treeItem.data.AVIresourceID)}
           />
           <TreeItem
-            key={treeItem.data.TreeID}
-            nodeId={treeItem.data.TreeID}
-            label={treeItem.data.TreeName}
+            key={treeItem.data.AVIresourceID}
+            nodeId={treeItem.data.AVIresourceID}
+            label={treeItem.data.name}
             ref={drag}
             style={{ isDragging }}
             onFocusCapture={(e) => e.stopPropagation()}
@@ -80,7 +73,7 @@ const AzureExistingResourcesList = () => {
               treeItem.children.map((treeItem) => (
                 <Box
                   treeItem={treeItem}
-                  key={"box".concat("", treeItem.data.TreeID)}
+                  key={"box".concat("", treeItem.data.AVIresourceID)}
                 />
               ))}
           </TreeItem>
@@ -89,7 +82,10 @@ const AzureExistingResourcesList = () => {
     }
 
     const renderedListItems = tree.map((treeItem) => (
-      <Box treeItem={treeItem} key={"box".concat("", treeItem.data.TreeID)} />
+      <Box
+        treeItem={treeItem}
+        key={"box".concat("", treeItem.data.AVIresourceID)}
+      />
     ));
     return (
       <Grid

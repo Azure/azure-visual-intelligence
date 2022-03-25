@@ -6,7 +6,11 @@ import { addResources, addRelations } from "../../redux/ducks/argEngineSlice";
 import "isomorphic-fetch";
 
 export class argEngine extends resourcesEngine {
-  public static *ListResources(): Generator<any, AVIresource[], any> {
+  public static *ListResources(): Generator<
+    any,
+    [AVIresource[], AVIrelation[]],
+    any
+  > {
     //Get Subscriptions List
     let subscriptions = yield call(argEngine.GetSubscriptions);
 
@@ -20,7 +24,8 @@ export class argEngine extends resourcesEngine {
 
     yield put(addResources(resources));
     yield put(addRelations(relations));
-    return resources;
+    console.log(resources);
+    return [resources, relations];
   }
 
   public static *GetResources(
@@ -86,7 +91,11 @@ export class argEngine extends resourcesEngine {
         subscription: "",
         type: resourcegroup.type,
         name: resourcegroup.name,
-        enrichments: {},
+        enrichments: {
+          ARG: {
+            parent: "/subscriptions/" + resourcegroup.subscriptionId,
+          },
+        },
       };
       resources.push(AVIresource);
 
@@ -118,7 +127,13 @@ export class argEngine extends resourcesEngine {
         subscription: "",
         type: resourceContainer.type,
         name: resourceContainer.name,
-        enrichments: {},
+        enrichments: {
+          ARG: {
+            parent:
+              resourceContainer.properties.managementGroupAncestorsChain[0]
+                .name,
+          },
+        },
       };
       resources.push(AVIresource);
 
@@ -155,7 +170,14 @@ export class argEngine extends resourcesEngine {
           subscription: "",
           type: "ManagementGroup",
           name: managementGroupAncestorsChain[i].displayName,
-          enrichments: {},
+          enrichments: {
+            ARG: {
+              parent:
+                i === managementGroupAncestorsChain.length - 1
+                  ? null
+                  : managementGroupAncestorsChain[i + 1].name,
+            },
+          },
         };
         resources.push(AVIresource);
 

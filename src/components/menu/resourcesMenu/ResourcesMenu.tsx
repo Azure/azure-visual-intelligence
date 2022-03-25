@@ -25,7 +25,6 @@ const ResourcesMenu = () => {
         <Typography>Resources</Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <Button onClick={handleClearDiagram}> Clear All</Button>
         <AzureExistingResourcesList />
       </AccordionDetails>
     </Accordion>

@@ -5,8 +5,15 @@ const resourcesSlice = createSlice({
   initialState: [],
   reducers: {
     setResources(state, action) {
-      const resourcesData = action.payload;
-      return [...state, ...resourcesData];
+      let newlist = [];
+      console.log(action.payload);
+      Array.from(action.payload).forEach((element) => {
+        console.log(element);
+        let newItem = element;
+        newItem.parentId = element.enrichments.ARG.parent;
+        newlist.push(newItem);
+      });
+      return [...state, ...newlist];
     },
     /*addResourceRecommandationASC(state, action) {
       const index = action.payload.resourceIndex;
@@ -19,6 +26,5 @@ const resourcesSlice = createSlice({
 });
 
 export const { setResources } = resourcesSlice.actions;
-//addResourceRecommandationASC
 
 export default resourcesSlice.reducer;
