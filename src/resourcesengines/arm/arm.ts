@@ -237,7 +237,12 @@ export class armEngine extends resourcesEngine {
                 let AVIrelation: AVIrelation = {
                   AVIrelationID: AVIresourceID + IDtarget,
                   sourceID: AVIresourceID,
-                  sourceType: resourceTemplate.type.split("/")[2].toLowerCase(),
+                  sourceType:
+                    resourceTemplate.type.split("/")[0].toLowerCase() +
+                    "/" +
+                    resourceTemplate.type.split("/")[1].toLowerCase() +
+                    "/" +
+                    resourceTemplate.type.split("/")[2].toLowerCase(),
                   targetID: target,
                   targetType: result.groups.resourcetype.toLowerCase(),
                   type: "ARGref",
@@ -302,13 +307,13 @@ export class armEngine extends resourcesEngine {
                   let AVIrelation: AVIrelation = {
                     AVIrelationID: AVIresourceID + IDtarget,
                     sourceID: AVIresourceID,
-                    sourceType: result.groups.resourcetype
-                      .split("/")[1]
-                      .toLowerCase(),
+                    sourceType:
+                      resourceTemplate.type.split("/")[0].toLowerCase() +
+                      "/" +
+                      resourceTemplate.type.split("/")[1].toLowerCase(),
                     targetID: target,
-                    targetType: result.groups.resourcetype
-                      .split("/")[2]
-                      .toLowerCase(),
+                    targetType:
+                      provider + "/" + parenttype + "/" + resourcesubtype,
                     type: "ARGref",
                   };
                   returnRelations.push(AVIrelation);

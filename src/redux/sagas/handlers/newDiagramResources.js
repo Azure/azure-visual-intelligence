@@ -82,21 +82,37 @@ function* AddDiagramResourceToDisplay(
     if (layoutSettings.diagramprimitive !== "hidden") {
       console.log(resource.AVIresourceID);
       console.log(layoutSettings.parentType);
+      let trueparentID = null;
       let trueparent = diagramRelations.find(
         (element) =>
           element.targetID === resource.AVIresourceID &&
           element.sourceType === layoutSettings.parentType
       );
+
+      if (trueparent !== undefined) {
+        trueparentID = trueparent.sourceID;
+      } else {
+        //this is risky, should be improved
+        //We are doing it to detect ARM relationship Bastion -> Subnet (that should be Subnet -> Bastion but ARM is ARM)
+        trueparent = diagramRelations.find(
+          (element) =>
+            element.sourceID === resource.AVIresourceID &&
+            element.targetType === layoutSettings.parentType
+        );
+        if (trueparent !== undefined) {
+          trueparentID = trueparent.targetID;
+        }
+      }
       var newNode;
       if (layoutSettings.diagramprimitive === "item") {
-        console.log("trueparent", trueparent);
-        if (trueparent !== undefined) {
+        console.log("trueparentID", trueparentID);
+        if (trueparentID !== undefined) {
           //we build the adequate layout info for the node
           newNode = {
             data: {
               id: resource.AVIresourceID,
               label: resource.name,
-              parent: trueparent.sourceID,
+              parent: trueparentID,
               img: nodeSettings.icon,
               diagramprimitive: layoutSettings.diagramprimitive,
             },
@@ -117,12 +133,12 @@ function* AddDiagramResourceToDisplay(
         console.log("newNode", newNode);
       }
       if (layoutSettings.diagramprimitive === "box") {
-        if (trueparent !== undefined) {
+        if (trueparentID !== undefined) {
           newNode = {
             data: {
               id: resource.AVIresourceID,
               label: resource.name,
-              parent: trueparent.sourceID,
+              parent: trueparentID,
               img: nodeSettings.icon,
               diagramprimitive: layoutSettings.diagramprimitive,
             },
@@ -140,19 +156,6 @@ function* AddDiagramResourceToDisplay(
         returnNodes.push(newNode);
       }
     }
-
-    //To improve, this is only to add classes to existing nodes
-    /* if (Evaluatedlayout === "ARM") {
-      //we update parent relation ship to ALL nodes (relation of some old node may have change with this new node)
-      returnNodes.forEach(function (node, index) {
-        this[index] = {
-          data: {
-            ...this[index].data,
-          },
-          classes: "nodeIcon",
-        };
-      }, returnNodes);
-    }*/
   }
   //edge
   if (Evaluatedlayout === "ARM") {
@@ -183,30 +186,6 @@ function* AddDiagramResourceToDisplay(
     console.log("out");
   }
 
-  //This is necessary because Governance parent is not seen as a relationship
-  //In order to make governance layout generic we need to make RG/ resources relationship as a relation.
-  //This specific part should not be done in layout but in AddResourcesToDiagram
-  //Layout should only handle a generic parent
-  /*if (Evaluatedlayout === "Governance") {
-    //we update parent relation ship to ALL nodes (relation of some old node may have change with this new node)
-    returnNodes.forEach(function (node, index) {
-      console.log("doing something in governance loop");
-      var ParentNode = returnNodes.find(
-        (element) => element.data.id === this[index].data.parentgovernance
-      );
-      //if undefined then node has no current parent displayed in the diagram.
-      //if not undefined then we need to update the parent field within the studied node
-      if (ParentNode !== undefined) {
-        this[index] = {
-          data: {
-            ...this[index].data,
-            parent: this[index].data.parentgovernance,
-          },
-          classes: "nodeIcon",
-        };
-      }
-    }, returnNodes);
-  }*/
   console.log("AddDiagramResourceToDisplay finished", Evaluatedlayout);
   return { Evaluatedlayout, returnNodes, returnEdges };
 }
