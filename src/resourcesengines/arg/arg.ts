@@ -20,7 +20,14 @@ export class argEngine extends resourcesEngine {
       subscriptions
     );
 
-    let [resources, relations] = argEngine.createResources(resourceContainers);
+    //Get resources from subscription
+    let rawresources = yield call(argEngine.GetResources, subscriptions);
+
+    console.log("rawresources", rawresources);
+    let [resources, relations] = argEngine.createResources(
+      resourceContainers,
+      rawresources
+    );
 
     yield put(addResources(resources));
     yield put(addRelations(relations));
@@ -28,16 +35,17 @@ export class argEngine extends resourcesEngine {
     return [resources, relations];
   }
 
-  public static *GetResourceAndRelatedresources(
+  public static *GetResourceAndChilds(
     resource: AVIresource
   ): Generator<any, [AVIresource[], AVIrelation[]], any> {
     yield;
-    console.log("should get");
+
     return [[resource], []];
   }
 
   private static createResources(
-    resourceContainers: any
+    resourceContainers: any,
+    rawresources: any
   ): [AVIresource[], AVIrelation[]] {
     //Note : only the management group that have subscriptions will be present
     //This is because we are getting the management group from subscriptions properties
@@ -72,6 +80,55 @@ export class argEngine extends resourcesEngine {
         );
       }
     });
+
+    //RESOURCES
+    rawresources.data.forEach((rawresource: any) => {
+      [resources, relations] = argEngine.addResource(
+        resources,
+        relations,
+        rawresource
+      );
+    });
+
+    return [resources, relations];
+  }
+
+  private static addResource(resources: any, relations: any, rawresource: any) {
+    if (
+      !resources.some(function (resourceGroupItem: any) {
+        return resourceGroupItem.AVIresourceID === rawresource.id;
+      })
+    ) {
+      let AVIresource: AVIresource = {
+        AVIresourceID: rawresource.id,
+        resourcegroup: rawresource.resourceGroup,
+        subscription: rawresource.subscriptionId,
+        type: rawresource.type,
+        name: rawresource.name,
+        enrichments: {
+          ARG: {
+            parent:
+              "/subscriptions/" +
+              rawresource.subscriptionId +
+              "/resourceGroups/" +
+              rawresource.resourceGroup,
+          },
+        },
+      };
+      resources.push(AVIresource);
+
+      let AVIrelation: AVIrelation = {
+        AVIrelationID: rawresource.subscriptionId + rawresource.id,
+        sourceID:
+          "/subscriptions/" +
+          rawresource.subscriptionId +
+          "/resourceGroups/" +
+          rawresource.resourceGroup,
+        targetID: rawresource.id,
+        type: "ARG",
+      };
+      relations.push(AVIrelation);
+    }
 
     return [resources, relations];
   }
@@ -234,6 +291,39 @@ export class argEngine extends resourcesEngine {
     const body = {
       subscriptions: bodySubscriptions,
       query: "resourcecontainers ",
+      options: {
+        resultFormat: "objectArray",
+      },
+    };
+    const options = {
+      method: "POST",
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Authorization: bearerToken,
+      }),
+      body: JSON.stringify(body),
+    };
+    var response = yield call(fetch, url, options);
+    const data = yield call([response, response.json]);
+    return data;
+  }
+
+  public static *GetResources(
+    subscriptions: any[]
+  ): Generator<any, any[], any> {
+    const accessToken = yield select(getAccessToken);
+    const bearerToken = "Bearer " + accessToken;
+    const url =
+      "https://management.azure.com/providers/Microsoft.ResourceGraph/resources?api-version=2019-04-01";
+    const query = "resources";
+    const bodySubscriptions = Array.from(subscriptions).map(
+      (subscription: any) => {
+        return subscription.subscriptionId;
+      }
+    );
+    const body = {
+      subscriptions: bodySubscriptions,
+      query: query,
       options: {
         resultFormat: "objectArray",
       },

@@ -23,27 +23,17 @@ export function* handleDragnDrop(action: any): Generator<any, any, any> {
     console.log(error);
   }
 }
-/* we accept payload as any for backwards compatibility
- * Change payload to AVIresource[]
- * should be removed when toolbox is updated
- */
+
 function* AddResourceToDiagram(
-  payload: any,
+  payload: AVIresource,
   diagramResources: any
 ): Generator<any, [AVIresource[], AVIrelation[]], any> {
-  /* we accept payload as "any" for backwards compatibility
-   * payload should be changed to AVIresource[] when toolbox is updated
-   */
-  //should be a single item.
-  console.log(payload);
+  console.log("payload", payload);
 
   var resources: AVIresource[] = [];
   var relations: AVIrelation[] = [];
 
-  [resources, relations] = yield call(
-    argEngine.GetResourceAndRelatedresources,
-    payload
-  );
+  [resources, relations] = yield call(argEngine.GetResourceAndChilds, payload);
   //this should be removed later on but is used to create a proper list if need be.
   /*if (!Array.isArray(payload)) {
     //if payload is a unique item we want to make it a list.
@@ -56,7 +46,6 @@ function* AddResourceToDiagram(
   );*/
 
   console.log("resources", resources);
-  //Now we are working on legit AVIresource type.
   //We ask armEngine to complete the list of resources with related resources and provide ARM info to all thoses resources
   var relations: AVIrelation[] = [];
   [resources, relations] = yield call(
@@ -64,12 +53,10 @@ function* AddResourceToDiagram(
     resources
   );
 
-  //What we want to do next is create the relationship from all Engine
-
   return [resources, relations];
 }
 
-function updateToolboxResourcestoAVIresources(Toolboxes: any) {
+/*function updateToolboxResourcestoAVIresources(Toolboxes: any) {
   let payload: AVIresource[] = [];
   for (const resource of Toolboxes) {
     let AVIresource: AVIresource = {
@@ -88,3 +75,4 @@ function updateToolboxResourcestoAVIresources(Toolboxes: any) {
   }
   return payload;
 }
+*/
