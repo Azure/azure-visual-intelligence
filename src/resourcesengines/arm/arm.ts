@@ -107,7 +107,6 @@ export class armEngine extends resourcesEngine {
             resource
           );
           if (armEngine.isResourcePartOfList(returnElements, mainResourceId)) {
-            // yield armEngine.isResourcePartOfDiagram(mainResourceId) ||
             const AVIresource: AVIresource =
               armEngine.GenerateAVIResourceFromTemplate(
                 resourceGroupID,
@@ -117,7 +116,11 @@ export class armEngine extends resourcesEngine {
             relations.push(
               armEngine.GenerateAVIARMSubTypeRelation(
                 mainResourceId,
-                AVIresource.AVIresourceID
+                resource.type.split("/")[0].toLowerCase() +
+                  "/" +
+                  resource.type.split("/")[1].toLowerCase(),
+                AVIresource.AVIresourceID,
+                AVIresource.type
               )
             );
           } else {
@@ -163,12 +166,19 @@ export class armEngine extends resourcesEngine {
       return false;
     }
   }
-  static GenerateAVIARMSubTypeRelation(sourceID: string, targetID: string) {
+  static GenerateAVIARMSubTypeRelation(
+    sourceID: string,
+    sourceType: string,
+    targetID: string,
+    targetType: string
+  ) {
     let AVIrelation: AVIrelation = {
       AVIrelationID: sourceID + targetID,
       sourceID: sourceID,
+      sourceType: sourceType,
       targetID: targetID,
-      type: "SubType",
+      targetType: targetType,
+      type: "ARGSubType",
     };
     return AVIrelation;
   }
@@ -227,8 +237,10 @@ export class armEngine extends resourcesEngine {
                 let AVIrelation: AVIrelation = {
                   AVIrelationID: AVIresourceID + IDtarget,
                   sourceID: AVIresourceID,
+                  sourceType: resourceTemplate.type.split("/")[2].toLowerCase(),
                   targetID: target,
-                  type: "ref",
+                  targetType: result.groups.resourcetype.toLowerCase(),
+                  type: "ARGref",
                 };
                 returnRelations.push(AVIrelation);
               }
@@ -290,8 +302,14 @@ export class armEngine extends resourcesEngine {
                   let AVIrelation: AVIrelation = {
                     AVIrelationID: AVIresourceID + IDtarget,
                     sourceID: AVIresourceID,
+                    sourceType: result.groups.resourcetype
+                      .split("/")[1]
+                      .toLowerCase(),
                     targetID: target,
-                    type: "ref",
+                    targetType: result.groups.resourcetype
+                      .split("/")[2]
+                      .toLowerCase(),
+                    type: "ARGref",
                   };
                   returnRelations.push(AVIrelation);
                 }
@@ -314,8 +332,13 @@ export class armEngine extends resourcesEngine {
                   let AVIrelation: AVIrelation = {
                     AVIrelationID: AVIresourceID + IDtarget,
                     sourceID: AVIresourceID,
+                    sourceType:
+                      resourceTemplate.type.split("/")[0].toLowerCase() +
+                      "/" +
+                      resourceTemplate.type.split("/")[1].toLowerCase(),
                     targetID: target,
-                    type: "ref",
+                    targetType: result.groups.resourcetype.toLowerCase(),
+                    type: "ARGref",
                   };
                   returnRelations.push(AVIrelation);
                 }

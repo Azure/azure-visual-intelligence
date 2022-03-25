@@ -700,7 +700,7 @@ const initialState = {
       name: "ARM",
       items: [
         {
-          type: "ManagementGroup",
+          type: "managementgroup",
           parentType: "none",
           diagramprimitive: "hidden",
         },

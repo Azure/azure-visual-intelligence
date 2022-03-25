@@ -148,7 +148,9 @@ export class argEngine extends resourcesEngine {
           rawresource.subscriptionId.toLowerCase() +
           "/resourcegroups/" +
           rawresource.resourceGroup.toLowerCase(),
+        sourceType: "microsoft.resources/subscriptions/resourcegroups",
         targetID: rawresource.id.toLowerCase(),
+        targetType: rawresource.type.toLowerCase(),
         type: "ARG",
       };
       relations.push(AVIrelation);
@@ -186,7 +188,9 @@ export class argEngine extends resourcesEngine {
         AVIrelationID:
           resourcegroup.subscriptionId + resourcegroup.id.toLowerCase(),
         sourceID: resourcegroup.subscriptionId.toLowerCase(),
+        sourceType: "microsoft.resources/subscriptions",
         targetID: resourcegroup.id.toLowerCase(),
+        targetType: "microsoft.resources/subscriptions/resourcegroups",
         type: "ARG",
       };
       relations.push(AVIrelation);
@@ -226,7 +230,9 @@ export class argEngine extends resourcesEngine {
           resourceContainer.id.toLowerCase(),
         sourceID:
           resourceContainer.properties.managementGroupAncestorsChain[0].name.toLowerCase(),
+        sourceType: "managementgroup",
         targetID: resourceContainer.id.toLowerCase(),
+        targetType: "microsoft.resources/subscriptions",
         type: "ARG",
       };
       relations.push(AVIrelation);
@@ -270,7 +276,9 @@ export class argEngine extends resourcesEngine {
               managementGroupAncestorsChain[i].name.toLowerCase() +
               managementGroupAncestorsChain[i + 1].name.toLowerCase(),
             sourceID: managementGroupAncestorsChain[i].name.toLowerCase(),
+            sourceType: "managementgroup",
             targetID: managementGroupAncestorsChain[i + 1].name.toLowerCase(),
+            targetType: "managementgroup",
             type: "ARG",
           };
           relations.push(AVIrelation);

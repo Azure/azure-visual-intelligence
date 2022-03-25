@@ -57,40 +57,92 @@ function* AddDiagramResourceToDisplay(
     var nodeSettings = azureSettings.resources.azure.find(
       (element) => element.type === resource.type
     );
+
+    //if we don't find the resource type we still want a default display
+    if (nodeSettings === undefined) {
+      nodeSettings = {
+        icon: "/assets/img/azure/original/default.svg",
+      };
+    }
+
     //get the layout resource metadata
     var layoutSettings = azureSettings.layout
       .find((layout) => layout.name === Evaluatedlayout)
       .items.find((item) => item.type === resource.type.toLowerCase());
 
     //if we don't find the resource type we still want a default display
-    if (nodeSettings === undefined) {
-      nodeSettings = {
-        icon: "/assets/img/azure/original/default.svg",
-        diagramprimitive: "item",
-      };
-    }
     if (layoutSettings === undefined) {
       layoutSettings = azureSettings.layout
         .find((layout) => layout.name === Evaluatedlayout)
         .items.find((item) => item.type === "default");
     }
 
+    console.log("layoutSettings", layoutSettings);
+
     if (layoutSettings.diagramprimitive !== "hidden") {
-      //we build the adequate layout info for the node
-      var newNode = {
-        data: {
-          id: resource.AVIresourceID,
-          label: resource.name,
-          parentgovernance: resource.enrichments["ARG"].parent,
-          img: nodeSettings.icon,
-          diagramprimitive: layoutSettings.diagramprimitive,
-        },
-      };
-      returnNodes.push(newNode);
+      console.log(resource.AVIresourceID);
+      console.log(layoutSettings.parentType);
+      let trueparent = diagramRelations.find(
+        (element) =>
+          element.targetID === resource.AVIresourceID &&
+          element.sourceType === layoutSettings.parentType
+      );
+      var newNode;
+      if (layoutSettings.diagramprimitive === "item") {
+        console.log("trueparent", trueparent);
+        if (trueparent !== undefined) {
+          //we build the adequate layout info for the node
+          newNode = {
+            data: {
+              id: resource.AVIresourceID,
+              label: resource.name,
+              parent: trueparent.sourceID,
+              img: nodeSettings.icon,
+              diagramprimitive: layoutSettings.diagramprimitive,
+            },
+            classes: "nodeIcon",
+          };
+        } else {
+          newNode = {
+            data: {
+              id: resource.AVIresourceID,
+              label: resource.name,
+              img: nodeSettings.icon,
+              diagramprimitive: layoutSettings.diagramprimitive,
+            },
+            classes: "nodeIcon",
+          };
+        }
+        returnNodes.push(newNode);
+        console.log("newNode", newNode);
+      }
+      if (layoutSettings.diagramprimitive === "box") {
+        if (trueparent !== undefined) {
+          newNode = {
+            data: {
+              id: resource.AVIresourceID,
+              label: resource.name,
+              parent: trueparent.sourceID,
+              img: nodeSettings.icon,
+              diagramprimitive: layoutSettings.diagramprimitive,
+            },
+          };
+        } else {
+          newNode = {
+            data: {
+              id: resource.AVIresourceID,
+              label: resource.name,
+              img: nodeSettings.icon,
+              diagramprimitive: layoutSettings.diagramprimitive,
+            },
+          };
+        }
+        returnNodes.push(newNode);
+      }
     }
 
     //To improve, this is only to add classes to existing nodes
-    if (Evaluatedlayout === "ARM") {
+    /* if (Evaluatedlayout === "ARM") {
       //we update parent relation ship to ALL nodes (relation of some old node may have change with this new node)
       returnNodes.forEach(function (node, index) {
         this[index] = {
@@ -100,33 +152,32 @@ function* AddDiagramResourceToDisplay(
           classes: "nodeIcon",
         };
       }, returnNodes);
-    }
+    }*/
   }
   //edge
   if (Evaluatedlayout === "ARM") {
-    let cpt = 0;
     let diagramResources = yield select(getDiagramResources);
     for (let relation of diagramRelations) {
-      cpt++;
-      console.log("cpt", cpt);
-      console.log("doing something in relation loop", relation);
-      if (
-        isResourcePartOfDiagram(diagramResources, relation.sourceID) &&
-        isResourcePartOfDiagram(diagramResources, relation.targetID)
-      ) {
-        let newEdge = {
-          data: {
-            id: relation.AVIrelationID,
-            source: relation.sourceID,
-            target: relation.targetID,
-          },
-        };
-        returnEdges.push(newEdge);
-      } else {
-        console.log(
-          "Creating relation : source or target does not exist :",
-          relation
-        );
+      if (relation.type !== "ARG") {
+        console.log("doing something in relation loop", relation);
+        if (
+          isResourcePartOfDiagram(diagramResources, relation.sourceID) &&
+          isResourcePartOfDiagram(diagramResources, relation.targetID)
+        ) {
+          let newEdge = {
+            data: {
+              id: relation.AVIrelationID,
+              source: relation.sourceID,
+              target: relation.targetID,
+            },
+          };
+          returnEdges.push(newEdge);
+        } else {
+          console.log(
+            "Creating relation : source or target does not exist :",
+            relation
+          );
+        }
       }
     }
     console.log("out");
@@ -136,7 +187,7 @@ function* AddDiagramResourceToDisplay(
   //In order to make governance layout generic we need to make RG/ resources relationship as a relation.
   //This specific part should not be done in layout but in AddResourcesToDiagram
   //Layout should only handle a generic parent
-  if (Evaluatedlayout === "Governance") {
+  /*if (Evaluatedlayout === "Governance") {
     //we update parent relation ship to ALL nodes (relation of some old node may have change with this new node)
     returnNodes.forEach(function (node, index) {
       console.log("doing something in governance loop");
@@ -155,7 +206,7 @@ function* AddDiagramResourceToDisplay(
         };
       }
     }, returnNodes);
-  }
+  }*/
   console.log("AddDiagramResourceToDisplay finished", Evaluatedlayout);
   return { Evaluatedlayout, returnNodes, returnEdges };
 }
@@ -169,7 +220,3 @@ function isResourcePartOfDiagram(diagramResources, AVIID) {
     return false;
   }
 }
-
-/*
-POST https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/
-my-resource-group/exportTemplate?api-version=2021-04-01*/
