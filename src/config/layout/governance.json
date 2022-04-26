@@ -1,0 +1,50 @@
+{
+    "name": "Governance",
+    "items": [
+    {
+        "type": "ManagementGroup",
+        "diagramprimitive": "box",
+        "parentType": "none"
+    },
+    {
+        "type": "microsoft.resources/subscriptions",
+        "diagramprimitive": "box",
+        "parentType": "ManagementGroup"
+    },
+    {
+        "type": "microsoft.resources/subscriptions/resourcegroups",
+        "diagramprimitive": "box",
+        "parentType": "microsoft.resources/subscriptions"
+    },
+    {
+        "type": "default",
+        "diagramprimitive": "item",
+        "parentType": "microsoft.resources/subscriptions/resourcegroups"
+    },
+    {
+        "type": "microsoft.operationalinsights/workspaces/savedsearches",
+        "diagramprimitive": "hidden",
+        "parentType": "microsoft.resources/subscriptions/resourcegroups"
+    },
+    {
+        "type": "microsoft.storage/storageaccounts/queueservices",
+        "diagramprimitive": "hidden",
+        "parentType": "microsoft.resources/subscriptions/resourcegroups"
+    },
+    {
+        "type": "microsoft.storage/storageaccounts/tableservices",
+        "parentType": "microsoft.resources/subscriptions/resourcegroups",
+        "diagramprimitive": "hidden"
+    },
+    {
+        "type": "microsoft.storage/storageaccounts/blobservices",
+        "parentType": "microsoft.resources/subscriptions/resourcegroups",
+        "diagramprimitive": "hidden"
+    },
+    {
+        "type": "microsoft.storage/storageaccounts/fileservices",
+        "parentType": "microsoft.resources/subscriptions/resourcegroups",
+        "diagramprimitive": "hidden"
+    }
+    ]
+}

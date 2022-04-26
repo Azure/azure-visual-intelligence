@@ -11,6 +11,7 @@ import {
 import { MsalProvider } from "@azure/msal-react";
 import { msalConfig } from "./common/Config";
 import { Provider } from "react-redux";
+import { useDispatch } from "react-redux";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 //import { PersistGate } from "redux-persist/integration/react";

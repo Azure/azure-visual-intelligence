@@ -1,0 +1,35 @@
+{
+  "name": "ARM",
+  "items": [
+    {
+      "type": "managementgroup",
+      "parentType": "none",
+      "diagramprimitive": "hidden"
+    },
+    {
+      "type": "microsoft.resources/subscriptions",
+      "parentType": "ManagementGroup",
+      "diagramprimitive": "hidden"
+    },
+    {
+      "type": "microsoft.resources/subscriptions/resourcegroups",
+      "parentType": "none",
+      "diagramprimitive": "box"
+    },
+    {
+      "type": "default",
+      "parentType": "microsoft.resources/subscriptions/resourcegroups",
+      "diagramprimitive": "item",
+      "relations": [
+        {
+          "engine": "ARM",
+          "type": "ref"
+        },
+        {
+          "engine": "ARM",
+          "type": "subtype"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+    "name": "Network",
+    "items": [
+    {
+        "type": "microsoft.resources/subscriptions/resourcegroups",
+        "parentType": "",
+        "diagramprimitive": "hidden"
+    },
+    {
+        "type": "default",
+        "parentType": "",
+        "diagramprimitive": "item"
+    },
+    {
+        "type": "microsoft.network/virtualnetworks",
+        "parentType": "",
+        "diagramprimitive": "box"
+    },
+    {
+        "type": "microsoft.network/virtualnetworks/subnets",
+        "parentType": "microsoft.network/virtualnetworks",
+        "diagramprimitive": "box"
+    },
+    {
+        "type": "microsoft.network/bastionhosts",
+        "parentType": "microsoft.network/virtualnetworks/subnets",
+        "diagramprimitive": "item"
+    },
+    {
+        "type": "microsoft.network/networkinterfaces",
+        "parentType": "microsoft.network/virtualnetworks/subnets",
+        "diagramprimitive": "item"
+    }
+    ]
+}

@@ -8,6 +8,7 @@ import { handleSelectNode } from "./handlers/selectNode";
 import { handleChangeLayout } from "./handlers/changeLayout";
 import { handleChangeOverlay } from "./handlers/changeOverlay";
 import { handleResourcesMenu } from "./handlers/ResourcesMenu";
+import { handleLoadConfig } from "./handlers/Config";
 
 export function* watcherSaga() {
   //user Action
@@ -18,6 +19,7 @@ export function* watcherSaga() {
   yield takeLatest("SELECT_NODE", handleSelectNode);
   yield takeLatest("CHANGE_LAYOUT", handleChangeLayout);
   yield takeLatest("CHANGE_OVERLAY", handleChangeOverlay);
+  yield takeLatest("LOAD_CONFIG", handleLoadConfig);
 
   //cascading Action
   //yield takeLatest("diagram/setDiagramResources", handleNewDiagramResources);

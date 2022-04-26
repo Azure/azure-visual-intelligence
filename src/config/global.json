@@ -1,0 +1,29 @@
+{
+    "diagram": {
+        "DisplayInstanceName": false,
+        "DisplayInstanceType": false,
+        "AlwaysAskDragnDropSubGovernanceResources": false,
+        "DragnDropSubGovernanceResources": true,
+        "AlwaysAskDragnDropSubARMResources": false,
+        "DragnDropSubARMResources": true,
+        "DefaultLayout": "ARM",
+        "CurrentLayout": "ARM"
+    },
+    "resources": {
+        "ref":"config/azure/resources.json"
+    },
+
+    "layout": [
+        {"ref":"config/layout/arm.json"},
+        {"ref":"config/layout/network.json"},
+        {"ref":"config/layout/governance.json"}
+    ],
+
+    "overlay": [
+    { "name": "Security" },
+    { "name": "Reliability" },
+    { "name": "Cost" },
+    { "name": "Performance" },
+    { "name": "Latency" }
+    ]
+}

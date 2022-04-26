@@ -44,6 +44,7 @@ module.exports = {
       },
     }),
     new CopyPlugin({ patterns: [{ from: "src/assets", to: "assets" }] }),
+    new CopyPlugin({ patterns: [{ from: "src/config", to: "config" }] }),
   ],
   module: {
     rules: [
