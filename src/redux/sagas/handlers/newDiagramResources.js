@@ -82,6 +82,7 @@ function* AddDiagramResourceToDisplay(
     if (layoutSettings.diagramprimitive !== "hidden") {
       console.log(resource.AVIresourceID);
       console.log(layoutSettings.parentType);
+      //parent logic
       let trueparentID = null;
       let trueparent = diagramRelations.find(
         (element) =>
@@ -103,6 +104,9 @@ function* AddDiagramResourceToDisplay(
           trueparentID = trueparent.targetID;
         }
       }
+      //If parent is still undefined we might need to look if the resource is a subtype and in this case pick the parent of the type 
+      // There should be an option for this, do we want a global one or edit by resource ? 
+      
       var newNode;
       if (layoutSettings.diagramprimitive === "item") {
         console.log("trueparentID", trueparentID);

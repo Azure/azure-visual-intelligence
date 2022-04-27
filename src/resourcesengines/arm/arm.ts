@@ -178,7 +178,7 @@ export class armEngine extends resourcesEngine {
       sourceType: sourceType,
       targetID: targetID,
       targetType: targetType,
-      type: "ARGSubType",
+      type: "ARMSubType",
     };
     return AVIrelation;
   }
@@ -245,7 +245,7 @@ export class armEngine extends resourcesEngine {
                     resourceTemplate.type.split("/")[2].toLowerCase(),
                   targetID: target,
                   targetType: result.groups.resourcetype.toLowerCase(),
-                  type: "ARGref",
+                  type: "ARMref",
                 };
                 returnRelations.push(AVIrelation);
               }
@@ -314,7 +314,7 @@ export class armEngine extends resourcesEngine {
                     targetID: target,
                     targetType:
                       provider + "/" + parenttype + "/" + resourcesubtype,
-                    type: "ARGref",
+                    type: "ARMref",
                   };
                   returnRelations.push(AVIrelation);
                 }
@@ -343,7 +343,7 @@ export class armEngine extends resourcesEngine {
                       resourceTemplate.type.split("/")[1].toLowerCase(),
                     targetID: target,
                     targetType: result.groups.resourcetype.toLowerCase(),
-                    type: "ARGref",
+                    type: "ARMref",
                   };
                   returnRelations.push(AVIrelation);
                 }
