@@ -119,11 +119,15 @@ const Graph = () => {
         initialEnergyOnIncremental: 0.3,
         name: "fcose",
         spacingFactor: 1,
+        /*alignmentConstraint: {horizontal: [[
+          "/subscriptions/320c35fb-03ca-42b2-a67d-46a71839aad1/resourcegroups/mendacorp_online/providers/microsoft.network/virtualnetworks/mendacorp_online-vnet/subnets/azurebastionsubnet",
+          "/subscriptions/320c35fb-03ca-42b2-a67d-46a71839aad1/resourcegroups/mendacorp_online/providers/microsoft.network/virtualnetworks/mendacorp_online-vnet/subnets/default",
+          "/subscriptions/320c35fb-03ca-42b2-a67d-46a71839aad1/resourcegroups/mendacorp_online/providers/microsoft.network/virtualnetworks/mendacorp_online-vnet/subnets/nat",
+        ]] }*/
         //nodeDimensionsIncludeLabels: false,
         //spacingFactor: "spacing",
         //styleEnabled: true,
       });
-
       layout.current.run();
     }
   }, [diagramDisplay, currentLayout]);
@@ -133,6 +137,7 @@ const Graph = () => {
       return;
     }
     try {
+      console.log("la");
       if (!graph.current) {
         cytoscape.use(fcose);
         if (typeof cytoscape("core", "nodeHtmlLabel") === "undefined") {
@@ -140,6 +145,11 @@ const Graph = () => {
         }
         graph.current = cytoscape({
           ...diagramDisplay[currentLayout].elements,
+          layout : {
+            name: "fcose",
+            animate: false,
+            edgeElasticity: 0.3
+          },
           style: [
             //CORE
             {
@@ -293,6 +303,3 @@ const Graph = () => {
 };
 
 export default Graph;
-/*      <div style={{ position: "absolute", top: "1200px", left: "2000px" }}>
-        <Button variant="contained" onClick={DeployThroughPortal}>Deploy</Button>
-      </div>*/

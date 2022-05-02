@@ -96,9 +96,6 @@ function* AddDiagramResourceToDisplay(
           trueparentID = trueparent.targetID;
         }
       }
-      //If parent is still undefined we might need to look if the resource is a subtype and in this case pick the parent of the type 
-      // There should be an option for this, do we want a global one or edit by resource ? 
-      //how do we know it is a subtype
       
       var newNode;
       if (layoutSettings.diagramprimitive === "item") {
@@ -178,6 +175,9 @@ function* AddDiagramResourceToDisplay(
       }
     }
   }
+
+  //HERE lets add alignement constraint
+  
   return { Evaluatedlayout, returnNodes, returnEdges };
 }
 
