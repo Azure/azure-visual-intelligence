@@ -76,7 +76,7 @@ export class armEngine extends resourcesEngine {
         armEngine.azGetARMResourceGroup,
         resourceGroupID
       );
-      console.log("resourcegroupARMtemplate", resourcegroupARMtemplate);
+
       //Enrich the resources in the parameters not yet enriched
       for (let resource of resourcesToEnrich) {
         var EnrichedResources = armEngine.EnrichResourceFromARM(
@@ -123,6 +123,15 @@ export class armEngine extends resourcesEngine {
                 AVIresource.type
               )
             );
+
+            //We add the relation between RG and subtype as an ARG relation
+            relations.push(
+              armEngine.GenerateAVIARGRelation(
+                resourceGroupID,
+                "microsoft.resources/subscriptions/resourcegroups",
+                AVIresource.AVIresourceID,
+                AVIresource.type
+              ));
           } else {
             console.log(
               "sub type not added because main type not in diagram",
@@ -179,6 +188,23 @@ export class armEngine extends resourcesEngine {
       targetID: targetID,
       targetType: targetType,
       type: "ARMSubType",
+    };
+    return AVIrelation;
+  }
+
+  static GenerateAVIARGRelation(
+    sourceID: string,
+    sourceType: string,
+    targetID: string,
+    targetType: string
+  ) {
+    let AVIrelation: AVIrelation = {
+      AVIrelationID: sourceID + targetID,
+      sourceID: sourceID,
+      sourceType: sourceType,
+      targetID: targetID,
+      targetType: targetType,
+      type: "ARG",
     };
     return AVIrelation;
   }

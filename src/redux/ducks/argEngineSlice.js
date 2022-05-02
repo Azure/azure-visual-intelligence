@@ -13,8 +13,8 @@ const argEngineSlice = createSlice({
   },
 });
 
-export const getArmEngineResources = (state) => state.argEngine.resources;
-export const getArmEngineRelations = (state) => state.argEngine.relations;
+export const getArgEngineResources = (state) => state.argEngine.resources;
+export const getArgEngineRelations = (state) => state.argEngine.relations;
 
 export const { addResources, addRelations } = argEngineSlice.actions;
 

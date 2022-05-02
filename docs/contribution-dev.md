@@ -5,7 +5,6 @@
 - Azure AD admin to create app registrations
 - Visual Studio Code 
 - Node.js latest
-- Typescript latest
 
 ### Steps
 

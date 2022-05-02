@@ -27,8 +27,6 @@ export function* handleNewDiagramResources(action) {
       )
     );
 
-    console.log("ended");
-
     yield all(
       responses.map((response) => {
         return put(setDiagramNodes(response));
@@ -37,7 +35,6 @@ export function* handleNewDiagramResources(action) {
   } catch (error) {
     console.log(error);
   }
-  console.log("All setDiagramNodes ended");
 }
 
 function* AddDiagramResourceToDisplay(
@@ -52,7 +49,6 @@ function* AddDiagramResourceToDisplay(
   var returnNodes = [];
   var returnEdges = [];
   for (const resource of diagramResources) {
-    console.log("doing something");
     //get the azure resource metadata
     var nodeSettings = azureSettings.resources.azure.find(
       (element) => element.type === resource.type
@@ -77,11 +73,7 @@ function* AddDiagramResourceToDisplay(
         .items.find((item) => item.type === "default");
     }
 
-    console.log("layoutSettings", layoutSettings);
-
     if (layoutSettings.diagramprimitive !== "hidden") {
-      console.log(resource.AVIresourceID);
-      console.log(layoutSettings.parentType);
       //parent logic
       let trueparentID = null;
       let trueparent = diagramRelations.find(
@@ -106,10 +98,10 @@ function* AddDiagramResourceToDisplay(
       }
       //If parent is still undefined we might need to look if the resource is a subtype and in this case pick the parent of the type 
       // There should be an option for this, do we want a global one or edit by resource ? 
+      //how do we know it is a subtype
       
       var newNode;
       if (layoutSettings.diagramprimitive === "item") {
-        console.log("trueparentID", trueparentID);
         if (trueparentID !== undefined) {
           //we build the adequate layout info for the node
           newNode = {
@@ -134,7 +126,6 @@ function* AddDiagramResourceToDisplay(
           };
         }
         returnNodes.push(newNode);
-        console.log("newNode", newNode);
       }
       if (layoutSettings.diagramprimitive === "box") {
         if (trueparentID !== undefined) {
@@ -166,7 +157,6 @@ function* AddDiagramResourceToDisplay(
     let diagramResources = yield select(getDiagramResources);
     for (let relation of diagramRelations) {
       if (relation.type !== "ARG") {
-        console.log("doing something in relation loop", relation);
         if (
           isResourcePartOfDiagram(diagramResources, relation.sourceID) &&
           isResourcePartOfDiagram(diagramResources, relation.targetID)
@@ -187,10 +177,7 @@ function* AddDiagramResourceToDisplay(
         }
       }
     }
-    console.log("out");
   }
-
-  console.log("AddDiagramResourceToDisplay finished", Evaluatedlayout);
   return { Evaluatedlayout, returnNodes, returnEdges };
 }
 

@@ -5,8 +5,8 @@ import { call, delay, select, put } from "redux-saga/effects";
 import {
   addResources,
   addRelations,
-  getArmEngineResources,
-  getArmEngineRelations,
+  getArgEngineResources,
+  getArgEngineRelations,
 } from "../../redux/ducks/argEngineSlice";
 import "isomorphic-fetch";
 
@@ -44,8 +44,8 @@ export class argEngine extends resourcesEngine {
     resource: AVIresource
   ): Generator<any, [AVIresource[], AVIrelation[]], any> {
     yield;
-    const armresouces = yield select(getArmEngineResources);
-    const armrelations = yield select(getArmEngineRelations);
+    const armresouces = yield select(getArgEngineResources);
+    const armrelations = yield select(getArgEngineRelations);
 
     let resources: AVIresource[] = [resource];
     let relations: AVIrelation[] = [];
@@ -283,12 +283,6 @@ export class argEngine extends resourcesEngine {
           };
           relations.push(AVIrelation);
         }
-        /*
-
-        TreeParentID:
-          i === managementGroupAncestorsChain.length - 1
-            ? null
-            : managementGroupAncestorsChain[i + 1].name,*/
       }
     }
     return [resources, relations];
